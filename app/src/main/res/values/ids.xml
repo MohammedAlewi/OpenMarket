@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="home_frame" type="id"/>
+    <item name="nav_upload" type="id"/>
+    <item name="nav_subscription" type="id"/>
+    <item name="nav_setting" type="id"/>
+    <item name="nav_about" type="id"/>
+</resources>
