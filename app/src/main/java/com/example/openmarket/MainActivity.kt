@@ -39,6 +39,8 @@ class MainActivity : AppCompatActivity(),
             .replace(R.id.home_frame,HomeFragment.getInstance())
             .addToBackStack(null)
             .commit()
+//             var navController = Navigation.findNavController(this, R.id.nav_resource)
+
 
     }
 
@@ -99,7 +101,5 @@ class MainActivity : AppCompatActivity(),
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
     }
-
-
 
 }

@@ -12,4 +12,5 @@ data class Comment (
         @ColumnInfo(name = "comment_data") val commentdata:String,
         @ColumnInfo(name ="comment_date" )val dateOfComment:String,
         @ColumnInfo(name = "user_name") val userName:String
+
 ):Serializable

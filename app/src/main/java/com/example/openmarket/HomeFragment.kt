@@ -62,7 +62,6 @@ class HomeFragment : Fragment() {
     }
 
 
-
     companion object{
         fun getInstance():HomeFragment{
             var homeFragment=HomeFragment()
