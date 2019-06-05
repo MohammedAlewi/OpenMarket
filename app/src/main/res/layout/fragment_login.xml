@@ -1,46 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical" android:layout_width="match_parent"
-              android:layout_height="match_parent">
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" android:id="@+id/linearLayout">
+
     <TextView
             android:id="@+id/loginscrn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="80dp"
             android:text="Login"
             android:textSize="25dp"
             android:textStyle="bold"
-            android:layout_gravity="center"/>
+            app:layout_constraintTop_toTopOf="parent" android:layout_marginLeft="39dp"
+            android:layout_marginTop="80dp"
+            android:layout_marginStart="39dp" app:layout_constraintStart_toEndOf="@+id/fstTxt"/>
     <TextView
             android:id="@+id/fstTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="100dp"
-            android:layout_marginTop="20dp"
-            android:text="Email"/>
+            android:text="Email"
+            app:layout_constraintStart_toStartOf="@+id/txtEmail"
+            android:layout_marginBottom="1dp"
+            app:layout_constraintBottom_toTopOf="@+id/txtEmail"/>
     <EditText
             android:id="@+id/txtEmail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="100dp"
-            android:ems="10"/>
+            android:ems="10"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="40dp"
+            app:layout_constraintTop_toBottomOf="@+id/loginscrn"
+            app:layout_constraintEnd_toEndOf="parent"/>
     <TextView
             android:id="@+id/secTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Password"
-            android:layout_marginLeft="100dp" />
+            app:layout_constraintStart_toStartOf="@+id/txtEmail"
+            android:layout_marginBottom="1dp"
+            app:layout_constraintBottom_toTopOf="@+id/txtPwd"/>
     <EditText
             android:id="@+id/txtPwd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="100dp"
             android:inputType="textPassword"
-            android:ems="10" />
+            android:ems="10"
+            app:layout_constraintStart_toStartOf="@+id/secTxt"
+            android:layout_marginTop="19dp"
+            app:layout_constraintTop_toBottomOf="@+id/txtEmail"/>
     <Button
             android:id="@+id/btnLogin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="100dp"
-            android:text="Login" />
-</LinearLayout>
+            android:text="Login"
+            app:layout_constraintTop_toTopOf="@+id/txtPwd"
+            app:layout_constraintStart_toStartOf="@+id/txtPwd"
+            android:layout_marginTop="44dp"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
