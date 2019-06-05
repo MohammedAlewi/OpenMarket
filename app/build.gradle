@@ -84,6 +84,7 @@ dependencies {
     kapt 'com.android.databinding:compiler:3.4.1'
     //new material design
     implementation 'com.google.android.material:material:1.0.0'
+    implementation 'com.squareup.picasso:picasso:2.71828'
 
 
 }

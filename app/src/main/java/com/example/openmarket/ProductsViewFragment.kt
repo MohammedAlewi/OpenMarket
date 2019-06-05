@@ -20,7 +20,7 @@ class ProductsView : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-       var listitems:View = inflater.inflate(R.layout.fragment_products_view,container,false)
+        var listitems:View = inflater.inflate(R.layout.fragment_products_view,container,false)
         recyclerView=listitems.findViewById(R.id.recycler_view_items) as RecyclerView
 
         @Suppress("UNCHECKED_CAST")
