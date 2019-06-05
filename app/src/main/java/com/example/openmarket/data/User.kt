@@ -10,6 +10,7 @@ import java.io.Serializable
 data class User(
     @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") val id:Long,
     @ColumnInfo(name = "username") val username:String,
+    @ColumnInfo(name = "email") val email:String,
     @ColumnInfo(name = "password") val password:String,
     @ColumnInfo(name = "fullName") val fullName:String,
     @ColumnInfo(name = "phoneNo") val phoneNo:String,
