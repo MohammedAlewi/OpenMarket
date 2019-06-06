@@ -9,9 +9,11 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
+import androidx.navigation.ui.setupWithNavController
 import com.example.openmarket.data.Product
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
@@ -71,6 +73,7 @@ class MainActivity : AppCompatActivity(),
             NavigationUI.setupWithNavController(it,navController)
         }
 
+        setupNavigationMenu(navController)
 
         bottom_nav.setOnNavigationItemSelectedListener {
             when(it.itemId){
@@ -153,6 +156,12 @@ class MainActivity : AppCompatActivity(),
 
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
+    }
+
+    private fun setupNavigationMenu(navController: NavController) {
+        val sideNavView = findViewById<NavigationView>(R.id.nav_view)
+        sideNavView?.setupWithNavController(navController)
+
     }
 
 }
