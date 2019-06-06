@@ -1,8 +1,11 @@
 package com.example.openmarket
 
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.Navigation
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.openmarket.data.Product
 import kotlinx.android.synthetic.main.product_items_view.view.*
@@ -20,12 +23,14 @@ class ProductsItemAdapter(mainActivity: MainActivity,items_val: Array<Product>)
 
         recyclerView.setOnClickListener{
             var product:Product?=products.find{it.name==recyclerView.name_of_product.text.toString() }
-//            var productDetailFragment=ProductDetailFragment.getInstance(product as Product)
-//            handler.childFragmentManager.beginTransaction().replace(R.id.home_frame,productDetailFragment).commit()
-            main.onItemClicked(product as Product)
+//            main.onItemClicked(product as Product)
+            var arg=Bundle()
+            arg.putSerializable("product",product)
+            recyclerView.findNavController().navigate(R.id.productDetailFragment,arg)
 
+            notifyDataSetChanged()
         }
-
+        
         return ProductViewHolder(recyclerView)
     }
 

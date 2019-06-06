@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item
+            android:id="@+id/navigation_electronics"
+            android:icon="@android:drawable/ic_btn_speak_now"
+            android:title="Electronics"/>
+    <item
+            android:id="@+id/navigation_cloth"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="clothes"/>
+    <item
+            android:id="@+id/navigation_car"
+            android:icon="@android:drawable/ic_menu_directions"
+            android:title="Cars"/>
+    <item
+            android:id="@+id/navigation_house"
+            android:icon="@android:drawable/ic_lock_lock"
+            android:title="Houses"/>
+</menu>
