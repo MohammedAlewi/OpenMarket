@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.Navigation
 import com.example.openmarket.data.User
 import com.example.openmarket.repository.UserRepository
 import com.example.openmarket.viewmodel.UserViewModel
@@ -45,7 +46,11 @@ class RegistrationFragment : Fragment() {
         signIn = view.register
 
         signIn.setOnClickListener {
-            userViewModel.insertUser(readFeilds())
+            val user = readFeilds()
+            userViewModel.insertUser(user)
+            val bundle = Bundle()
+            bundle.putSerializable("user" , user)
+            Navigation.createNavigateOnClickListener(R.id.action_registrationFragment_to_loginFragment , bundle)
         }
 
 
