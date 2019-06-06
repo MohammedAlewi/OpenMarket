@@ -8,11 +8,11 @@ import java.io.Serializable
 
 @Entity(tableName = "users")
 data class User(
-    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") val id:Long,
+    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") val id:Long = 0,
+    @ColumnInfo(name = "fullName") val fullName:String,
     @ColumnInfo(name = "username") val username:String,
     @ColumnInfo(name = "email") val email:String,
     @ColumnInfo(name = "password") val password:String,
-    @ColumnInfo(name = "fullName") val fullName:String,
     @ColumnInfo(name = "phoneNo") val phoneNo:String,
     @ColumnInfo(name = "pictureId") val pictureId:String,
     @ColumnInfo(name = "locationId") val locationId:String
