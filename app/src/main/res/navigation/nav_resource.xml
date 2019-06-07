@@ -3,43 +3,27 @@
             xmlns:app="http://schemas.android.com/apk/res-auto"
             xmlns:tools="http://schemas.android.com/tools" android:id="@+id/nav_resource"
 
-            app:startDestination="@id/productsView">
+            app:startDestination="@id/entry2">
+    <fragment android:id="@+id/entry2" android:name="com.example.openmarket.Entry" android:label="fragment_entry"
+              tools:layout="@layout/fragment_entry">
+        <action android:id="@+id/action_entry_to_loginFragment" app:destination="@id/loginFragment"/>
+        <action android:id="@+id/action_entry_to_registrationFragment" app:destination="@id/registrationFragment"/>
+    </fragment>
     <fragment android:id="@+id/productsView" android:name="com.example.openmarket.ProductsView"
               android:label="fragment_products_view" tools:layout="@layout/fragment_products_view">
         <action android:id="@+id/action_productsView_to_productDetailFragment"
                 app:destination="@id/productDetailFragment"/>
-        <action android:id="@+id/action_productsView_to_loginFragment" app:destination="@id/loginFragment"/>
-
     </fragment>
-    <fragment android:id="@+id/loginFragment" android:name="com.example.openmarket.LoginFragment"
-              android:label="LoginFragment">
-        <action android:id="@+id/action_loginFragment_to_productsView" app:destination="@id/productsView"/>
-        <action android:id="@+id/action_loginFragment_to_registrationFragment"
-                app:destination="@id/registrationFragment"/>
+    <fragment android:id="@+id/productDetailFragment" android:name="com.example.openmarket.ProductDetailFragment"
+              android:label="fragment_product_detail" tools:layout="@layout/fragment_product_detail">
+        <action android:id="@+id/action_productDetailFragment_to_productsView" app:destination="@id/productsView"/>
     </fragment>
-
     <fragment android:id="@+id/registrationFragment" android:name="com.example.openmarket.RegistrationFragment"
               android:label="fragment_registration" tools:layout="@layout/fragment_registration">
         <action android:id="@+id/action_registrationFragment_to_loginFragment" app:destination="@id/loginFragment"/>
     </fragment>
-    <fragment android:id="@+id/entry"
-              android:name="com.example.openmarket.Entry"
-              android:label="fragment_entry"
-              tools:layout="@layout/fragment_entry">
-
-        <action android:id="@+id/action_entry_to_loginFragment"
-                app:enterAnim="@anim/slide_in_right"
-                app:exitAnim="@anim/slide_out_left"
-                app:popEnterAnim="@anim/slide_in_left"
-                app:destination="@id/loginFragment"/>
-
-        <action android:id="@+id/action_entry_to_registrationFragment"
-                app:destination="@id/registrationFragment"
-                app:enterAnim="@anim/slide_in_right"
-                app:exitAnim="@anim/slide_out_left"
-                app:popEnterAnim="@anim/slide_in_left"
-                app:popExitAnim="@anim/slide_out_right"/>
+    <fragment android:id="@+id/loginFragment" android:name="com.example.openmarket.LoginFragment"
+              android:label="LoginFragment">
+        <action android:id="@+id/action_loginFragment_to_productsView" app:destination="@id/productsView"/>
     </fragment>
-    <fragment android:id="@+id/productDetailFragment" android:name="com.example.openmarket.ProductDetailFragment"
-              android:label="fragment_product_detail" tools:layout="@layout/fragment_product_detail"/>
 </navigation>
