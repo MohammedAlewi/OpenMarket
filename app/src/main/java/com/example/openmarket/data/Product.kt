@@ -8,7 +8,7 @@ import java.io.Serializable
 
 @Entity(tableName ="products")
 data class Product(
-        @PrimaryKey(autoGenerate = true)  @ColumnInfo(name = "product_id")  val id:Long,
+        @PrimaryKey  @ColumnInfo(name = "product_id")  val id:Long=0,
         @ColumnInfo(name = "product_image") var imagePath:String,
         @ColumnInfo(name = "product_name") var name:String,
         @ColumnInfo(name = "product_type") var type:String,
