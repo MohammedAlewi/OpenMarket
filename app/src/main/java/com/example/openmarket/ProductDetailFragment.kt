@@ -13,7 +13,6 @@ import kotlinx.android.synthetic.main.fragment_product_detail.view.*
 class ProductDetailFragment : Fragment() {
 
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -29,8 +28,10 @@ class ProductDetailFragment : Fragment() {
         view.product_price.text=product.price.toString()
 
 
+
         return view
     }
+
 
 
 

@@ -3,9 +3,12 @@ package com.example.openmarket.viewmodel
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.viewModelScope
 import com.example.openmarket.data.Comment
 import com.example.openmarket.data.OpenMarketDatabase
 import com.example.openmarket.repository.CommentRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class CommentViewModel(application:Application):AndroidViewModel(application){
     private var commentRepository:CommentRepository
@@ -16,11 +19,11 @@ class CommentViewModel(application:Application):AndroidViewModel(application){
         commentRepository=CommentRepository(comment_dao,product_cmnt_dao)
     }
 
-    fun insertComment(comment: Comment, product_id:Long){
+    fun insertComment(comment: Comment, product_id:Long)=viewModelScope.launch(Dispatchers.IO){
         commentRepository.insertComment(comment,product_id)
     }
 
-    fun deleteComment(comment: Comment){
+    fun deleteComment(comment: Comment)=viewModelScope.launch(Dispatchers.IO){
         commentRepository.deleteComment(comment)
     }
 
@@ -32,7 +35,7 @@ class CommentViewModel(application:Application):AndroidViewModel(application){
         return commentRepository.getCommentByUsername(username)
     }
 
-    fun updateComment(comment: Comment)=commentRepository.updateComment(comment)
+    fun updateComment(comment: Comment)=viewModelScope.launch(Dispatchers.IO){commentRepository.updateComment(comment)}
 
     fun getCommentById(id:Long): LiveData<Comment> {
         return commentRepository.getCommentById(id)

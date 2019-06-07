@@ -3,10 +3,13 @@ package com.example.openmarket.viewmodel
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.viewModelScope
 import com.example.openmarket.data.OpenMarketDatabase
 import com.example.openmarket.data.Product
 import com.example.openmarket.data.User
 import com.example.openmarket.repository.UserRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class UserViewModel(application: Application):AndroidViewModel(application){
     private  var userRepository:UserRepository
@@ -24,15 +27,15 @@ class UserViewModel(application: Application):AndroidViewModel(application){
         return userRepository.getUserByUsername(username)
     }
 
-    fun insertUser(user: User){
+    fun insertUser(user: User)=viewModelScope.launch(Dispatchers.IO){
         userRepository.insertUser(user)
     }
 
-    fun updateUser(user: User){
+    fun updateUser(user: User)=viewModelScope.launch(Dispatchers.IO){
         userRepository.updateUser(user)
     }
 
-    fun deleteUser(user: User){
+    fun deleteUser(user: User)=viewModelScope.launch(Dispatchers.IO){
         userRepository.deleteUser(user)
     }
 
