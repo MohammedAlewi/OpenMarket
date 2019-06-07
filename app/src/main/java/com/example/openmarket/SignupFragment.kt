@@ -1,83 +1,145 @@
 package com.example.openmarket
 
-import android.content.Context
+
+import android.app.Activity
 import android.content.Intent
-import android.net.Uri
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
-import android.provider.MediaStore
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+import android.widget.*
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat.checkSelfPermission
+import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.Navigation
+import com.example.openmarket.data.User
+import com.example.openmarket.repository.UserRepository
+import com.example.openmarket.viewmodel.UserViewModel
+import com.google.android.material.textfield.TextInputEditText
+import kotlinx.android.synthetic.main.fragment_registration.*
+import kotlinx.android.synthetic.main.fragment_registration.view.*
+import kotlinx.android.synthetic.main.fragment_signup.view.*
+import java.util.jar.Manifest
+import kotlinx.android.synthetic.main.fragment_registration.view.user_profile_image as user_profile_image1
 
 class SignupFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-    private var listener: OnFragmentInteractionListener? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private lateinit var userViewModel : UserViewModel
+
+    private lateinit var fullName:EditText
+    private lateinit var userName:EditText
+    private lateinit var email_addr:EditText
+    private lateinit var password:EditText
+    private lateinit var confirmPassword:EditText
+    private lateinit var phoneNumber: EditText
+
+    private lateinit var imageView: ImageView
+
+    private lateinit var signUp: Button
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_signup, container, false)
-    }
+        val view =  inflater.inflate(R.layout.fragment_signup, container, false)
 
-    // TODO: Rename method, update argument and hook method into UI event
-    fun onButtonPressed(uri: Uri) {
-        listener?.onFragmentInteraction(uri)
-    }
+        userViewModel = ViewModelProviders.of(this).get(UserViewModel::class.java)
+        fullName = view.fullNameEdit
+        userName = view.usernameEdit
+        email_addr = view.emailEdit
+        password = view.passwordEdit
+        confirmPassword = view.confirmPasswordEdit
+        phoneNumber = view.phoneNoEdit
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        if (context is OnFragmentInteractionListener) {
-            listener = context
-        } else {
-            throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
+        imageView = view.user_profile_image
+
+        imageView.setOnClickListener {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (ActivityCompat.checkSelfPermission(requireContext(),
+                        android.Manifest.permission.READ_EXTERNAL_STORAGE) ==
+                        PackageManager.PERMISSION_DENIED){
+                    val permissions = arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE)
+                    requestPermissions(permissions, PERMISSION_CODE)
+                }else{
+                    pickImage()
+                }
+            }else{
+                pickImage()
+            }
         }
+
+
+
+        signUp = view.signupBtn
+
+        signUp.setOnClickListener {
+            val user = readFeilds()
+            userViewModel.insertUser(user)
+            val bundle = Bundle()
+            bundle.putSerializable("user" , user)
+            Navigation.createNavigateOnClickListener(R.id.action_registrationFragment_to_loginFragment , bundle)
+        }
+
+
+
+        return view
     }
 
-    override fun onDetach() {
-        super.onDetach()
-        listener = null
-    }
-
-    interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        fun onFragmentInteraction(uri: Uri)
-    }
-
-    fun selectImageInAlbum() {
-        val intent = Intent(Intent.ACTION_GET_CONTENT)
+    private fun pickImage() {
+        val intent = Intent(Intent.ACTION_PICK)
         intent.type = "image/*"
-        if (intent.resolveActivity(packageManager) != null) {
-            startActivityForResult(intent, REQUEST_SELECT_IMAGE_IN_ALBUM)
+        startActivityForResult(intent, IMAGE_PICK_CODE)
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        when (requestCode) {
+            PERMISSION_CODE -> {
+                if (grantResults.size > 0 && grantResults[0] ==
+                        PackageManager.PERMISSION_GRANTED) {
+                    pickImage()
+                }
+                else {
+                    Toast.makeText(activity, "Permission Denied", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
     }
-    fun takePhoto() {
-        val intent1 = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        if (intent1.resolveActivity(packageManager) != null) {
-            startActivityForResult(intent1, REQUEST_TAKE_PHOTO)
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE) {
+            imageView.setImageURI(data?.data)
         }
     }
+
+    fun readFeilds(): User {
+        val user  = User(
+            fullName = fullName.text.toString(),
+            username = userName.text.toString(),
+            email = email_addr.text.toString(),
+            password = validPassword(password.text.toString() , confirm_password.text.toString()),
+            phoneNo = phoneNumber.text.toString(),
+            pictureId = "",
+            locationId = ""
+        )
+        return user
+    }
+
+    private fun validPassword(pass:String , confirmPass:String):String {
+        if (pass == confirmPass) {
+            return pass.hashCode().toString()
+        }
+        return ""
+
+    }
+
     companion object {
-        private val REQUEST_TAKE_PHOTO = 0
-        private val REQUEST_SELECT_IMAGE_IN_ALBUM = 1
+        private val IMAGE_PICK_CODE = 1000
+        private val PERMISSION_CODE = 1001
     }
+
 
 }

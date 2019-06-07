@@ -26,11 +26,11 @@ class Entry : Fragment() {
         signupButton = view.signup
 
         loginButton.setOnClickListener(
-            Navigation.createNavigateOnClickListener(R.id.action_entry_to_loginFragment , null)
+            Navigation.createNavigateOnClickListener(R.id.action_entry_to_loginFragment, null)
         )
 
         signupButton.setOnClickListener (
-            Navigation.createNavigateOnClickListener(R.id.action_entry_to_registrationFragment , null)
+            Navigation.createNavigateOnClickListener(R.id.action_entry2_to_signupFragment, null)
         )
 
         return view
