@@ -10,6 +10,8 @@ import android.view.ViewGroup
 
 
 import android.text.Editable
+import android.widget.TextView
+import androidx.navigation.Navigation
 import kotlinx.android.synthetic.main.fragment_login.*
 import kotlinx.android.synthetic.main.fragment_login.view.*
 
@@ -17,10 +19,17 @@ import kotlinx.android.synthetic.main.fragment_login.view.*
 
 class LoginFragment : Fragment() {
 
+    private lateinit var noAccount: TextView
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_login, container, false)
+
+        noAccount = view.toRegistration
+        noAccount.setOnClickListener(
+            Navigation.createNavigateOnClickListener(R.id.action_loginFragment_to_signupFragment, null)
+        )
 
         // Set an error if the password is less than 8 characters.
         view.btnLogin.setOnClickListener {
@@ -41,6 +50,8 @@ class LoginFragment : Fragment() {
         }
         return view
     }
+
+
 
     companion object{
         fun getInstance():LoginFragment{

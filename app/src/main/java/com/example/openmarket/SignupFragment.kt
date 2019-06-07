@@ -21,6 +21,7 @@ import com.example.openmarket.viewmodel.UserViewModel
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.android.synthetic.main.fragment_registration.*
 import kotlinx.android.synthetic.main.fragment_registration.view.*
+import kotlinx.android.synthetic.main.fragment_signup.*
 import kotlinx.android.synthetic.main.fragment_signup.view.*
 import java.util.jar.Manifest
 import kotlinx.android.synthetic.main.fragment_registration.view.user_profile_image as user_profile_image1
@@ -37,6 +38,7 @@ class SignupFragment : Fragment() {
     private lateinit var phoneNumber: EditText
 
     private lateinit var imageView: ImageView
+    private lateinit var haveAccount: TextView
 
     private lateinit var signUp: Button
 
@@ -56,6 +58,11 @@ class SignupFragment : Fragment() {
         phoneNumber = view.phoneNoEdit
 
         imageView = view.user_profile_image
+        haveAccount = view.lnkLogin
+
+        haveAccount.setOnClickListener(
+            Navigation.createNavigateOnClickListener(R.id.action_signupFragment_to_loginFragment, null)
+        )
 
         imageView.setOnClickListener {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
