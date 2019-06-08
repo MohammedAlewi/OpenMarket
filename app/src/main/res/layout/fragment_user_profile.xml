@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".UserProfileFragment">
+
+    <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="200dp" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginTop="32dp"
+            app:layout_constraintTop_toTopOf="parent" android:layout_marginBottom="32dp"
+            app:layout_constraintBottom_toBottomOf="parent" android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp">
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="351dp"
+                android:layout_height="493dp" app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintHorizontal_bias="0.5">
+            <ImageView
+                    android:layout_width="351dp"
+                    android:layout_height="0dp" tools:src="@tools:sample/backgrounds/scenic"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" android:id="@+id/usres_profile_image"
+                    app:layout_constraintHorizontal_bias="0.0" app:layout_constraintTop_toTopOf="@+id/guideline26"
+                    android:layout_marginBottom="8dp" app:layout_constraintBottom_toTopOf="@+id/guideline24"
+                    android:layout_marginTop="8dp"/>
+            <androidx.constraintlayout.widget.Guideline
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" app:layout_constraintGuide_begin="219dp"
+                    android:id="@+id/guideline24"/>
+            <TextView
+                    android:text="TextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textView16" app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginEnd="8dp" app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginStart="8dp"
+                    app:layout_constraintHorizontal_bias="0.5" app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent" android:gravity="center_horizontal"
+                    android:textSize="36sp"/>
+            <TextView
+                    android:text="TextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/email_address"
+                    app:layout_constraintTop_toBottomOf="@+id/user_name"
+                    app:layout_constraintBottom_toTopOf="@+id/phone_number" app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginEnd="8dp" app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginStart="8dp" android:gravity="center_horizontal" android:textSize="28"/>
+            <TextView
+                    android:text="TextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/user_name"
+                    app:layout_constraintTop_toBottomOf="@+id/textView16"
+                    app:layout_constraintBottom_toTopOf="@+id/email_address" app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginEnd="8dp" app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginStart="8dp" android:gravity="center_horizontal" android:textSize="32"/>
+            <TextView
+                    android:text="TextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/phone_number"
+                    app:layout_constraintTop_toBottomOf="@+id/email_address" android:layout_marginBottom="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginEnd="8dp" app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginStart="8dp" android:gravity="center_horizontal"
+                    app:layout_constraintBottom_toTopOf="@+id/guideline25" android:textSize="24sp"/>
+            <androidx.constraintlayout.widget.Guideline
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" app:layout_constraintGuide_begin="477dp"
+                    android:id="@+id/guideline25"/>
+            <androidx.constraintlayout.widget.Guideline
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" app:layout_constraintGuide_begin="57dp"
+                    android:id="@+id/guideline26"/>
+            <ImageButton
+                    android:src="@color/colorPrimary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/imageButton9"
+                    app:layout_constraintTop_toTopOf="parent" app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginEnd="41dp"
+                    app:layout_constraintBottom_toTopOf="@+id/usres_profile_image"/>
+            <ImageButton
+                    android:src="@color/design_default_color_on_secondary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/imageButton10" app:layout_constraintEnd_toStartOf="@+id/imageButton9"
+                    android:layout_marginEnd="45dp" app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginTop="3dp"
+                    app:layout_constraintBottom_toTopOf="@+id/usres_profile_image"/>
+            <TextView
+                    android:text="TextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/profile_title" app:layout_constraintEnd_toStartOf="@+id/imageButton10"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginTop="21dp"
+                    app:layout_constraintTop_toTopOf="parent" android:layout_marginBottom="24dp"
+                    app:layout_constraintBottom_toTopOf="@+id/usres_profile_image" android:textSize="30dp"/>
+            <androidx.constraintlayout.widget.Guideline
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" app:layout_constraintGuide_begin="167dp"
+                    android:id="@+id/guideline27"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

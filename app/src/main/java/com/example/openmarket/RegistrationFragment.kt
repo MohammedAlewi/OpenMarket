@@ -11,9 +11,7 @@ import android.widget.EditText
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import com.example.openmarket.data.User
-import com.example.openmarket.repository.UserRepository
 import com.example.openmarket.viewmodel.UserViewModel
-import com.google.android.material.textfield.TextInputEditText
 import kotlinx.android.synthetic.main.fragment_registration.*
 import kotlinx.android.synthetic.main.fragment_registration.view.*
 
@@ -39,7 +37,7 @@ class RegistrationFragment : Fragment() {
         userViewModel = ViewModelProviders.of(this).get(UserViewModel::class.java)
         fullName = view.full_name
         userName = view.user_name
-        email_addr = view.email
+        email_addr = view.email_address
         password = view.password
         confirmPassword = view.confirm_password
 
