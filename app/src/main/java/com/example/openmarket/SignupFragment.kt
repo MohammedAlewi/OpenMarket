@@ -19,12 +19,9 @@ import com.example.openmarket.data.User
 import com.example.openmarket.repository.UserRepository
 import com.example.openmarket.viewmodel.UserViewModel
 import com.google.android.material.textfield.TextInputEditText
-import kotlinx.android.synthetic.main.fragment_registration.*
-import kotlinx.android.synthetic.main.fragment_registration.view.*
 import kotlinx.android.synthetic.main.fragment_signup.*
 import kotlinx.android.synthetic.main.fragment_signup.view.*
 import java.util.jar.Manifest
-import kotlinx.android.synthetic.main.fragment_registration.view.user_profile_image as user_profile_image1
 
 class SignupFragment : Fragment() {
 
@@ -127,7 +124,7 @@ class SignupFragment : Fragment() {
             fullName = fullName.text.toString(),
             username = userName.text.toString(),
             email = email_addr.text.toString(),
-            password = validPassword(password.text.toString() , confirm_password.text.toString()),
+            password = validPassword(password.text.toString() , confirmPassword.text.toString()),
             phoneNo = phoneNumber.text.toString(),
             pictureId = "",
             locationId = ""
