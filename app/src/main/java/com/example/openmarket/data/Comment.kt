@@ -8,7 +8,7 @@ import java.io.Serializable
 
 @Entity(tableName = "comments")
 data class Comment (
-        @PrimaryKey(autoGenerate = true)  @ColumnInfo(name = "id")  val id:Long,
+        @PrimaryKey  @ColumnInfo(name = "id")  val id:Long=0,
         @ColumnInfo(name = "comment_data") val commentdata:String,
         @ColumnInfo(name ="comment_date" )val dateOfComment:String,
         @ColumnInfo(name = "user_name") val userName:String
