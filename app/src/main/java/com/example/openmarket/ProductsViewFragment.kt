@@ -6,15 +6,17 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.Navigation
+import androidx.navigation.ui.NavigationUI
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 import com.example.openmarket.data.Product
+import kotlinx.android.synthetic.main.fragment_products_view.view.*
 import java.util.*
 
 
 class ProductsView : Fragment() {
-
     private lateinit var recyclerView: RecyclerView
     private var default=arrayOf(
         Product(17,"sdjfhg erer","dsfjg dsfgj","sdfsdg sdfgsdfg sdfgsdfg sdfsdf","sdfdf sdfghsldk orehj",232,2.0, Date().toString(),"sdasd"),
@@ -38,6 +40,8 @@ class ProductsView : Fragment() {
         var products=arguments?.getSerializable("products") as Array<Product>
         recyclerView.layoutManager= GridLayoutManager(this.context,2) as RecyclerView.LayoutManager?
         recyclerView.adapter= ProductsItemAdapter(activity as MainActivity,products)
+
+
 
 
 

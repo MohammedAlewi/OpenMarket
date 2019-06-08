@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.openmarket.data.Comment
@@ -38,9 +39,12 @@ class ProductDetailFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+//        var fragmentProductDetailBinding:com.example.openmarket.databinding.FragmentProductDetailBinding=
+//            DataBindingUtil.inflate(inflater, R.layout.fragment_product_detail, container, false)
         var view=inflater.inflate(R.layout.fragment_product_detail, container, false)
         var product=arguments?.getSerializable("product") as Product
-
+//        var view=fragmentProductDetailBinding.root
+//        fragmentProductDetailBinding.product=product
         view.product_name.text=product.name
         view.product__type.text=product.type
         view.product_amount.text=product.amount.toString()
