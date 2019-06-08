@@ -6,21 +6,8 @@
                                                    android:layout_height="fill_parent"
                                                    android:layout_width="fill_parent">
 
-    <EditText
-            android:id="@+id/confirmPasswordEdit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="textPassword"
-            android:ems="10"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
-            android:layout_marginTop="19dp" app:layout_constraintTop_toBottomOf="@+id/passwordEdit"/>
-    <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Confirm Password"
-            app:layout_constraintStart_toStartOf="@+id/passwordEdit"
-            android:id="@+id/confirmPassword" app:layout_constraintBottom_toTopOf="@+id/confirmPasswordEdit"/>
+
+
     <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -99,6 +86,21 @@
             app:layout_constraintTop_toBottomOf="@+id/emailEdit" android:layout_marginEnd="8dp"
             app:layout_constraintEnd_toEndOf="parent" android:layout_marginStart="8dp"/>
     <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Confirm Password"
+            app:layout_constraintStart_toStartOf="@+id/passwordEdit"
+            android:id="@+id/confirmPassword" app:layout_constraintBottom_toTopOf="@+id/confirmPasswordEdit"/>
+    <EditText
+            android:id="@+id/confirmPasswordEdit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:ems="10"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
+            android:layout_marginTop="19dp" app:layout_constraintTop_toBottomOf="@+id/passwordEdit"/>
+    <TextView
             android:id="@+id/phoneNo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -109,7 +111,7 @@
             android:id="@+id/phoneNoEdit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:inputType="textPassword"
+            android:inputType="phone"
             android:ems="10"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
@@ -120,6 +122,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="SignUp"
+            android:background="#00BB00"
+            android:textColor="#FFFFFF"
             app:layout_constraintBottom_toTopOf="@+id/lnkLogin"
             app:layout_constraintStart_toStartOf="@+id/phoneNoEdit" android:layout_marginTop="8dp"
             app:layout_constraintTop_toBottomOf="@+id/phoneNoEdit"/>
