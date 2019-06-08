@@ -46,7 +46,15 @@
             android:id="@+id/btnLogin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+<<<<<<< HEAD
             android:text="Login"
             app:layout_constraintTop_toTopOf="@+id/txtPwd" app:layout_constraintStart_toStartOf="@+id/txtPwd"
             android:layout_marginTop="44dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
+=======
+            android:layout_marginLeft="100dp"
+            android:text="Login" />
+
+
+</LinearLayout>
+>>>>>>> 8b880401a119ff99941fa94f13e9637f0d55ffda
