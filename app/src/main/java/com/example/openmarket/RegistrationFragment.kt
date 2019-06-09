@@ -35,6 +35,7 @@ class RegistrationFragment : Fragment() {
         val view =  inflater.inflate(R.layout.fragment_registration, container, false)
 
         userViewModel = ViewModelProviders.of(this).get(UserViewModel::class.java)
+        userViewModel.setActivtiy(activity as MainActivity)
         fullName = view.full_name
         userName = view.user_name
         email_addr = view.email_address
