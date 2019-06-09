@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.example.openmarket.data.User
+import com.example.openmarket.databinding.FragmentUserProfileBinding
 
 class UserProfileFragment : Fragment() {
 
