@@ -55,6 +55,16 @@ class ProductRepository(private val productDao: ProductDao, private val productC
         return productDao.getProductsByUsername(username)
     }
 
+    fun getAllProducts():LiveData<List<Product>>{
+        if (activity.isConnected()){
+            GlobalScope.launch(Dispatchers.IO){
+                val products= OpenMarketApiService.getInstance().getAllProducts().await().body() as List<Product>
+                productDao.insertProducts(products)
+            }
+        }
+        return productDao.getAllProduct()
+    }
+
 
     fun updateProduct(product: Product){
         if (activity.isConnected()){

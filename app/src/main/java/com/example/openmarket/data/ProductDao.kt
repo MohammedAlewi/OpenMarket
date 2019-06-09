@@ -8,6 +8,9 @@ interface ProductDao {
     @Query("SELECT * FROM products WHERE product_id =:product_id")
     fun getProductById(product_id:Long):LiveData<Product>
 
+    @Query("SELECT * FROM products ")
+    fun getAllProduct():LiveData<List<Product>>
+
     @Query("SELECT * FROM products WHERE user_name =:username")
     fun getProductsByUsername(username:String):LiveData<List<Product>>
 

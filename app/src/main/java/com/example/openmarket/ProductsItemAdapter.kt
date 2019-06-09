@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.openmarket.data.Product
 import kotlinx.android.synthetic.main.product_items_view.view.*
 
-class ProductsItemAdapter(mainActivity: MainActivity,items_val: Array<Product>)
+class ProductsItemAdapter(mainActivity: MainActivity,items_val: List<Product>)
     :RecyclerView.Adapter<ProductsItemAdapter.ProductViewHolder>(){
 
     val products=items_val

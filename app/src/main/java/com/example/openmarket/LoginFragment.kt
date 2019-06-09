@@ -38,7 +38,9 @@ class LoginFragment : Fragment() {
             val password=view.txtPwd.text.toString()
             val user=userViewModel.getUserByUsername(username).value as User
             if (user!=null && (user.password==password)) {
-                view.findNavController().navigate(R.id.homeFragment,null)
+                var arg=Bundle()
+                arg.putSerializable("user",user)
+                view.findNavController().navigate(R.id.homeFragment,arg)
             } else {
                 Toast.makeText(this.context,"Password or Username is incorrect",Toast.LENGTH_LONG).show()
             }
