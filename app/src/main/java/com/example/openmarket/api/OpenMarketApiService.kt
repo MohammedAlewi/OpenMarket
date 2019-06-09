@@ -43,6 +43,9 @@ interface OpenMarketApiService {
     @GET("products/username/{username}")
     fun getProductsByUsername(@Path("username") username:String):Deferred<Response<List<Product>>>
 
+    @GET("products/products")
+    fun getAllProducts():Deferred<Response<List<Product>>>
+
     @PUT("products/update/{id}")
     fun updateProduct(@Body product: Product,@Path("id") long: Long):Deferred<Response<Void>>
 
