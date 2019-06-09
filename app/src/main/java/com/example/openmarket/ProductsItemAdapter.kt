@@ -53,13 +53,3 @@ class ProductsItemAdapter(mainActivity: MainActivity,items_val: List<Product>)
         fun onItemClicked(item: Product)
     }
 }
-
-//class ProductListener(val recyclerView:View,val product: Product){
-//    fun onClick(){
-//       // var product:Product?=products.find{it.name==recyclerView.name_of_product.text.toString() }
-////            main.onItemClicked(product as Product)
-//        var arg=Bundle()
-//        arg.putSerializable("product",product)
-//        recyclerView.findNavController().navigate(R.id.productDetailFragment,arg)
-//    }
-//}

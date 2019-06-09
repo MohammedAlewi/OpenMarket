@@ -50,6 +50,7 @@ class ProductUploadFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_product_upload, container, false)
 
         productViewModel = ViewModelProviders.of(this).get(ProductViewModel::class.java)
+        productViewModel.setActivtiy(activity as MainActivity)
 
         productName = view.productNameEdit
         description = view.descriptionEdit
@@ -60,7 +61,13 @@ class ProductUploadFragment : Fragment() {
 
         uploadBtn.setOnClickListener {
             val product = readFeilds()
-            productViewModel.insertProduct(product,0)
+
+            var userid=(activity as MainActivity).currentUser?.id
+            if(userid==null){
+                userid=0
+            }
+            productViewModel.insertProduct(product,userid)
+
             val bundle = Bundle()
             bundle.putSerializable("product", product)
             Navigation.createNavigateOnClickListener(R.id.action_signupFragment_to_loginFragment, bundle)

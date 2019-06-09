@@ -8,7 +8,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.openmarket.databinding.CommentsListsBinding
 
-class CommentItemAdapter(private var comment_items: Array<Comment>)
+class CommentItemAdapter(private var comment_items: List<Comment>)
     :RecyclerView.Adapter<CommentItemAdapter.CommentViewHolder>(){
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommentItemAdapter.CommentViewHolder {
         var inflater=LayoutInflater.from(parent.context)
@@ -26,7 +26,7 @@ class CommentItemAdapter(private var comment_items: Array<Comment>)
         var comment=comment_items[position]
         holder.binding.comment=comment
     }
-    fun addComment(comments: Array<Comment>){
+    fun addComment(comments: List<Comment>){
         comment_items=comments
         notifyDataSetChanged()
     }

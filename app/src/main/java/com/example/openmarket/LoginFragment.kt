@@ -31,15 +31,20 @@ class LoginFragment : Fragment() {
             view.txtEmail.setText(user.username)
             view.txtPwd.setText(user.password)
         }
+
         userViewModel = ViewModelProviders.of(this).get(UserViewModel::class.java)
         userViewModel.setActivtiy(activity as MainActivity)
+
         view.btnLogin.setOnClickListener {
             val username=view.txtEmail.text.toString()
             val password=view.txtPwd.text.toString()
-            val user=userViewModel.getUserByUsername(username).value as User
-            if (user!=null && (user.password==password)) {
-                var arg=Bundle()
+            val user=userViewModel.getUserByUsername(username).value
+            if (user!=null && (user?.password==password)) {
+                val arg=Bundle()
                 arg.putSerializable("user",user)
+
+                (activity as MainActivity).currentUser=user
+
                 view.findNavController().navigate(R.id.homeFragment,arg)
             } else {
                 Toast.makeText(this.context,"Password or Username is incorrect",Toast.LENGTH_LONG).show()
