@@ -15,6 +15,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
+import androidx.navigation.findNavController
 import com.example.openmarket.data.User
 import com.example.openmarket.repository.UserRepository
 import com.example.openmarket.viewmodel.UserViewModel
@@ -47,6 +48,7 @@ class SignupFragment : Fragment() {
         val view =  inflater.inflate(R.layout.fragment_signup, container, false)
 
         userViewModel = ViewModelProviders.of(this).get(UserViewModel::class.java)
+        userViewModel.setActivtiy(activity as MainActivity)
         fullName = view.fullNameEdit
         userName = view.usernameEdit
         email_addr = view.emailEdit
@@ -85,7 +87,8 @@ class SignupFragment : Fragment() {
             userViewModel.insertUser(user)
             val bundle = Bundle()
             bundle.putSerializable("user" , user)
-            Navigation.createNavigateOnClickListener(R.id.action_signupFragment_to_loginFragment , bundle)
+            view.findNavController().navigate(R.id.loginFragment,bundle)
+            //Navigation.createNavigateOnClickListener(R.id.action_signupFragment_to_loginFragment , bundle)
         }
 
 
