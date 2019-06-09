@@ -12,9 +12,9 @@ import java.util.*
 import kotlin.random.Random
 
 class ProductRepository(private val productDao: ProductDao, private val productCommentDao: ProductCommentDao,
-                        private val userProductDao: UserProductDao,private val commentDao: CommentDao,private val activity: MainActivity
+                        private val userProductDao: UserProductDao,private val commentDao: CommentDao
 ){
-
+    lateinit var activity: MainActivity
     fun insertProduct(product: Product,user_id:Long){
         if (activity.isConnected()){
             GlobalScope.launch(Dispatchers.IO){

@@ -11,7 +11,9 @@ import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.random.Random
 
-class UserRepository (private val userDao: UserDao,private val userProductDao: UserProductDao,private val activity: MainActivity){
+class UserRepository (private val userDao: UserDao,private val userProductDao: UserProductDao){
+    lateinit var activity:MainActivity
+
     fun getUserById(user_id:Long): LiveData<User>{
         if (activity.isConnected()){
             GlobalScope.launch(Dispatchers.IO){

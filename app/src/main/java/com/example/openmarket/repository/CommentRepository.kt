@@ -19,8 +19,8 @@ import kotlinx.coroutines.runBlocking
 import java.util.*
 import kotlin.random.Random
 
-class CommentRepository(private val commentDao: CommentDao,private val productCommentDao: ProductCommentDao,private val activity:MainActivity){
-
+class CommentRepository(private val commentDao: CommentDao,private val productCommentDao: ProductCommentDao){
+    lateinit var activity: MainActivity
     @WorkerThread
     fun insertComment(comment: Comment,product_id:Long){
         if (activity.isConnected()){
