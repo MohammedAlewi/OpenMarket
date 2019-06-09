@@ -4,8 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.Navigation
+import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
+import com.example.openmarket.databinding.ProductItemsViewBinding
 import androidx.recyclerview.widget.RecyclerView
 import com.example.openmarket.data.Product
 import kotlinx.android.synthetic.main.product_items_view.view.*
@@ -19,11 +20,11 @@ class ProductsItemAdapter(mainActivity: MainActivity,items_val: Array<Product>)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
         var inflator=LayoutInflater.from(parent.context);
-        val recyclerView=inflator.inflate(R.layout.product_items_view, parent,false)
+        var binding=DataBindingUtil.inflate<ProductItemsViewBinding>(inflator, R.layout.product_items_view, parent, false)
+        val recyclerView=binding.root
 
         recyclerView.setOnClickListener{
             var product:Product?=products.find{it.name==recyclerView.name_of_product.text.toString() }
-//            main.onItemClicked(product as Product)
             var arg=Bundle()
             arg.putSerializable("product",product)
             recyclerView.findNavController().navigate(R.id.productDetailFragment,arg)
@@ -31,7 +32,7 @@ class ProductsItemAdapter(mainActivity: MainActivity,items_val: Array<Product>)
             notifyDataSetChanged()
         }
         
-        return ProductViewHolder(recyclerView)
+        return ProductViewHolder(recyclerView,binding)
     }
 
 
@@ -41,15 +42,24 @@ class ProductsItemAdapter(mainActivity: MainActivity,items_val: Array<Product>)
 
     override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
         val product=products[position]
-        holder.itemView.name_of_product.text=product.name
+       holder.binding.productName=product.name
 
     }
 
 
-    inner class ProductViewHolder(itemView:View):RecyclerView.ViewHolder(itemView)
+    inner class ProductViewHolder(itemView:View, val binding:ProductItemsViewBinding):RecyclerView.ViewHolder(itemView)
 
     interface ContentListener {
         fun onItemClicked(item: Product)
     }
 }
 
+//class ProductListener(val recyclerView:View,val product: Product){
+//    fun onClick(){
+//       // var product:Product?=products.find{it.name==recyclerView.name_of_product.text.toString() }
+////            main.onItemClicked(product as Product)
+//        var arg=Bundle()
+//        arg.putSerializable("product",product)
+//        recyclerView.findNavController().navigate(R.id.productDetailFragment,arg)
+//    }
+//}

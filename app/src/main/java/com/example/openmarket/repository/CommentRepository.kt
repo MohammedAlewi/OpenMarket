@@ -5,6 +5,7 @@ import android.os.AsyncTask
 import androidx.annotation.WorkerThread
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.example.openmarket.MainActivity
 import com.example.openmarket.api.OpenMarketApiService
 import com.example.openmarket.data.Comment
@@ -60,6 +61,7 @@ class CommentRepository(private val commentDao: CommentDao,private val productCo
     }
 
     fun getCommentForProduct(product_id:Long):LiveData<List<Comment>>{
+        //val commentsVal=    MutableLiveData<List<Comment>>
         if (activity.isConnected()){
             GlobalScope.launch(Dispatchers.IO){
                 val comments= OpenMarketApiService.getInstance().getCommentForProduct(product_id).await().body() as List<Comment>
