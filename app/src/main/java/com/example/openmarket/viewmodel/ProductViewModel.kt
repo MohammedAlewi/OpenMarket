@@ -13,14 +13,14 @@ import com.example.openmarket.repository.ProductRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class ProductViewModel(application: Application,private val activity: MainActivity):AndroidViewModel(application){
+class ProductViewModel(application: Application):AndroidViewModel(application){
     private var productRepository:ProductRepository
     init {
         var product_dao=OpenMarketDatabase.getInstance(application).getProductDao()
         var product_cmnt_dao=OpenMarketDatabase.getInstance(application).getProductCommentDao()
         var product_user_dao=OpenMarketDatabase.getInstance(application).getUserProductDao()
         var comnt_dao=OpenMarketDatabase.getInstance(application).getCommentDao()
-        productRepository= ProductRepository(product_dao,product_cmnt_dao,product_user_dao,comnt_dao,activity)
+        productRepository= ProductRepository(product_dao,product_cmnt_dao,product_user_dao,comnt_dao)
     }
     fun insertProduct(product: Product, user_id:Long)=viewModelScope.launch(Dispatchers.IO){
         productRepository.insertProduct(product,user_id)
@@ -49,5 +49,9 @@ class ProductViewModel(application: Application,private val activity: MainActivi
 
     fun getProductsForUser(user_id: Long): LiveData<List<Product>> {
         return productRepository.getProductsForUser(user_id)
+    }
+
+    fun setActivtiy(activity: MainActivity){
+        productRepository.activity=activity
     }
 }

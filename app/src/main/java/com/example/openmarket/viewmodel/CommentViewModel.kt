@@ -12,13 +12,12 @@ import com.example.openmarket.repository.CommentRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class CommentViewModel(application:Application,private val activity:MainActivity):AndroidViewModel(application){
+class CommentViewModel(application:Application):AndroidViewModel(application){
     private var commentRepository:CommentRepository
-
     init {
         var comment_dao=OpenMarketDatabase.getInstance(application).getCommentDao()
         var product_cmnt_dao=OpenMarketDatabase.getInstance(application).getProductCommentDao()
-        commentRepository=CommentRepository(comment_dao,product_cmnt_dao,activity)
+        commentRepository=CommentRepository(comment_dao,product_cmnt_dao)
     }
 
     fun insertComment(comment: Comment, product_id:Long)=viewModelScope.launch(Dispatchers.IO){
@@ -41,5 +40,8 @@ class CommentViewModel(application:Application,private val activity:MainActivity
 
     fun getCommentById(id:Long): LiveData<Comment> {
         return commentRepository.getCommentById(id)
+    }
+    fun setActivtiy(activity: MainActivity){
+        commentRepository.activity=activity
     }
 }

@@ -12,18 +12,20 @@ import com.example.openmarket.repository.UserRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class UserViewModel(application: Application,private val activity: MainActivity):AndroidViewModel(application){
+class UserViewModel(application: Application):AndroidViewModel(application){
     private  var userRepository:UserRepository
     init {
         var user_dao=OpenMarketDatabase.getInstance(application).getUserDao()
         var user_prod_dao=OpenMarketDatabase.getInstance(application).getUserProductDao()
-        userRepository=UserRepository(user_dao,user_prod_dao,activity)
+        userRepository=UserRepository(user_dao,user_prod_dao)
     }
 
     fun getUserById(user_id:Long): LiveData<User> {
         return userRepository.getUserById(user_id)
     }
-
+    fun setActivtiy(activity: MainActivity){
+        userRepository.activity=activity
+    }
     fun getUserByUsername(username:String): LiveData<User> {
         return userRepository.getUserByUsername(username)
     }
