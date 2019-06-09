@@ -18,7 +18,7 @@ interface OpenMarketApiService {
     fun findUserByUsername(@Path("username") username:String):Deferred<Response<User>>
 
     @POST("users")
-    fun registerUser(@Body user: User):Deferred<Response<Void>>
+    fun registerUser(@Body user: User):Deferred<Response<Long>>
 
     @PUT("users/update/{id}")
     fun updateUser(@Body user: User,@Path("id") id:Long):Deferred<Response<Void>>
@@ -32,7 +32,7 @@ interface OpenMarketApiService {
 
     // product methods
     @POST("products/save/{username}")
-    fun saveProduct(@Body product: Product,@Path("username") username: String):Deferred<Response<Void>>
+    fun saveProduct(@Body product: Product,@Path("username") username: String):Deferred<Response<Long>>
 
     @POST("products/save_id/{user_id}")
     fun saveProductWithId(@Body product: Product,@Path("user_id") user_id: Long):Deferred<Response<Void>>
@@ -55,7 +55,7 @@ interface OpenMarketApiService {
 
     // comment methods.....
     @POST("comment/save/{product_id}")
-    fun saveComment(@Body comment: Comment,@Path("product_id") product_id:Long):Deferred<Response<Void>>
+    fun saveComment(@Body comment: Comment,@Path("product_id") product_id:Long):Deferred<Response<Long>>
 
     @DELETE("comment/delete/{id}")
     fun deleteComment(@Path("id") id:Long):Deferred<Response<Void>>

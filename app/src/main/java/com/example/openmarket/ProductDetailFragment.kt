@@ -1,26 +1,27 @@
 package com.example.openmarket
 
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.openmarket.data.Comment
 import com.example.openmarket.data.Product
-import kotlinx.android.synthetic.main.fragment_product_detail.view.*
 import java.util.*
-
+import com.example.openmarket.databinding.FragmentProductDetailBinding
 
 class ProductDetailFragment : Fragment() {
     private var comments= arrayOf(
         Comment(0,"n order to convert the layout to Data Binding, you nee" +
                 "d to wrap the root element inn order to convert the layout to Data Binding, you" +
                 " need to wrap the root element in a <layout> tag. You'll also have to move the namespace definitions " +
-                " a <layout> tag. You'll also have to move the namespace definitions ",Date().toString(),"@depressed_demons"),
+                " tag. You'll also have to move the namespace definitions ",Date().toString(),"@depressed_demons"),
         Comment(0,"ert the layout to Data Binding, you nee" +
                 "d to wrap the root element inn order to convert the layout to Data Binding, you" +
                 " need to wrap the root element in a <layout> tag. You'll also have to move the namespace definitions " +
@@ -39,26 +40,13 @@ class ProductDetailFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-//        var fragmentProductDetailBinding:com.example.openmarket.databinding.FragmentProductDetailBinding=
-//            DataBindingUtil.inflate(inflater, R.layout.fragment_product_detail, container, false)
-        var view=inflater.inflate(R.layout.fragment_product_detail, container, false)
+        var fragmentProductDetailBinding=
+           DataBindingUtil.inflate<FragmentProductDetailBinding>(inflater, R.layout.fragment_product_detail, container, false)
         var product=arguments?.getSerializable("product") as Product
-//        var view=fragmentProductDetailBinding.root
-//        fragmentProductDetailBinding.product=product
-        view.product_name.text=product.name
-        view.product__type.text=product.type
-        view.product_amount.text=product.amount.toString()
-        view.product_date.text=product.date
-        view.product_description.text=product.description
-        view.product_price.text=product.price.toString()
+        var view=fragmentProductDetailBinding.root
+        fragmentProductDetailBinding.product=product
+        fragmentProductDetailBinding.comLst=CommentListener(this.context as Context)
 
-        view.comment_btn.setOnClickListener {
-            var commentText=view.comment_box.text.toString()
-            var commentdate=Date().toString()
-            var commentusername="@maroc"
-
-            var comment=Comment(0,commentText,commentdate,commentusername)
-        }
 
         var commentViews=view.findViewById(R.id.comment_items) as RecyclerView
         commentViews.layoutManager=LinearLayoutManager(this.context)
@@ -66,9 +54,6 @@ class ProductDetailFragment : Fragment() {
 
         return view
     }
-
-
-
 
     companion object {
         fun getInstance(product:Product):ProductDetailFragment{
@@ -83,3 +68,8 @@ class ProductDetailFragment : Fragment() {
     }
 }
 
+class CommentListener(private var context: Context){
+    fun buttonClicked() {
+      Toast.makeText(context,"comment is saved",Toast.LENGTH_LONG).show()
+    }
+}
