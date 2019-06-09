@@ -14,6 +14,9 @@ interface CommentDao{
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertComment(comment: Comment):Long
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertComments(comments: List<Comment>)
+
     @Delete
     fun deleteComment(comment: Comment)
 
