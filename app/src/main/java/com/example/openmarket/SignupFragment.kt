@@ -85,7 +85,7 @@ class SignupFragment : Fragment() {
             userViewModel.insertUser(user)
             val bundle = Bundle()
             bundle.putSerializable("user" , user)
-            Navigation.createNavigateOnClickListener(R.id.action_registrationFragment_to_loginFragment , bundle)
+            Navigation.createNavigateOnClickListener(R.id.action_signupFragment_to_loginFragment , bundle)
         }
 
 

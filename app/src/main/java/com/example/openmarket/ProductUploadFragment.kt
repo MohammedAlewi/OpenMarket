@@ -1,5 +1,6 @@
 package com.example.openmarket
 
+import android.content.ClipDescription
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
@@ -7,14 +8,27 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.Spinner
+import android.widget.*
+import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.Navigation
+import com.example.openmarket.data.Product
+import com.example.openmarket.data.User
+import com.example.openmarket.viewmodel.ProductViewModel
+import com.example.openmarket.viewmodel.UserViewModel
 import kotlinx.android.synthetic.main.fragment_product_upload.*
 import kotlinx.android.synthetic.main.fragment_product_upload.view.*
+import kotlinx.android.synthetic.main.fragment_signup.*
 
 
 class ProductUploadFragment : Fragment() {
+
+    private lateinit var productViewModel: ProductViewModel
+
+    private lateinit var productName: EditText
+    private lateinit var description: EditText
+    private lateinit var amount: EditText
+    private lateinit var price: EditText
+    private lateinit var uploadBtn: Button
 
     private var listener: OnFragmentInteractionListener? = null
 
@@ -27,7 +41,25 @@ class ProductUploadFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_product_upload, container, false)
+        val view = inflater.inflate(R.layout.fragment_product_upload, container, false)
+
+        productViewModel = ViewModelProviders.of(this).get(ProductViewModel::class.java)
+
+        productName = view.productNameEdit
+        description = view.descriptionEdit
+        amount = view.amountEdit
+        price = view.priceEdit
+        uploadBtn = view.uploadBtn
+
+        uploadBtn.setOnClickListener {
+            val product = readFeilds()
+            productViewModel.insertProduct(product,0)
+            val bundle = Bundle()
+            bundle.putSerializable("product", product)
+            Navigation.createNavigateOnClickListener(R.id.action_signupFragment_to_loginFragment, bundle)
+        }
+
+        return view
 
     }
 
@@ -75,6 +107,20 @@ class ProductUploadFragment : Fragment() {
     interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         fun onFragmentInteraction(uri: Uri)
+    }
+
+    fun readFeilds(): Product {
+        val product  = Product(
+            name = productName.text.toString(),
+            description = description.text.toString(),
+            amount = amount.text.toString().toInt(),
+            price = price.text.toString().toDouble(),
+            date = "",
+            userName = "",
+            imagePath = "",
+            type = ""
+        )
+        return product
     }
 
 }
