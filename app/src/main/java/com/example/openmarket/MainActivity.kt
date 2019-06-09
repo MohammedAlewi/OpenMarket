@@ -1,5 +1,8 @@
 package com.example.openmarket
 
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
 import android.opengl.Visibility
 import android.os.Bundle
 import com.google.android.material.snackbar.Snackbar
@@ -9,6 +12,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
@@ -80,6 +84,13 @@ class MainActivity : AppCompatActivity(),
 
     }
 
+    fun isConnected():Boolean {
+
+        var connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE)  as  ConnectivityManager
+        var networkInfo: NetworkInfo? = connectivityManager.activeNetworkInfo
+        return networkInfo != null && networkInfo.isConnected
+
+    }
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         // Handle navigation view item clicks here.
         when (item.itemId) {
@@ -109,5 +120,6 @@ class MainActivity : AppCompatActivity(),
         sideNavView?.setupWithNavController(navController)
 
     }
+
 
 }
