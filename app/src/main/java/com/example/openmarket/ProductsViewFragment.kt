@@ -52,32 +52,29 @@ class ProductsView : Fragment() {
             "electronics" -> {
                 var main_products:List<Product> = emptyList()
                 productViewModel.products.observe(this,androidx.lifecycle.Observer {
-                        products -> products.let { products.filter { product -> product.type=="electronics"  } }
-                    main_products=products
+                        products -> products.let { main_products=products.filter { product -> product.type=="electronics"  } }
                 })
                 recyclerView.adapter= ProductsItemAdapter(activity as MainActivity,main_products)
             }
             "car" -> {
                 var main_products:List<Product> = emptyList()
                 productViewModel.products.observe(this,androidx.lifecycle.Observer {
-                        products -> products.let { products.filter { product -> product.type=="car"  } }
-                    main_products=products
+                        products -> products.let {main_products= products.filter { product -> product.type=="car"  } }
+
                 })
                 recyclerView.adapter= ProductsItemAdapter(activity as MainActivity,main_products)
             }
             "cloth" -> {
                 var main_products:List<Product> = emptyList()
                 productViewModel.products.observe(this,androidx.lifecycle.Observer {
-                        products -> products.let { products.filter { product -> product.type=="cloth"  } }
-                    main_products=products
+                        products -> products.let { main_products= products.filter { product -> product.type=="cloth"  } }
                 })
                 recyclerView.adapter= ProductsItemAdapter(activity as MainActivity,main_products)
             }
             "house" ->{
                 var main_products:List<Product> = emptyList()
                 productViewModel.products.observe(this,androidx.lifecycle.Observer {
-                        products -> products.let { products.filter { product -> product.type=="house"  } }
-                    main_products=products
+                        products -> products.let {main_products=  products.filter { product -> product.type=="house"  } }
                 })
                 recyclerView.adapter= ProductsItemAdapter(activity as MainActivity,main_products)
             }
