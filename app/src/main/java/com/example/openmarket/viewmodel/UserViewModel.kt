@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
+import com.example.openmarket.MainActivity
 import com.example.openmarket.data.OpenMarketDatabase
 import com.example.openmarket.data.Product
 import com.example.openmarket.data.User
@@ -11,12 +12,12 @@ import com.example.openmarket.repository.UserRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class UserViewModel(application: Application):AndroidViewModel(application){
+class UserViewModel(application: Application,private val activity: MainActivity):AndroidViewModel(application){
     private  var userRepository:UserRepository
     init {
         var user_dao=OpenMarketDatabase.getInstance(application).getUserDao()
         var user_prod_dao=OpenMarketDatabase.getInstance(application).getUserProductDao()
-        userRepository=UserRepository(user_dao,user_prod_dao)
+        userRepository=UserRepository(user_dao,user_prod_dao,activity)
     }
 
     fun getUserById(user_id:Long): LiveData<User> {
