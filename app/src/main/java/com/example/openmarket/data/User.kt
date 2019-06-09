@@ -8,7 +8,7 @@ import java.io.Serializable
 
 @Entity(tableName = "users")
 data class User(
-    @PrimaryKey @ColumnInfo(name = "id") val id:Long = 0,
+    @PrimaryKey @ColumnInfo(name = "id") var id:Long = 0,
     @ColumnInfo(name = "fullName") val fullName:String,
     @ColumnInfo(name = "username") val username:String,
     @ColumnInfo(name = "email") val email:String,
