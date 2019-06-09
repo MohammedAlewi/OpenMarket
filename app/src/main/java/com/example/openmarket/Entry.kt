@@ -30,7 +30,7 @@ class Entry : Fragment() {
         )
 
         signupButton.setOnClickListener (
-            Navigation.createNavigateOnClickListener(R.id.action_entry_to_registrationFragment , null)
+            Navigation.createNavigateOnClickListener(R.id.action_entry2_to_signupFragment , null)
         )
 
         return view
