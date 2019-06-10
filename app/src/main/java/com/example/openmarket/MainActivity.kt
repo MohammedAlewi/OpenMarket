@@ -58,14 +58,17 @@ class MainActivity : AppCompatActivity(),
             //supportFragmentManager.beginTransaction().replace(R.id.home_framelayout,ProductUploadFragment()).commit()
         }
         userViewModel= ViewModelProviders.of(this).get(UserViewModel::class.java)
+        userViewModel.setActivtiy(this)
         sheardPref=getSharedPreferences("user_login",Context.MODE_PRIVATE)
         var id=sheardPref.getLong("user_id",-1L)
         if (id!=-1L){
             var arg=Bundle()
-            var user=userViewModel.getUserById(id).value as User
+            var user=userViewModel.getUserById(id).value
             currentUser=user
-            arg.putSerializable("user",user)
-            userProfile.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_entry2_to_userProfileFragment, arg))
+            if (user!=null){
+                arg.putSerializable("user",user)
+                userProfile.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_entry2_to_userProfileFragment, arg))
+            }
         }
 
     }

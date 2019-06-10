@@ -45,6 +45,7 @@ class LoginFragment : Fragment() {
             userProfile.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_entry2_to_userProfileFragment, arg))
         }
 
+
         userViewModel = ViewModelProviders.of(this).get(UserViewModel::class.java)
         userViewModel.setActivtiy(activity as MainActivity)
 
@@ -85,7 +86,7 @@ class LoginFragment : Fragment() {
         }
         return view
     }
-
+    override fun men
     companion object{
         fun getInstance():LoginFragment{
             var loginFragment=LoginFragment()
