@@ -1,6 +1,7 @@
 package com.example.openmarket
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.opengl.Visibility
@@ -13,13 +14,16 @@ import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
+import com.example.openmarket.R.layout.activity_main
 import com.example.openmarket.data.Product
 import com.example.openmarket.data.User
+import com.example.openmarket.viewmodel.UserViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.content_main.*
@@ -30,13 +34,12 @@ import java.util.*
 class MainActivity : AppCompatActivity(),
     NavigationView.OnNavigationItemSelectedListener,ProductsItemAdapter.ContentListener{
     var currentUser:User?=null
-
+    private lateinit var sheardPref:SharedPreferences
+    private lateinit var userViewModel: UserViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(activity_main)
         setSupportActionBar(toolbar)
-
-        fab.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_entry2_to_productUploadFragment , null))
 
         val toggle = ActionBarDrawerToggle(
             this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close
@@ -48,14 +51,22 @@ class MainActivity : AppCompatActivity(),
         nav_view.setNavigationItemSelectedListener(this)
         var navController=Navigation.findNavController(this,R.id.main_content)
 
-        if (currentUser!=null){
-            var arg=Bundle()
-            arg.putSerializable("user",currentUser)
-            userProfile.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_entry2_to_userProfileFragment, arg))
-        }
-
         setupNavigationMenu(navController)
 
+        fab.setOnClickListener {
+            it.findNavController().navigate(R.id.productUploadFragment)
+            //supportFragmentManager.beginTransaction().replace(R.id.home_framelayout,ProductUploadFragment()).commit()
+        }
+        userViewModel= ViewModelProviders.of(this).get(UserViewModel::class.java)
+        sheardPref=getSharedPreferences("user_login",Context.MODE_PRIVATE)
+        var id=sheardPref.getLong("user_id",-1L)
+        if (id!=-1L){
+            var arg=Bundle()
+            var user=userViewModel.getUserById(id).value as User
+            currentUser=user
+            arg.putSerializable("user",user)
+            userProfile.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_entry2_to_userProfileFragment, arg))
+        }
 
     }
 

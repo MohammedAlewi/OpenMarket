@@ -1,6 +1,7 @@
 package com.example.openmarket
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -12,10 +13,12 @@ import android.view.ViewGroup
 import android.text.Editable
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import com.example.openmarket.data.User
 import com.example.openmarket.viewmodel.UserViewModel
 import kotlinx.android.synthetic.main.fragment_login.view.*
+import kotlinx.android.synthetic.main.nav_header_main.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -31,6 +34,15 @@ class LoginFragment : Fragment() {
             var user=arguments?.getSerializable("user") as User
             view.txtEmail.setText(user.username)
             view.txtPwd.setText(user.password)
+
+            with((activity?.getSharedPreferences("user_login",Context.MODE_PRIVATE) as SharedPreferences).edit()){
+                putLong("user_id",user.id)
+                apply()
+            }
+
+            var arg=Bundle()
+            arg.putSerializable("user",user)
+            userProfile.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_entry2_to_userProfileFragment, arg))
         }
 
         userViewModel = ViewModelProviders.of(this).get(UserViewModel::class.java)
@@ -53,7 +65,17 @@ class LoginFragment : Fragment() {
 
                         (activity as MainActivity).currentUser = user
 
+
+                        var usr=Bundle()
+                        arg.putSerializable("user",user)
+                        userProfile.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_entry2_to_userProfileFragment, usr))
+
                         view.findNavController().navigate(R.id.homeFragment, arg)
+
+                        with((activity?.getSharedPreferences("user_login",Context.MODE_PRIVATE) as SharedPreferences).edit()){
+                            putLong("user_id",user.id)
+                            apply()
+                        }
                     } else {
                         Toast.makeText(activity, "Password or Username is incorrect", Toast.LENGTH_LONG).show()
                     }

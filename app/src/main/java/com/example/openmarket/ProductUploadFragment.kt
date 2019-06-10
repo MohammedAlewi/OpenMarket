@@ -36,7 +36,6 @@ class ProductUploadFragment : Fragment() {
     private lateinit var uploadBtn: Button
     private lateinit var imageView: ImageView
 
-    private var listener: OnFragmentInteractionListener? = null
 
     var product_types = arrayOf("Electronics", "Cloth", "Car", "House")
     private lateinit var type: Spinner
@@ -139,30 +138,6 @@ class ProductUploadFragment : Fragment() {
         }
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    fun onButtonPressed(uri: Uri) {
-        listener?.onFragmentInteraction(uri)
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        if (context is OnFragmentInteractionListener) {
-            listener = context
-        } else {
-            throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
-        }
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        listener = null
-    }
-
-
-    interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        fun onFragmentInteraction(uri: Uri)
-    }
 
     fun readFeilds(): Product {
         val product  = Product(
