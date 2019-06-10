@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+                android:id="@+id/nav_upload"
+                android:icon="@android:drawable/ic_menu_upload"
+                android:title="My products"/>
+        <item
+                android:id="@+id/nav_subscription"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Subscription"/>
+        <item
+                android:id="@+id/nav_setting"
+                android:icon="@drawable/ic_menu_manage"
+                android:title="Settings"/>
+    </group>
+
+    <item android:title="About App">
+        <menu>
+            <item
+                    android:id="@+id/nav_share"
+                    android:icon="@drawable/ic_menu_share"
+                    android:title="Share"/>
+            <item
+                    android:id="@+id/nav_about"
+                    android:icon="@android:drawable/sym_action_chat"
+                    android:title="About Us"/>
+
+            <item
+                    android:id="@+id/entry"
+                    android:icon="@android:drawable/sym_action_chat"
+                    android:title="Entry"/>
+        </menu>
+    </item>
+
+</menu>
