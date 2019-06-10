@@ -135,9 +135,9 @@ class SignupFragment : Fragment() {
         return user
     }
 
-    private fun validPassword(pass:String , confirmPass:String):String {
+     fun validPassword(pass:String , confirmPass:String):String {
         if (pass == confirmPass) {
-            return pass.hashCode().toString()
+            return pass
         }
         return ""
 
