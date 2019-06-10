@@ -3,12 +3,20 @@ package com.example.openmarket.api
 import com.example.openmarket.data.*
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import kotlinx.coroutines.Deferred
+import okhttp3.Cookie
+import okhttp3.CookieJar
+import okhttp3.HttpUrl
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.*
 
 interface OpenMarketApiService {
+    @FormUrlEncoded
+    @POST("users/login")
+    fun login(@Field("username")  user:String, @Field("password") password:String):Deferred<Response<Void>>
 
     // users methods ....
     @GET("users/{id}")
@@ -79,17 +87,18 @@ interface OpenMarketApiService {
 
         fun getInstance(): OpenMarketApiService {
 
-//            val interceptor = HttpLoggingInterceptor()
-//            interceptor.level = HttpLoggingInterceptor.Level.BASIC
-//
-//            val client = OkHttpClient
-//                .Builder()
-//                .addInterceptor(interceptor)
-//                .build()
+            val interceptor = HttpLoggingInterceptor()
+            interceptor.level = HttpLoggingInterceptor.Level.BASIC
+
+            val client = OkHttpClient
+                .Builder()
+                .cookieJar(UvCookieJar())
+                .addInterceptor(interceptor)
+                .build()
 
             val retrofit: Retrofit =  Retrofit.Builder()
                 .baseUrl(url)
-                //.client(client)
+                .client(client)
                 .addConverterFactory(MoshiConverterFactory.create())
                 .addCallAdapterFactory(CoroutineCallAdapterFactory())
                 .build()
@@ -97,4 +106,15 @@ interface OpenMarketApiService {
             return retrofit.create(OpenMarketApiService::class.java)
         }
     }
+}
+private class UvCookieJar : CookieJar {
+
+    private val cookies = mutableListOf<Cookie>()
+
+    override fun saveFromResponse(url: HttpUrl, cookieList: List<Cookie>) {
+        cookies.clear()
+        cookies.addAll(cookieList)
+    }
+
+    override fun loadForRequest(url: HttpUrl): List<Cookie> = cookies
 }

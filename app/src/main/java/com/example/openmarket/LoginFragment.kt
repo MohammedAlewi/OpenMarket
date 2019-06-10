@@ -17,7 +17,10 @@ import com.example.openmarket.data.User
 import com.example.openmarket.viewmodel.UserViewModel
 import kotlinx.android.synthetic.main.fragment_login.*
 import kotlinx.android.synthetic.main.fragment_login.view.*
-import kotlinx.android.synthetic.main.fragment_registration.view.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlin.math.log
 
 
 class LoginFragment : Fragment() {
@@ -36,28 +39,29 @@ class LoginFragment : Fragment() {
         userViewModel.setActivtiy(activity as MainActivity)
 
         view.btnLogin.setOnClickListener {
-            val username=view.txtEmail.text.toString()
-            val password=view.txtPwd.text.toString()
-            val user=userViewModel.getUserByUsername(username).value
-            if (user!=null && (user?.password==password)) {
-                val arg=Bundle()
-                arg.putSerializable("user",user)
-
-                (activity as MainActivity).currentUser=user
-
-                view.findNavController().navigate(R.id.homeFragment,arg)
+            val username = view.txtEmail.text.toString()
+            val password = view.txtPwd.text.toString()
+            val login = userViewModel.login(username, password)
+            if (login == null) {
+                Toast.makeText(this.context, "There is No Connection", Toast.LENGTH_LONG).show()
             } else {
-                Toast.makeText(this.context,"Password or Username is incorrect",Toast.LENGTH_LONG).show()
-            }
+                GlobalScope.launch(Dispatchers.Main) {
+                    var result = login.await()
+                    if (result.code() == 200) {
+                        val user = userViewModel.getUserByUsername(username).value as User
 
-        }
+                        val arg = Bundle()
+                        arg.putSerializable("user", user)
 
-        // Clear the error once more than 8 characters are typed.
-        view.txtPwd.setOnKeyListener { _, _, _ ->
-            if (isPasswordValid(txtPwd.text)) {
-                txtPwd.error = null //Clear the error
+                        (activity as MainActivity).currentUser = user
+
+                        view.findNavController().navigate(R.id.homeFragment, arg)
+                    } else {
+                        Toast.makeText(activity, "Password or Username is incorrect", Toast.LENGTH_LONG).show()
+                    }
+                }
+
             }
-            false
         }
         return view
     }

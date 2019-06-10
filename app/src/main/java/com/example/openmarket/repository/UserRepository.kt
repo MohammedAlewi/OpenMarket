@@ -5,9 +5,11 @@ import androidx.lifecycle.LiveData
 import com.example.openmarket.MainActivity
 import com.example.openmarket.api.OpenMarketApiService
 import com.example.openmarket.data.*
+import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import retrofit2.Response
 import java.util.*
 import kotlin.random.Random
 
@@ -69,7 +71,15 @@ class UserRepository (private val userDao: UserDao,private val userProductDao: U
 
     }
 
+    fun login(username: String,password:String):Deferred<Response<Void>>? {
+        if (activity.isConnected()){
+            return OpenMarketApiService.getInstance().login(username,password)
+        }
+        return null
+    }
+
     fun getProductsForUser(user_id: Long): LiveData<List<Product>>{
         return userProductDao.getProductsForUser(user_id)
     }
+
 }

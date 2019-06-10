@@ -9,8 +9,10 @@ import com.example.openmarket.data.OpenMarketDatabase
 import com.example.openmarket.data.Product
 import com.example.openmarket.data.User
 import com.example.openmarket.repository.UserRepository
+import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import retrofit2.Response
 
 class UserViewModel(application: Application):AndroidViewModel(application){
     private  var userRepository:UserRepository
@@ -44,5 +46,9 @@ class UserViewModel(application: Application):AndroidViewModel(application){
 
     fun getProductsForUser(user_id: Long): LiveData<List<Product>> {
         return userRepository.getProductsForUser(user_id)
+    }
+
+    fun login(username: String,password:String): Deferred<Response<Void>>? {
+        return  userRepository.login(username,password)
     }
 }
