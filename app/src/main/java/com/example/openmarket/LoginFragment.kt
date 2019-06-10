@@ -15,12 +15,10 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import com.example.openmarket.data.User
 import com.example.openmarket.viewmodel.UserViewModel
-import kotlinx.android.synthetic.main.fragment_login.*
 import kotlinx.android.synthetic.main.fragment_login.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import kotlin.math.log
 
 
 class LoginFragment : Fragment() {
@@ -47,7 +45,7 @@ class LoginFragment : Fragment() {
             } else {
                 GlobalScope.launch(Dispatchers.Main) {
                     var result = login.await()
-                    if (result.code() == 200) {
+                    if (result.code() == 301) {
                         val user = userViewModel.getUserByUsername(username).value as User
 
                         val arg = Bundle()
