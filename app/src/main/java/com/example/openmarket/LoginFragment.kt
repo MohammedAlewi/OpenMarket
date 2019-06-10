@@ -86,7 +86,6 @@ class LoginFragment : Fragment() {
         }
         return view
     }
-    override fun men
     companion object{
         fun getInstance():LoginFragment{
             var loginFragment=LoginFragment()
