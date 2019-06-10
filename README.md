@@ -14,7 +14,7 @@ XAR ==> Mulualem Tekle
 
 NNBranch ==> Natnael Muluget
 
-mat ==> Ruth Humnessa(Handling the material design and other UI related matters)
+mat ==> Ruth Humnessa
 
 # WorkFlow
 
