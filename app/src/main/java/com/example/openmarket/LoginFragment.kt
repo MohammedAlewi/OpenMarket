@@ -40,9 +40,10 @@ class LoginFragment : Fragment() {
                 apply()
             }
 
-            var arg=Bundle()
-            arg.putSerializable("user",user)
-            userProfile.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_entry2_to_userProfileFragment, arg))
+//            var arg=Bundle()
+//            arg.putSerializable("user",user)
+            (activity as MainActivity).currentUser = user
+         //   userProfile.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_entry2_to_userProfileFragment, arg))
         }
 
 
@@ -67,9 +68,9 @@ class LoginFragment : Fragment() {
                         (activity as MainActivity).currentUser = user
 
 
-                        var usr=Bundle()
-                        arg.putSerializable("user",user)
-                        userProfile.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_entry2_to_userProfileFragment, usr))
+//                        var usr=Bundle()
+//                        arg.putSerializable("user",user)
+                        //userProfile.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_entry2_to_userProfileFragment, usr))
 
                         view.findNavController().navigate(R.id.homeFragment, arg)
 

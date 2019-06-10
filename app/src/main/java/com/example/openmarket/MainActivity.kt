@@ -68,7 +68,7 @@ class MainActivity : AppCompatActivity(),
             currentUser=user
             if (user!=null){
                 arg.putSerializable("user",user)
-                userProfile.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_entry2_to_userProfileFragment, arg))
+               // userProfile.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_entry2_to_userProfileFragment, arg))
             }
         }
 
@@ -125,6 +125,9 @@ class MainActivity : AppCompatActivity(),
 
             }
             R.id.nav_about -> {
+
+            }
+            R.id.userProfile ->{
 
             }
         }
