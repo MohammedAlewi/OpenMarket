@@ -52,9 +52,10 @@ class MainActivity : AppCompatActivity(),
         var navController=Navigation.findNavController(this,R.id.main_content)
 
         setupNavigationMenu(navController)
-
+        Navigation.setViewNavController(fab,navController)
         fab.setOnClickListener {
-            it.findNavController().navigate(R.id.productUploadFragment)
+            navController.navigate(R.id.productUploadFragment)
+            //it.findNavController().navigate(R.id.productUploadFragment)
             //supportFragmentManager.beginTransaction().replace(R.id.home_framelayout,ProductUploadFragment()).commit()
         }
         userViewModel= ViewModelProviders.of(this).get(UserViewModel::class.java)

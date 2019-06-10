@@ -15,14 +15,14 @@ import kotlinx.coroutines.launch
 
 class ProductViewModel(application: Application):AndroidViewModel(application){
     private var productRepository:ProductRepository
-    var products:LiveData<List<Product>>
+    //var products:LiveData<List<Product>>
     init {
         var product_dao=OpenMarketDatabase.getInstance(application).getProductDao()
         var product_cmnt_dao=OpenMarketDatabase.getInstance(application).getProductCommentDao()
         var product_user_dao=OpenMarketDatabase.getInstance(application).getUserProductDao()
         var comnt_dao=OpenMarketDatabase.getInstance(application).getCommentDao()
         productRepository= ProductRepository(product_dao,product_cmnt_dao,product_user_dao,comnt_dao)
-        products=productRepository.getAllProducts()
+        //products=productRepository.getAllProducts()
     }
     fun insertProduct(product: Product, user_id:Long)=viewModelScope.launch(Dispatchers.IO){
         productRepository.insertProduct(product,user_id)

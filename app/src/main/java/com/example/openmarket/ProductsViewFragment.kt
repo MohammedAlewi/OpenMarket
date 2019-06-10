@@ -44,21 +44,21 @@ class ProductsView : Fragment() {
             "none" -> {recyclerView.adapter= ProductsItemAdapter(activity as MainActivity, emptyList()) }
             "any" -> {
                 var main_products:List<Product> = emptyList()
-                productViewModel.products.observe(this,androidx.lifecycle.Observer {
+                productViewModel.getAllProducts().observe(this,androidx.lifecycle.Observer {
                     products -> main_products=products
                 })
                 recyclerView.adapter= ProductsItemAdapter(activity as MainActivity,main_products)
             }
             "electronics" -> {
                 var main_products:List<Product> = emptyList()
-                productViewModel.products.observe(this,androidx.lifecycle.Observer {
+                productViewModel.getAllProducts().observe(this,androidx.lifecycle.Observer {
                         products -> products.let { main_products=products.filter { product -> product.type=="electronics"  } }
                 })
                 recyclerView.adapter= ProductsItemAdapter(activity as MainActivity,main_products)
             }
             "car" -> {
                 var main_products:List<Product> = emptyList()
-                productViewModel.products.observe(this,androidx.lifecycle.Observer {
+                productViewModel.getAllProducts().observe(this,androidx.lifecycle.Observer {
                         products -> products.let {main_products= products.filter { product -> product.type=="car"  } }
 
                 })
@@ -66,14 +66,14 @@ class ProductsView : Fragment() {
             }
             "cloth" -> {
                 var main_products:List<Product> = emptyList()
-                productViewModel.products.observe(this,androidx.lifecycle.Observer {
+                productViewModel.getAllProducts().observe(this,androidx.lifecycle.Observer {
                         products -> products.let { main_products= products.filter { product -> product.type=="cloth"  } }
                 })
                 recyclerView.adapter= ProductsItemAdapter(activity as MainActivity,main_products)
             }
             "house" ->{
                 var main_products:List<Product> = emptyList()
-                productViewModel.products.observe(this,androidx.lifecycle.Observer {
+                productViewModel.getAllProducts().observe(this,androidx.lifecycle.Observer {
                         products -> products.let {main_products=  products.filter { product -> product.type=="house"  } }
                 })
                 recyclerView.adapter= ProductsItemAdapter(activity as MainActivity,main_products)
