@@ -52,9 +52,10 @@ class MainActivity : AppCompatActivity(),
         var navController=Navigation.findNavController(this,R.id.main_content)
 
         setupNavigationMenu(navController)
-
+        Navigation.setViewNavController(fab,navController)
         fab.setOnClickListener {
-            it.findNavController().navigate(R.id.productUploadFragment)
+            navController.navigate(R.id.productUploadFragment)
+            //it.findNavController().navigate(R.id.productUploadFragment)
             //supportFragmentManager.beginTransaction().replace(R.id.home_framelayout,ProductUploadFragment()).commit()
         }
         userViewModel= ViewModelProviders.of(this).get(UserViewModel::class.java)
@@ -67,7 +68,7 @@ class MainActivity : AppCompatActivity(),
             currentUser=user
             if (user!=null){
                 arg.putSerializable("user",user)
-                userProfile.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_entry2_to_userProfileFragment, arg))
+               // userProfile.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_entry2_to_userProfileFragment, arg))
             }
         }
 
@@ -124,6 +125,9 @@ class MainActivity : AppCompatActivity(),
 
             }
             R.id.nav_about -> {
+
+            }
+            R.id.userProfile ->{
 
             }
         }
