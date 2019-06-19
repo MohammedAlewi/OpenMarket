@@ -11,12 +11,15 @@ import android.view.ViewGroup
 
 
 import android.text.Editable
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import com.example.openmarket.data.User
 import com.example.openmarket.viewmodel.UserViewModel
+import com.google.android.material.navigation.NavigationView
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_login.view.*
 import kotlinx.android.synthetic.main.nav_header_main.*
 import kotlinx.coroutines.Dispatchers
@@ -42,7 +45,8 @@ class LoginFragment : Fragment() {
 
             var arg=Bundle()
             arg.putSerializable("user",user)
-            userProfile.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_entry2_to_userProfileFragment, arg))
+            var profile=nav_view.getHeaderView(0).findViewById<ImageView>(R.id.userProfile)
+            profile.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_entry2_to_userProfileFragment, arg))
         }
 
         userViewModel = ViewModelProviders.of(this).get(UserViewModel::class.java)
@@ -55,9 +59,7 @@ class LoginFragment : Fragment() {
             if (login == null) {
                 Toast.makeText(this.context, "There is No Connection", Toast.LENGTH_LONG).show()
             } else {
-                GlobalScope.launch(Dispatchers.Main) {
-                    var result = login.await()
-                    if (result.code() == 301) {
+                    if (login==true) {
                         val user = userViewModel.getUserByUsername(username).value as User
 
                         val arg = Bundle()
@@ -67,8 +69,9 @@ class LoginFragment : Fragment() {
 
 
                         var usr=Bundle()
-                        arg.putSerializable("user",user)
-                        userProfile.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_entry2_to_userProfileFragment, usr))
+                        usr.putSerializable("user",user)
+                        var profile=nav_view.getHeaderView(0).findViewById<ImageView>(R.id.userProfile)
+                        profile.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_entry2_to_userProfileFragment, usr))
 
                         view.findNavController().navigate(R.id.homeFragment, arg)
 
@@ -82,7 +85,6 @@ class LoginFragment : Fragment() {
                 }
 
             }
-        }
         return view
     }
 

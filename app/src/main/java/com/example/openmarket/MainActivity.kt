@@ -13,6 +13,8 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.ImageView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
@@ -58,14 +60,18 @@ class MainActivity : AppCompatActivity(),
             //supportFragmentManager.beginTransaction().replace(R.id.home_framelayout,ProductUploadFragment()).commit()
         }
         userViewModel= ViewModelProviders.of(this).get(UserViewModel::class.java)
+        userViewModel.setActivtiy(this)
+
+
         sheardPref=getSharedPreferences("user_login",Context.MODE_PRIVATE)
         var id=sheardPref.getLong("user_id",-1L)
         if (id!=-1L){
             var arg=Bundle()
-            var user=userViewModel.getUserById(id).value as User
+            var user=userViewModel.getUserById(id).value// as User
             currentUser=user
             arg.putSerializable("user",user)
-            userProfile.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_entry2_to_userProfileFragment, arg))
+            var profile =nav_view.getHeaderView(0).findViewById<ImageView>(R.id.userProfile)
+            profile.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_entry2_to_userProfileFragment, arg))
         }
 
     }
@@ -106,6 +112,7 @@ class MainActivity : AppCompatActivity(),
         return networkInfo != null && networkInfo.isConnected
 
     }
+
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         // Handle navigation view item clicks here.
         when (item.itemId) {
