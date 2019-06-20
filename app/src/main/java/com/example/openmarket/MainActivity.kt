@@ -54,15 +54,14 @@ class MainActivity : AppCompatActivity(),
         var navController=Navigation.findNavController(this,R.id.main_content)
 
         setupNavigationMenu(navController)
-
+        Navigation.setViewNavController(fab,navController)
         fab.setOnClickListener {
-            it.findNavController().navigate(R.id.productUploadFragment)
+            navController.navigate(R.id.productUploadFragment)
+            //it.findNavController().navigate(R.id.productUploadFragment)
             //supportFragmentManager.beginTransaction().replace(R.id.home_framelayout,ProductUploadFragment()).commit()
         }
         userViewModel= ViewModelProviders.of(this).get(UserViewModel::class.java)
         userViewModel.setActivtiy(this)
-
-
         sheardPref=getSharedPreferences("user_login",Context.MODE_PRIVATE)
         var id=sheardPref.getLong("user_id",-1L)
         if (id!=-1L){
@@ -72,6 +71,12 @@ class MainActivity : AppCompatActivity(),
             arg.putSerializable("user",user)
             var profile =nav_view.getHeaderView(0).findViewById<ImageView>(R.id.userProfile)
             profile.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_entry2_to_userProfileFragment, arg))
+            user=userViewModel.getUserById(id).value
+            currentUser=user
+            if (user!=null){
+                arg.putSerializable("user",user)
+               // userProfile.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_entry2_to_userProfileFragment, arg))
+            }
         }
 
     }
@@ -128,6 +133,9 @@ class MainActivity : AppCompatActivity(),
 
             }
             R.id.nav_about -> {
+
+            }
+            R.id.userProfile ->{
 
             }
         }

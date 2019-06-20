@@ -47,7 +47,9 @@ class LoginFragment : Fragment() {
             arg.putSerializable("user",user)
             var profile=nav_view.getHeaderView(0).findViewById<ImageView>(R.id.userProfile)
             profile.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_entry2_to_userProfileFragment, arg))
+
         }
+
 
         userViewModel = ViewModelProviders.of(this).get(UserViewModel::class.java)
         userViewModel.setActivtiy(activity as MainActivity)
@@ -73,6 +75,7 @@ class LoginFragment : Fragment() {
                         var profile=nav_view.getHeaderView(0).findViewById<ImageView>(R.id.userProfile)
                         profile.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_entry2_to_userProfileFragment, usr))
 
+
                         view.findNavController().navigate(R.id.homeFragment, arg)
 
                         with((activity?.getSharedPreferences("user_login",Context.MODE_PRIVATE) as SharedPreferences).edit()){
@@ -88,7 +91,6 @@ class LoginFragment : Fragment() {
 
         return view
     }
-
     companion object{
         fun getInstance():LoginFragment{
             var loginFragment=LoginFragment()

@@ -135,17 +135,19 @@ class SignupFragment : Fragment() {
         return user
     }
 
-    private fun validPassword(pass:String , confirmPass:String):String {
-        if (pass == confirmPass) {
-            return pass.hashCode().toString()
-        }
-        return ""
 
-    }
 
     companion object {
         private val IMAGE_PICK_CODE = 1000
         private val PERMISSION_CODE = 1001
+
+        fun validPassword(pass:String , confirmPass:String):String {
+            if (pass == confirmPass) {
+                return pass
+            }
+            return ""
+
+        }
     }
 
 
