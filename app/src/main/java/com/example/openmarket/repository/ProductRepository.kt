@@ -24,12 +24,11 @@ class ProductRepository(private val productDao: ProductDao, private val productC
                 userProductDao.insertUserProduct(UserProductJoin(product_id = id,user_id = user_id))
             }
         }else{
-            val id= Random(Date().time).nextLong()
-            product.id=id
-            productDao.insertProduct(product)
-            userProductDao.insertUserProduct(UserProductJoin(product_id = id,user_id = user_id))
+            var product_id=productDao.insertProduct(product)
+            println("---------------product id $product_id")
+            userProductDao.insertUserProduct(UserProductJoin(product_id = product_id,user_id = user_id))
             with(activity.getSharedPreferences("unsaved_data_on_server", Context.MODE_PRIVATE).edit()){
-                putLong("product_insert",id)
+                putLong("product_insert",product_id)
                 apply()
             }
         }
