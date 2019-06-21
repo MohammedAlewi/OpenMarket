@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
@@ -35,6 +36,10 @@ class ProductsView : Fragment() {
         @Suppress("UNCHECKED_CAST")
         var type=arguments?.getSerializable("products") as String
 
+        productViewModel.getAllProducts().observe(this,androidx.lifecycle.Observer {
+            prod->prod.let { Toast.makeText(this.context," all product size ${prod.size}", Toast.LENGTH_LONG).show() }
+        })
+
         recyclerView.layoutManager= GridLayoutManager(this.context,2) as RecyclerView.LayoutManager?
 
         if (resources.configuration.orientation==Configuration.ORIENTATION_LANDSCAPE){
@@ -45,41 +50,49 @@ class ProductsView : Fragment() {
             "any" -> {
                 var main_products:List<Product> = emptyList()
                 productViewModel.getAllProducts().observe(this,androidx.lifecycle.Observer {
-                    products -> main_products=products
+                    products -> products.let { recyclerView.adapter= ProductsItemAdapter(activity as MainActivity,products) }
                 })
-                recyclerView.adapter= ProductsItemAdapter(activity as MainActivity,main_products)
             }
             "electronics" -> {
                 var main_products:List<Product> = emptyList()
                 productViewModel.getAllProducts().observe(this,androidx.lifecycle.Observer {
-                        products -> products.let { main_products=products.filter { product -> product.type=="electronics"  } }
+                        products -> products.let {
+                            recyclerView.adapter= ProductsItemAdapter(activity as MainActivity,
+                                products.filter { product -> product.type=="electronics"  })
+                        }
                 })
-                recyclerView.adapter= ProductsItemAdapter(activity as MainActivity,main_products)
+
             }
             "car" -> {
                 var main_products:List<Product> = emptyList()
                 productViewModel.getAllProducts().observe(this,androidx.lifecycle.Observer {
-                        products -> products.let {main_products= products.filter { product -> product.type=="car"  } }
+                        products -> products.let {
+                            recyclerView.adapter= ProductsItemAdapter(activity as MainActivity,
+                            products.filter { product -> product.type=="car"})
+                        }
 
                 })
-                recyclerView.adapter= ProductsItemAdapter(activity as MainActivity,main_products)
+
             }
             "cloth" -> {
                 var main_products:List<Product> = emptyList()
                 productViewModel.getAllProducts().observe(this,androidx.lifecycle.Observer {
-                        products -> products.let { main_products= products.filter { product -> product.type=="cloth"  } }
+                        products -> products.let {
+                            recyclerView.adapter= ProductsItemAdapter(activity as MainActivity,
+                            products.filter { product -> product.type=="cloth"  })
+                        }
                 })
-                recyclerView.adapter= ProductsItemAdapter(activity as MainActivity,main_products)
             }
             "house" ->{
                 var main_products:List<Product> = emptyList()
                 productViewModel.getAllProducts().observe(this,androidx.lifecycle.Observer {
-                        products -> products.let {main_products=  products.filter { product -> product.type=="house"  } }
+                        products -> products.let {
+                            recyclerView.adapter= ProductsItemAdapter(activity as MainActivity,
+                                products.filter { product -> product.type=="house"  } )
+                        }
                 })
-                recyclerView.adapter= ProductsItemAdapter(activity as MainActivity,main_products)
             }
         }
-        //recyclerView.adapter= ProductsItemAdapter(activity as MainActivity,products)
 
         return listitems
     }
