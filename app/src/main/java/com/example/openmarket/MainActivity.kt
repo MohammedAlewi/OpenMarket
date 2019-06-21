@@ -4,9 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
-import android.opengl.Visibility
 import android.os.Bundle
-import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.navigation.NavigationView
 import androidx.core.view.GravityCompat
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -15,12 +13,9 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import androidx.navigation.findNavController
-import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
 import com.example.openmarket.R.layout.activity_main
 import com.example.openmarket.data.Product
@@ -28,9 +23,6 @@ import com.example.openmarket.data.User
 import com.example.openmarket.viewmodel.UserViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
-import kotlinx.android.synthetic.main.content_main.*
-import kotlinx.android.synthetic.main.nav_header_main.*
-import java.util.*
 
 
 class MainActivity : AppCompatActivity(),
@@ -62,21 +54,33 @@ class MainActivity : AppCompatActivity(),
         }
         userViewModel= ViewModelProviders.of(this).get(UserViewModel::class.java)
         userViewModel.setActivtiy(this)
+
         sheardPref=getSharedPreferences("user_login",Context.MODE_PRIVATE)
-        var id=sheardPref.getLong("user_id",-1L)
-        if (id!=-1L){
-            var arg=Bundle()
-            var user=userViewModel.getUserById(id).value// as User
+        var username=sheardPref.getString("username",null)
+
+        if (username!=null){
+
+            var user:User?=null// as User
+            userViewModel.getUserByUsername(username).observe(this,androidx.lifecycle.Observer {
+                userObj-> user=userObj;
+            })
+
             currentUser=user
-            arg.putSerializable("user",user)
+
             var profile =nav_view.getHeaderView(0).findViewById<ImageView>(R.id.userProfile)
-            profile.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_entry2_to_userProfileFragment, arg))
-            user=userViewModel.getUserById(id).value
-            currentUser=user
-            if (user!=null){
+           profile.setOnClickListener {
+               var arg=Bundle()
+               arg.putSerializable("user",user)
+               navController.navigate(R.id.userProfileFragment,arg);
+               drawer_layout.closeDrawer(GravityCompat.START)
+           }
+            fab.setOnClickListener {
+                var arg=Bundle()
                 arg.putSerializable("user",user)
-               // userProfile.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_entry2_to_userProfileFragment, arg))
+                navController.navigate(R.id.productUploadFragment,arg)
             }
+
+            navController.navigate(R.id.homeFragment,null)
         }
 
     }
