@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.ClipDescription
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
@@ -16,6 +17,7 @@ import android.widget.*
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
+import androidx.navigation.findNavController
 import com.example.openmarket.data.Product
 import com.example.openmarket.data.User
 import com.example.openmarket.viewmodel.ProductViewModel
@@ -23,6 +25,7 @@ import com.example.openmarket.viewmodel.UserViewModel
 import kotlinx.android.synthetic.main.fragment_product_upload.*
 import kotlinx.android.synthetic.main.fragment_product_upload.view.*
 import kotlinx.android.synthetic.main.fragment_signup.*
+import java.util.*
 
 
 class ProductUploadFragment : Fragment() {
@@ -48,7 +51,10 @@ class ProductUploadFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_product_upload, container, false)
 
+        var userObject=arguments?.getSerializable("user") as User?
+
         productViewModel = ViewModelProviders.of(this).get(ProductViewModel::class.java)
+
         productViewModel.setActivtiy(activity as MainActivity)
 
         productName = view.productNameEdit
@@ -59,17 +65,23 @@ class ProductUploadFragment : Fragment() {
         imageView = view.productImage
 
         uploadBtn.setOnClickListener {
+
             val product = readFeilds()
+            product.date=Date().toString()
+            product.type="car"
+            // get user object
 
-            var userid=(activity as MainActivity).currentUser?.id
-            if(userid==null){
-                userid=0
-            }
-            productViewModel.insertProduct(product,userid)
+            if (userObject !=null){
+                var userid=userObject.id
+                product.userName=userObject.username
 
-            val bundle = Bundle()
-            bundle.putSerializable("product", product)
-            Navigation.createNavigateOnClickListener(R.id.action_signupFragment_to_loginFragment, bundle)
+                productViewModel.insertProduct(product,userid)
+
+                val bundle = Bundle()
+                bundle.putSerializable("product", product)
+                Navigation.createNavigateOnClickListener(R.id.action_signupFragment_to_loginFragment, bundle)
+            }else{  view.findNavController().navigate(R.id.loginFragment,null)}
+
         }
 
         imageView.setOnClickListener {
