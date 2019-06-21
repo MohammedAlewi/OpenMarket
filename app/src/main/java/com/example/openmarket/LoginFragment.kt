@@ -39,14 +39,14 @@ class LoginFragment : Fragment() {
             view.txtPwd.setText(user.password)
 
             with((activity?.getSharedPreferences("user_login",Context.MODE_PRIVATE) as SharedPreferences).edit()){
-                putLong("user_id",user.id)
+                putString("username",user.username)
                 apply()
             }
 
             var arg=Bundle()
             arg.putSerializable("user",user)
-            var profile=nav_view.getHeaderView(0).findViewById<ImageView>(R.id.userProfile)
-            profile.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_entry2_to_userProfileFragment, arg))
+            //var profile=nav_view.getHeaderView(0).findViewById<ImageView>(R.id.userProfile)
+            //profile.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_entry2_to_userProfileFragment, arg))
 
         }
 
@@ -72,14 +72,14 @@ class LoginFragment : Fragment() {
 
                         var usr=Bundle()
                         usr.putSerializable("user",user)
-                        var profile=nav_view.getHeaderView(0).findViewById<ImageView>(R.id.userProfile)
-                        profile.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_entry2_to_userProfileFragment, usr))
+                       // var profile=nav_view.getHeaderView(0).findViewById<ImageView>(R.id.userProfile)
+                       // profile.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_entry2_to_userProfileFragment, usr))
 
 
                         view.findNavController().navigate(R.id.homeFragment, arg)
 
                         with((activity?.getSharedPreferences("user_login",Context.MODE_PRIVATE) as SharedPreferences).edit()){
-                            putLong("user_id",user.id)
+                            putString("username",user.username)
                             apply()
                         }
                     } else {
