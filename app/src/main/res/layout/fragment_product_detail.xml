@@ -335,7 +335,6 @@
                     android:text="Send"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:onClick="@{() -> comLst.buttonClicked()}"
                     android:id="@+id/comment_btn" android:layout_marginTop="8dp"
                     app:layout_constraintTop_toTopOf="@+id/guideline23"
                     app:layout_constraintEnd_toStartOf="@+id/guideline5"
