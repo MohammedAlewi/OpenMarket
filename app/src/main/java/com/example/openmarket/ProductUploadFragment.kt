@@ -68,7 +68,7 @@ class ProductUploadFragment : Fragment() {
 
             val product = readFeilds()
             product.date=Date().toString()
-            product.type="car"
+            product.type=view.typeSpinner.selectedItem.toString()
             // get user object
 
             if (userObject !=null){
