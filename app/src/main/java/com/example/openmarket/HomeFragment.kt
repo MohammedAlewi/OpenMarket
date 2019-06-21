@@ -5,7 +5,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
@@ -26,12 +28,18 @@ class HomeFragment : Fragment() {
         }
         productViewModel = ViewModelProviders.of(this).get(ProductViewModel::class.java)
         productViewModel.setActivtiy(activity as MainActivity)
-        var empty=productViewModel.getAllProducts().value?.isEmpty() as Boolean
-        if (empty){
-            childFragmentManager.beginTransaction().replace(R.id.home_framelayouts,ProductsView.newInstance("none")).commit()
-        }else{
-            childFragmentManager.beginTransaction().replace(R.id.home_framelayouts,ProductsView.newInstance("all")).commit()
-        }
+
+        productViewModel.getAllProducts().observe(this, Observer {
+            products->products.let {
+                if (products.isEmpty()){
+                    childFragmentManager.beginTransaction().replace(R.id.home_framelayouts,ProductsView.newInstance("none")).commit()
+                }else{
+                    childFragmentManager.beginTransaction().replace(R.id.home_framelayouts,ProductsView.newInstance("any")).commit()
+                }
+            }
+        })
+
+
 
         view.bottom_nav.setOnNavigationItemSelectedListener {
             when(it.itemId){
