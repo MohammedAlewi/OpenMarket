@@ -8,7 +8,6 @@ import androidx.test.espresso.Espresso
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.matcher.ViewMatchers
 import org.junit.After
-import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 
@@ -24,7 +23,7 @@ class RegistrationFragmentIntegrationTest{
 
     @Test
     fun testStaticLabel(){
-        Espresso.onView(ViewMatchers.withId(R.id.textView6))
+        Espresso.onView(ViewMatchers.withId(R.id.Type))
             .check(ViewAssertions.matches(ViewMatchers.withText("Be Family")))
         Espresso.onView(ViewMatchers.withId(R.id.register))
             .check(ViewAssertions.matches(ViewMatchers.withText("SignUp")))
