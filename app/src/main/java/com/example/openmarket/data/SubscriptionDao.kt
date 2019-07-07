@@ -9,7 +9,7 @@ import androidx.room.Query
 @Dao
 interface SubscriptionDao {
     @Query("SELECT  * FROM subscription WHERE subscribed_user = :username ")
-    fun getUserSubscriptions(username:String):LiveData<List<Subscription>>
+    fun getUserSubscriptions(username: String): LiveData<List<Subscription>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertSubscription(subscription: Subscription)

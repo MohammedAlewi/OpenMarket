@@ -6,34 +6,28 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat.checkSelfPermission
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
-import com.example.openmarket.data.Product
 import com.example.openmarket.data.User
-import com.example.openmarket.repository.UserRepository
 import com.example.openmarket.viewmodel.UserViewModel
-import com.google.android.material.textfield.TextInputEditText
-import kotlinx.android.synthetic.main.fragment_signup.*
 import kotlinx.android.synthetic.main.fragment_signup.view.*
-import java.util.jar.Manifest
 
 class SignupFragment : Fragment() {
 
-    private lateinit var userViewModel : UserViewModel
+    private lateinit var userViewModel: UserViewModel
 
-    private lateinit var fullName:EditText
-    private lateinit var userName:EditText
-    private lateinit var email_addr:EditText
-    private lateinit var password:EditText
-    private lateinit var confirmPassword:EditText
+    private lateinit var fullName: EditText
+    private lateinit var userName: EditText
+    private lateinit var email_addr: EditText
+    private lateinit var password: EditText
+    private lateinit var confirmPassword: EditText
     private lateinit var phoneNumber: EditText
 
     private lateinit var imageView: ImageView
@@ -46,7 +40,7 @@ class SignupFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val view =  inflater.inflate(R.layout.fragment_signup, container, false)
+        val view = inflater.inflate(R.layout.fragment_signup, container, false)
 
         userViewModel = ViewModelProviders.of(this).get(UserViewModel::class.java)
         userViewModel.setActivtiy(activity as MainActivity)
@@ -66,15 +60,18 @@ class SignupFragment : Fragment() {
 
         imageView.setOnClickListener {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                if (ActivityCompat.checkSelfPermission(requireContext(),
-                        android.Manifest.permission.READ_EXTERNAL_STORAGE) ==
-                        PackageManager.PERMISSION_DENIED){
+                if (ActivityCompat.checkSelfPermission(
+                        requireContext(),
+                        android.Manifest.permission.READ_EXTERNAL_STORAGE
+                    ) ==
+                    PackageManager.PERMISSION_DENIED
+                ) {
                     val permissions = arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE)
                     requestPermissions(permissions, PERMISSION_CODE)
-                }else{
+                } else {
                     pickImage()
                 }
-            }else{
+            } else {
                 pickImage()
             }
         }
@@ -85,11 +82,11 @@ class SignupFragment : Fragment() {
 
         signUp.setOnClickListener {
             val user = readFeilds()
-            if (user!=null)
+            if (user != null)
                 userViewModel.insertUser(user)
             val bundle = Bundle()
-            bundle.putSerializable("user" , user)
-            view.findNavController().navigate(R.id.loginFragment,bundle)
+            bundle.putSerializable("user", user)
+            view.findNavController().navigate(R.id.loginFragment, bundle)
             //Navigation.createNavigateOnClickListener(R.id.action_signupFragment_to_loginFragment , bundle)
         }
 
@@ -108,10 +105,10 @@ class SignupFragment : Fragment() {
         when (requestCode) {
             PERMISSION_CODE -> {
                 if (grantResults.size > 0 && grantResults[0] ==
-                        PackageManager.PERMISSION_GRANTED) {
+                    PackageManager.PERMISSION_GRANTED
+                ) {
                     pickImage()
-                }
-                else {
+                } else {
                     Toast.makeText(activity, "Permission Denied", Toast.LENGTH_SHORT).show()
                 }
             }
@@ -125,36 +122,36 @@ class SignupFragment : Fragment() {
     }
 
     fun readFeilds(): User? {
-        val user  = User(
+        val user = User(
             fullName = fullName.text.toString(),
             username = userName.text.toString(),
             email = email_addr.text.toString(),
-            password = validPassword(password.text.toString() , confirmPassword.text.toString()),
+            password = validPassword(password.text.toString(), confirmPassword.text.toString()),
             phoneNo = phoneNumber.text.toString(),
             pictureId = "",
             locationId = ""
         )
-        if(validUserFields(user)) {
+        if (validUserFields(user)) {
             return user
         }
         return null
     }
 
 
-
     companion object {
         private val IMAGE_PICK_CODE = 1000
         private val PERMISSION_CODE = 1001
 
-        fun validPassword(pass:String , confirmPass:String):String {
+        fun validPassword(pass: String, confirmPass: String): String {
             if (pass == confirmPass) {
                 return pass
             }
             return ""
 
         }
-        fun validUserFields(user:User):Boolean{
-            if (user.fullName.isNullOrEmpty()||user.username.isNotEmpty()||user.email.isNullOrEmpty()||user.phoneNo.isNullOrEmpty())
+
+        fun validUserFields(user: User): Boolean {
+            if (user.fullName.isNullOrEmpty() || user.username.isNotEmpty() || user.email.isNullOrEmpty() || user.phoneNo.isNullOrEmpty())
                 return false
             return true
         }

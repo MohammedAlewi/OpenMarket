@@ -7,9 +7,9 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 
 @Dao
-interface RatingDao{
+interface RatingDao {
     @Query("SELECT * FROM rating WHERE product_id = :productId ")
-    fun selectAllRatingForProduct(productId:Long):LiveData<List<Rating>>
+    fun selectAllRatingForProduct(productId: Long): LiveData<List<Rating>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertRating(rating: Rating)
@@ -18,5 +18,5 @@ interface RatingDao{
     fun insertRatings(ratings: List<Rating>)
 
     @Query("SELECT * FROM rating WHERE username = :username")
-    fun getRatingUsingUsername(username:String):LiveData<List<Rating>>
+    fun getRatingUsingUsername(username: String): LiveData<List<Rating>>
 }

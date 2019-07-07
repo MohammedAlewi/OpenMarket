@@ -11,23 +11,24 @@ import com.example.openmarket.repository.SubscriptionRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class SubscriptionViewmodel(application: Application): AndroidViewModel(application){
+class SubscriptionViewmodel(application: Application) : AndroidViewModel(application) {
     private lateinit var subscriptionRepository: SubscriptionRepository
+
     init {
-        var subscriptionDao= OpenMarketDatabase.getInstance(application).getSubscriptionDao()
-        subscriptionRepository= SubscriptionRepository(subscriptionDao)
+        var subscriptionDao = OpenMarketDatabase.getInstance(application).getSubscriptionDao()
+        subscriptionRepository = SubscriptionRepository(subscriptionDao)
     }
 
-    fun saveSubscription(subscription: Subscription)=viewModelScope.launch(Dispatchers.IO){
+    fun saveSubscription(subscription: Subscription) = viewModelScope.launch(Dispatchers.IO) {
         subscriptionRepository.saveSubscription(subscription)
     }
 
-    fun getSubscriptionForUser(username:String): LiveData<List<Subscription>> {
-        return  subscriptionRepository.getSubscriptionForUser(username)
+    fun getSubscriptionForUser(username: String): LiveData<List<Subscription>> {
+        return subscriptionRepository.getSubscriptionForUser(username)
     }
 
-    fun setActivtiy(activity: MainActivity){
-        subscriptionRepository.activity=activity
+    fun setActivtiy(activity: MainActivity) {
+        subscriptionRepository.activity = activity
     }
 
 }

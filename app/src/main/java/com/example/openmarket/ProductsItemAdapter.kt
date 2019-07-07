@@ -6,52 +6,54 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
-import com.example.openmarket.databinding.ProductItemsViewBinding
 import androidx.recyclerview.widget.RecyclerView
 import com.example.openmarket.data.Product
+import com.example.openmarket.databinding.ProductItemsViewBinding
 import kotlinx.android.synthetic.main.product_items_view.view.*
 
-class ProductsItemAdapter(mainActivity: MainActivity,items_val: List<Product>)
-    :RecyclerView.Adapter<ProductsItemAdapter.ProductViewHolder>(){
+class ProductsItemAdapter(mainActivity: MainActivity, items_val: List<Product>) :
+    RecyclerView.Adapter<ProductsItemAdapter.ProductViewHolder>() {
 
-    var products=items_val
-    val main=mainActivity
+    var products = items_val
+    val main = mainActivity
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
-        var inflator=LayoutInflater.from(parent.context);
-        var binding=DataBindingUtil.inflate<ProductItemsViewBinding>(inflator, R.layout.product_items_view, parent, false)
-        val recyclerView=binding.root
+        var inflator = LayoutInflater.from(parent.context)
+        var binding =
+            DataBindingUtil.inflate<ProductItemsViewBinding>(inflator, R.layout.product_items_view, parent, false)
+        val recyclerView = binding.root
 
-        recyclerView.setOnClickListener{
-            var product:Product?=products.find{it.name==recyclerView.name_of_product.text.toString() }
-            var arg=Bundle()
-            arg.putSerializable("product",product)
-            recyclerView.findNavController().navigate(R.id.productDetailFragment,arg)
+        recyclerView.setOnClickListener {
+            var product: Product? = products.find { it.name == recyclerView.name_of_product.text.toString() }
+            var arg = Bundle()
+            arg.putSerializable("product", product)
+            recyclerView.findNavController().navigate(R.id.productDetailFragment, arg)
 
             notifyDataSetChanged()
         }
-        
-        return ProductViewHolder(recyclerView,binding)
+
+        return ProductViewHolder(recyclerView, binding)
     }
 
 
-    override fun getItemCount():Int{
+    override fun getItemCount(): Int {
         return products.size
     }
 
     override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
-        val product=products[position]
-       holder.binding.productName=product.name
+        val product = products[position]
+        holder.binding.productName = product.name
 
     }
 
-    fun addProduct(product: Product){
-        products=products.plus(product)
+    fun addProduct(product: Product) {
+        products = products.plus(product)
         notifyDataSetChanged()
     }
 
-    inner class ProductViewHolder(itemView:View, val binding:ProductItemsViewBinding):RecyclerView.ViewHolder(itemView)
+    inner class ProductViewHolder(itemView: View, val binding: ProductItemsViewBinding) :
+        RecyclerView.ViewHolder(itemView)
 
     interface ContentListener {
         fun onItemClicked(item: Product)

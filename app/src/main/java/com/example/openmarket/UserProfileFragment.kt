@@ -18,20 +18,25 @@ class UserProfileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        var binding= DataBindingUtil.inflate<FragmentUserProfileBinding>(inflater, R.layout.fragment_user_profile, container, false)
-        var user=arguments?.getSerializable("user") as User?
-        var view=binding.root
-        binding.user=user
+        var binding = DataBindingUtil.inflate<FragmentUserProfileBinding>(
+            inflater,
+            R.layout.fragment_user_profile,
+            container,
+            false
+        )
+        var user = arguments?.getSerializable("user") as User?
+        var view = binding.root
+        binding.user = user
 
         return view
     }
 
-    companion object{
-        fun getInstance(user:User):UserProfileFragment{
-            val usr=UserProfileFragment()
-            var arg=Bundle()
-            arg.putSerializable("user",user)
-            usr.arguments=arg
+    companion object {
+        fun getInstance(user: User): UserProfileFragment {
+            val usr = UserProfileFragment()
+            var arg = Bundle()
+            arg.putSerializable("user", user)
+            usr.arguments = arg
             return usr
         }
     }
