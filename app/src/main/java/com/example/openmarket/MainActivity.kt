@@ -88,7 +88,7 @@ class MainActivity : AppCompatActivity(),
             }
             navController.navigate(R.id.homeFragment, null)
         }
-
+        nav_view.setNavigationItemSelectedListener(this)
     }
 
 
@@ -99,13 +99,28 @@ class MainActivity : AppCompatActivity(),
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         when (item.itemId) {
-            R.id.action_settings -> return true
-            else -> return super.onOptionsItemSelected(item)
+            R.id.nav_upload -> {
+            }
+            R.id.nav_subscription -> {
+                var arg = Bundle()
+                arg.putSerializable("products", "subscriptions")
+                controller.navigate(R.id.productsView, arg)
+            }
+            R.id.nav_setting -> {
+
+            }
+            // description
+            R.id.nav_share -> {
+
+            }
+            R.id.nav_about -> {
+
+            }
         }
+
+        drawer_layout.closeDrawer(GravityCompat.START)
+        return true
     }
 
 
@@ -128,13 +143,13 @@ class MainActivity : AppCompatActivity(),
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        // Handle navigation view item clicks here.
         when (item.itemId) {
             R.id.nav_upload -> {
+                var arg = Bundle()
+                arg.putSerializable("products", "my_products")
+                controller.navigate(R.id.productsView, arg)
             }
             R.id.nav_subscription -> {
-                println("--------------subscription hit")
-                Toast.makeText(this, "Subscriptions has been clicked", Toast.LENGTH_LONG).show()
                 var arg = Bundle()
                 arg.putSerializable("products", "subscriptions")
                 controller.navigate(R.id.productsView, arg)
