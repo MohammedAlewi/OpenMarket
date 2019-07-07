@@ -20,7 +20,6 @@ class CommentViewModelTest {
     fun setUp() {
         val context = InstrumentationRegistry.getInstrumentation().targetContext
         openMarketDatabase= Room.inMemoryDatabaseBuilder(context,OpenMarketDatabase::class.java).build()
-
         commentViewModel= CommentViewModel(Application())
     }
 
