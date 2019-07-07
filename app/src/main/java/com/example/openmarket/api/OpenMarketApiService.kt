@@ -12,6 +12,7 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.*
+import com.example.openmarket.data.Subscription as Subscription1
 
 interface OpenMarketApiService {
     @FormUrlEncoded
@@ -80,7 +81,24 @@ interface OpenMarketApiService {
     @GET("comment/{id}")
     fun getCommentById(@Path("id") id:Long):Deferred<Response<Comment>>
 
+    //  rating Section
+    @POST("rating/save")
+    fun saveRating(@Body rating: Rating):Deferred<Response<Void>>
 
+    @GET("rating/{username}")
+    fun getRating(@Path("username") username:String):Deferred<Response<Rating>>
+
+    @GET("rating/{product_id}")
+    fun getAllRatingForProduct(@Path("product_id") product_id:Long):Deferred<Response<List<Rating>>>
+
+    // subscription section
+    @POST("subscription/save")
+    fun saveSubscription(@Body subscription: com.example.openmarket.data.Subscription):Deferred<Response<Void>>
+
+    @GET("subscription/{username}")
+    fun getSubscriptions(@Path("username") username:String):Deferred<Response<List<com.example.openmarket.data.Subscription>>>
+
+    // end.....
     companion object {
 
         private val url = "http://10.0.2.2:9090/openMarket/api/"

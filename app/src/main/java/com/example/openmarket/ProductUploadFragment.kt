@@ -15,16 +15,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.core.app.ActivityCompat
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import com.example.openmarket.data.Product
 import com.example.openmarket.data.User
+//import com.example.openmarket.databinding.FragmentProductDetailBinding
 import com.example.openmarket.viewmodel.ProductViewModel
 import com.example.openmarket.viewmodel.UserViewModel
 import kotlinx.android.synthetic.main.fragment_product_upload.*
 import kotlinx.android.synthetic.main.fragment_product_upload.view.*
 import kotlinx.android.synthetic.main.fragment_signup.*
+//import com.example.openmarket.databinding.FragmentProductUploadBinding
 import java.util.*
 
 
@@ -48,14 +51,14 @@ class ProductUploadFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_product_upload, container, false)
-
-        var userObject=arguments?.getSerializable("user") as User?
-
         productViewModel = ViewModelProviders.of(this).get(ProductViewModel::class.java)
-
         productViewModel.setActivtiy(activity as MainActivity)
+       // var fragmentProductUploadBinding=
+         //   DataBindingUtil.inflate<FragmentProductUploadBinding>(inflater, R.layout.fragment_product_upload, container, false)
+        //var view=fragmentProductUploadBinding.root
+        var userObject=arguments?.getSerializable("user") as User?
+        var view=inflater.inflate(R.layout.fragment_product_upload, container, false)
+       // fragmentProductUploadBinding.uploadProduct=UploadProductAction(view,userObject,this,productViewModel)
 
         productName = view.productNameEdit
         description = view.descriptionEdit
@@ -64,25 +67,6 @@ class ProductUploadFragment : Fragment() {
         uploadBtn = view.uploadBtn
         imageView = view.productImage
 
-        uploadBtn.setOnClickListener {
-
-            val product = readFeilds()
-            product.date=Date().toString()
-            product.type=view.typeSpinner.selectedItem.toString()
-            // get user object
-
-            if (userObject !=null){
-                var userid=userObject.id
-                product.userName=userObject.username
-
-                productViewModel.insertProduct(product,userid)
-
-                val bundle = Bundle()
-                bundle.putSerializable("product", product)
-                Navigation.createNavigateOnClickListener(R.id.action_signupFragment_to_loginFragment, bundle)
-            }else{  view.findNavController().navigate(R.id.loginFragment,null)}
-
-        }
 
         imageView.setOnClickListener {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -97,6 +81,25 @@ class ProductUploadFragment : Fragment() {
             }else{
                 pickImage()
             }
+        }
+        view.uploadBtn.setOnClickListener {
+            val product = this.readFeilds()
+            product.date=Date().toString()
+            product.type=view.typeSpinner.selectedItem.toString()
+            // get user object
+
+            if (userObject !=null){
+                var userid=userObject.id
+                product.userName=userObject.username
+                productViewModel.insertProduct(product,userid)
+
+                this.clearFields()
+                view.findNavController().navigate(R.id.homeFragment)
+
+                val bundle = Bundle()
+                bundle.putSerializable("product", product)
+                Navigation.createNavigateOnClickListener(R.id.action_signupFragment_to_loginFragment, bundle)
+            }else{  view.findNavController().navigate(R.id.loginFragment,null)}
         }
 
         return view
@@ -165,9 +168,40 @@ class ProductUploadFragment : Fragment() {
         return product
     }
 
+    fun clearFields(){
+        productName.setText("")
+        description.setText("")
+        amount.setText("")
+        price.setText("")
+    }
+
     companion object {
         private val IMAGE_PICK_CODE = 1000
         private val PERMISSION_CODE = 1001
+    }
+
+}
+
+class UploadProductAction(private var view: View,private var userObject: User?,private var productUploadFragment: ProductUploadFragment
+                    ,private var productViewModel: ProductViewModel){
+    fun uploadButton(view:View,userObject:User?){
+        val product = productUploadFragment.readFeilds()
+        product.date=Date().toString()
+        product.type=view.typeSpinner.selectedItem.toString()
+        // get user object
+
+        if (userObject !=null){
+            var userid=userObject.id
+            product.userName=userObject.username
+            productViewModel.insertProduct(product,userid)
+
+           productUploadFragment.clearFields()
+            view.findNavController().navigate(R.id.homeFragment)
+
+            val bundle = Bundle()
+            bundle.putSerializable("product", product)
+            Navigation.createNavigateOnClickListener(R.id.action_signupFragment_to_loginFragment, bundle)
+        }else{  view.findNavController().navigate(R.id.loginFragment,null)}
     }
 
 }

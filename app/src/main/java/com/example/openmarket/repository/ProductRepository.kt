@@ -25,7 +25,6 @@ class ProductRepository(private val productDao: ProductDao, private val productC
             }
         }else{
             var product_id=productDao.insertProduct(product)
-            println("---------------product id $product_id")
             userProductDao.insertUserProduct(UserProductJoin(product_id = product_id,user_id = user_id))
             with(activity.getSharedPreferences("unsaved_data_on_server", Context.MODE_PRIVATE).edit()){
                 putLong("product_insert",product_id)
@@ -71,6 +70,12 @@ class ProductRepository(private val productDao: ProductDao, private val productC
                 OpenMarketApiService.getInstance().updateProduct(product,product.id)
                 productDao.updateProduct(product)
             }
+        }else{
+            productDao.updateProduct(product)
+            with(activity.getSharedPreferences("unsaved_data_on_server", Context.MODE_PRIVATE).edit()){
+                putLong("product_update",product.id)
+                apply()
+            }
         }
 
     }
@@ -83,6 +88,13 @@ class ProductRepository(private val productDao: ProductDao, private val productC
                 productCommentDao.removeAllRelationByProductId(product_id = product.id)
                 userProductDao.removeAllRelationByProductId(product_id = product.id)
                 productDao.deleteComment(product)
+            }
+        }else{
+            var product_id=productDao.insertProduct(product)
+            productDao.deleteComment(product)
+            with(activity.getSharedPreferences("unsaved_data_on_server", Context.MODE_PRIVATE).edit()){
+                putLong("product_delete",product_id)
+                apply()
             }
         }
     }

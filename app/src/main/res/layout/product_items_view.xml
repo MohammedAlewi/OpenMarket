@@ -3,7 +3,6 @@
         xmlns:tools="http://schemas.android.com/tools">
     <data>
         <variable name="productName" type="String"/>
-        <!--<variable name="productImageRes" type="String"/>-->
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
             android:orientation="vertical"

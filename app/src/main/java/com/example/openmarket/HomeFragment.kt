@@ -40,27 +40,25 @@ class HomeFragment : Fragment() {
         })
 
 
-
         view.bottom_nav.setOnNavigationItemSelectedListener {
             when(it.itemId){
                 R.id.navigation_electronics -> {
                     var arg=Bundle()
-                    var electornics=productViewModel.getAllProducts().value?.filter { product -> product.type=="electronics"  }
-                    arg.putSerializable("products","electronics")
+                    arg.putSerializable("products","Electronics")
                     navController.navigate(R.id.productsView,arg)
 //                    Navigation.createNavigateOnClickListener(R.id.action_homeFragment_to_productsView , arg)
                     true
                 }
                 R.id.navigation_car ->{
                     var arg=Bundle()
-                    arg.putSerializable("products","car")
+                    arg.putSerializable("products","Car")
                     navController.navigate(R.id.productsView,arg)
 //                    Navigation.createNavigateOnClickListener(R.id.action_homeFragment_to_productsView , arg)
                     true
                 }
                 R.id.navigation_cloth ->{
                     var arg=Bundle()
-                    arg.putSerializable("products","cloth")
+                    arg.putSerializable("products","Cloth")
                     navController.navigate(R.id.productsView,arg)
 //                    Navigation.createNavigateOnClickListener(R.id.action_homeFragment_to_productsView , arg)
 
@@ -68,7 +66,7 @@ class HomeFragment : Fragment() {
                 }
                 R.id.navigation_house ->{
                     var arg=Bundle()
-                    arg.putSerializable("products","house")
+                    arg.putSerializable("products","House")
 //                    Navigation.createNavigateOnClickListener(R.id.action_homeFragment_to_productsView , arg)
                     navController.navigate(R.id.productsView,arg)
                     true

@@ -11,11 +11,14 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.openmarket.R.layout.activity_main
 import com.example.openmarket.data.Product
@@ -23,11 +26,13 @@ import com.example.openmarket.data.User
 import com.example.openmarket.viewmodel.UserViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
+import kotlinx.android.synthetic.main.nav_header_main.*
 
 
 class MainActivity : AppCompatActivity(),
     NavigationView.OnNavigationItemSelectedListener,ProductsItemAdapter.ContentListener{
     var currentUser:User?=null
+    private lateinit var controller:NavController
     private lateinit var sheardPref:SharedPreferences
     private lateinit var userViewModel: UserViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,11 +67,16 @@ class MainActivity : AppCompatActivity(),
 
             var user:User?=null// as User
             userViewModel.getUserByUsername(username).observe(this,androidx.lifecycle.Observer {
-                userObj-> user=userObj;
+                userObj-> userObj.let {
+                    user=userObj;
+                    nav_view.getHeaderView(0).findViewById<TextView>(R.id.main_username).setText(userObj.username)
+                    nav_view.getHeaderView(0).findViewById<TextView>(R.id.main_fullname).setText(userObj.fullName)
+                }
             })
 
             currentUser=user
 
+            controller=navController
             var profile =nav_view.getHeaderView(0).findViewById<ImageView>(R.id.userProfile)
            profile.setOnClickListener {
                var arg=Bundle()
@@ -79,7 +89,6 @@ class MainActivity : AppCompatActivity(),
                 arg.putSerializable("user",user)
                 navController.navigate(R.id.productUploadFragment,arg)
             }
-
             navController.navigate(R.id.homeFragment,null)
         }
 
@@ -128,18 +137,20 @@ class MainActivity : AppCompatActivity(),
             R.id.nav_upload -> {
             }
             R.id.nav_subscription -> {
-
+                println("--------------subscription hit")
+                Toast.makeText(this,"Subscriptions has been clicked",Toast.LENGTH_LONG).show()
+                var arg=Bundle()
+                arg.putSerializable("products","subscriptions")
+                controller.navigate(R.id.productsView,arg)
             }
             R.id.nav_setting -> {
 
             }
+            // description
             R.id.nav_share -> {
 
             }
             R.id.nav_about -> {
-
-            }
-            R.id.userProfile ->{
 
             }
         }
