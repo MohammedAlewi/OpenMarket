@@ -13,10 +13,10 @@ import org.junit.runner.RunWith
 import org.mockito.Mockito
 
 @RunWith(AndroidJUnit4::class)
-class EditProductsFragmentNavigationTest {
+class SignupFragmentNavigationTest{
     @Test
-    fun click_saveButton_navigateTo_homeFragment() {
-        val scenario = launchFragmentInContainer<EditProductFragment>(Bundle(), R.style.AppTheme)
+    fun click_registerButton_navigateTo_loginFragment() {
+        val scenario = launchFragmentInContainer<SignupFragment>(Bundle(), R.style.AppTheme)
         val navController = Mockito.mock(NavController::class.java)
 
         scenario.onFragment {
@@ -24,11 +24,9 @@ class EditProductsFragmentNavigationTest {
         }
 
 
-        Espresso.onView(ViewMatchers.withId(R.id.save)).perform(ViewActions.click())
+        Espresso.onView(ViewMatchers.withId(R.id.signupBtn)).perform(ViewActions.click())
 
         Mockito.verify(navController).navigate(
-            EditProductFragmentDirections.action_editProductFragment_to_homeFragment())
+            SignupFragmentDirections.action_signupFragment_to_loginFragment())
     }
-
-
 }
