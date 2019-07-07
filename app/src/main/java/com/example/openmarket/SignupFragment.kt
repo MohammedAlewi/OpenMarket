@@ -16,6 +16,7 @@ import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
+import com.example.openmarket.data.Product
 import com.example.openmarket.data.User
 import com.example.openmarket.repository.UserRepository
 import com.example.openmarket.viewmodel.UserViewModel
@@ -84,7 +85,8 @@ class SignupFragment : Fragment() {
 
         signUp.setOnClickListener {
             val user = readFeilds()
-            userViewModel.insertUser(user)
+            if (user!=null)
+                userViewModel.insertUser(user)
             val bundle = Bundle()
             bundle.putSerializable("user" , user)
             view.findNavController().navigate(R.id.loginFragment,bundle)
@@ -122,7 +124,7 @@ class SignupFragment : Fragment() {
         }
     }
 
-    fun readFeilds(): User {
+    fun readFeilds(): User? {
         val user  = User(
             fullName = fullName.text.toString(),
             username = userName.text.toString(),
@@ -132,20 +134,30 @@ class SignupFragment : Fragment() {
             pictureId = "",
             locationId = ""
         )
-        return user
-    }
-
-    private fun validPassword(pass:String , confirmPass:String):String {
-        if (pass == confirmPass) {
-            return pass.hashCode().toString()
+        if(validUserFields(user)) {
+            return user
         }
-        return ""
-
+        return null
     }
+
+
 
     companion object {
         private val IMAGE_PICK_CODE = 1000
         private val PERMISSION_CODE = 1001
+
+        fun validPassword(pass:String , confirmPass:String):String {
+            if (pass == confirmPass) {
+                return pass
+            }
+            return ""
+
+        }
+        fun validUserFields(user:User):Boolean{
+            if (user.fullName.isNullOrEmpty()||user.username.isNotEmpty()||user.email.isNullOrEmpty()||user.phoneNo.isNullOrEmpty())
+                return false
+            return true
+        }
     }
 
 

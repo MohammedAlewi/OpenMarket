@@ -42,6 +42,12 @@ class UserRepository (private val userDao: UserDao,private val userProductDao: U
                 OpenMarketApiService.getInstance().registerUser(user).await().body()
                 userDao.insertUser(user)
             }
+        }else{
+            var id=userDao.insertUser(user)
+            with(activity.getSharedPreferences("unsaved_data_on_server", Context.MODE_PRIVATE).edit()){
+                putLong("user_insert",user.id)
+                apply()
+            }
         }
     }
 

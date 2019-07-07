@@ -11,12 +11,17 @@ import android.view.ViewGroup
 
 
 import android.text.Editable
+import android.widget.ImageView
 import android.widget.Toast
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import com.example.openmarket.data.User
+import com.example.openmarket.databinding.FragmentLoginBinding
 import com.example.openmarket.viewmodel.UserViewModel
+import com.google.android.material.navigation.NavigationView
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_login.view.*
 import kotlinx.android.synthetic.main.nav_header_main.*
 import kotlinx.coroutines.Dispatchers
@@ -29,75 +34,86 @@ class LoginFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_login, container, false)
+
+        userViewModel = ViewModelProviders.of(this).get(UserViewModel::class.java)
+        userViewModel.setActivtiy(activity as MainActivity)
+
+        var fragmentLoginBinding=
+            DataBindingUtil.inflate<FragmentLoginBinding>(inflater, R.layout.fragment_login, container, false)
+        var view=fragmentLoginBinding.root
+        fragmentLoginBinding.loginObject=LoginBinding(this,view,userViewModel)
+
         if (arguments!=null){
             var user=arguments?.getSerializable("user") as User
             view.txtEmail.setText(user.username)
             view.txtPwd.setText(user.password)
 
             with((activity?.getSharedPreferences("user_login",Context.MODE_PRIVATE) as SharedPreferences).edit()){
-                putLong("user_id",user.id)
+                putString("username",user.username)
                 apply()
             }
 
             var arg=Bundle()
             arg.putSerializable("user",user)
-            userProfile.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_entry2_to_userProfileFragment, arg))
+            //var profile=nav_view.getHeaderView(0).findViewById<ImageView>(R.id.userProfile)
+            //profile.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_entry2_to_userProfileFragment, arg))
+
         }
 
-        userViewModel = ViewModelProviders.of(this).get(UserViewModel::class.java)
-        userViewModel.setActivtiy(activity as MainActivity)
-
-        view.btnLogin.setOnClickListener {
-            val username = view.txtEmail.text.toString()
-            val password = view.txtPwd.text.toString()
-            val login = userViewModel.login(username, password)
-            if (login == null) {
-                Toast.makeText(this.context, "There is No Connection", Toast.LENGTH_LONG).show()
-            } else {
-                GlobalScope.launch(Dispatchers.Main) {
-                    var result = login.await()
-                    if (result.code() == 301) {
-                        val user = userViewModel.getUserByUsername(username).value as User
-
-                        val arg = Bundle()
-                        arg.putSerializable("user", user)
-
-                        (activity as MainActivity).currentUser = user
 
 
-                        var usr=Bundle()
-                        arg.putSerializable("user",user)
-                        userProfile.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_entry2_to_userProfileFragment, usr))
-
-                        view.findNavController().navigate(R.id.homeFragment, arg)
-
-                        with((activity?.getSharedPreferences("user_login",Context.MODE_PRIVATE) as SharedPreferences).edit()){
-                            putLong("user_id",user.id)
-                            apply()
-                        }
-                    } else {
-                        Toast.makeText(activity, "Password or Username is incorrect", Toast.LENGTH_LONG).show()
-                    }
-                }
-
-            }
-        }
         return view
     }
-
     companion object{
         fun getInstance():LoginFragment{
             var loginFragment=LoginFragment()
 
             return loginFragment;
         }
+
+         fun isPasswordValid(username:String,password:String): Boolean {
+            if(username.isNullOrEmpty() || password.isNullOrEmpty())
+                return false
+            return true
+        }
     }
+}
+
+class LoginBinding(var loginFragment: LoginFragment,var view: View, var userViewModel: UserViewModel){
+    fun login(){
+        val username = view.txtEmail.text.toString()
+        val password = view.txtPwd.text.toString()
+        if (LoginFragment.isPasswordValid(username,password)){
+            val login = userViewModel.login(username, password)
+            if (login == null) {
+                Toast.makeText(loginFragment.context, "There is No Connection", Toast.LENGTH_LONG).show()
+            } else {
+                if (login==true) {
+                    val user = userViewModel.getUserByUsername(username).value as User
+
+                    val arg = Bundle()
+                    arg.putSerializable("user", user)
+
+                    (loginFragment.activity as MainActivity).currentUser = user
 
 
-    private fun isPasswordValid(text: Editable?): Boolean {
-        return text != null && text.length >= 8
+                    var usr=Bundle()
+                    usr.putSerializable("user",user)
+                    // var profile=nav_view.getHeaderView(0).findViewById<ImageView>(R.id.userProfile)
+                    // profile.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_entry2_to_userProfileFragment, usr))
+
+
+                    view.findNavController().navigate(R.id.homeFragment, arg)
+
+                    with((loginFragment.activity?.getSharedPreferences("user_login",Context.MODE_PRIVATE) as SharedPreferences).edit()){
+                        putString("username",user.username)
+                        apply()
+                    }
+                } else {
+                    Toast.makeText(loginFragment.activity, "Password or Username is incorrect", Toast.LENGTH_LONG).show()
+                }
+            }
+        }
+
     }
-
-
 }

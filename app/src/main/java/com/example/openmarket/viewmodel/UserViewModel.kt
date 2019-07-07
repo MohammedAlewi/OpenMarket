@@ -11,6 +11,7 @@ import com.example.openmarket.data.User
 import com.example.openmarket.repository.UserRepository
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import retrofit2.Response
 
@@ -48,7 +49,17 @@ class UserViewModel(application: Application):AndroidViewModel(application){
         return userRepository.getProductsForUser(user_id)
     }
 
-    fun login(username: String,password:String): Deferred<Response<Void>>? {
-        return  userRepository.login(username,password)
+    fun login(username: String,password:String): Boolean?{
+        var login=  userRepository.login(username,password)
+        if( login==null)
+            return null
+        var result:Boolean?=null
+        GlobalScope.launch(Dispatchers.Main) {
+            var code=login.await()
+            if(code.code()==301)
+                result= true
+            result= false
+        }
+        return result
     }
 }

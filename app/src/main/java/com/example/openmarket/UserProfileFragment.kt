@@ -19,7 +19,7 @@ class UserProfileFragment : Fragment() {
     ): View? {
 
         var binding= DataBindingUtil.inflate<FragmentUserProfileBinding>(inflater, R.layout.fragment_user_profile, container, false)
-        var user=arguments?.getSerializable("user") as User
+        var user=arguments?.getSerializable("user") as User?
         var view=binding.root
         binding.user=user
 

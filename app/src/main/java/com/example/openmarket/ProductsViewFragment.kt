@@ -1,12 +1,14 @@
 package com.example.openmarket
 
 
+import android.content.Context
 import android.content.res.Configuration
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
@@ -15,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 import com.example.openmarket.data.Product
 import com.example.openmarket.viewmodel.ProductViewModel
+import com.example.openmarket.viewmodel.SubscriptionViewmodel
 import kotlinx.android.synthetic.main.fragment_products_view.view.*
 import java.util.*
 
@@ -22,6 +25,8 @@ import java.util.*
 class ProductsView : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var productViewModel:ProductViewModel
+    private lateinit var subscriptionViewmodel: SubscriptionViewmodel
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -30,7 +35,10 @@ class ProductsView : Fragment() {
         recyclerView=listitems.findViewById(R.id.recycler_view_items) as RecyclerView
 
         productViewModel = ViewModelProviders.of(this).get(ProductViewModel::class.java)
+        subscriptionViewmodel=ViewModelProviders.of(this).get(SubscriptionViewmodel::class.java)
+
         productViewModel.setActivtiy(activity as MainActivity)
+        subscriptionViewmodel.setActivtiy(activity as MainActivity)
 
         @Suppress("UNCHECKED_CAST")
         var type=arguments?.getSerializable("products") as String
@@ -44,42 +52,70 @@ class ProductsView : Fragment() {
             "none" -> {recyclerView.adapter= ProductsItemAdapter(activity as MainActivity, emptyList()) }
             "any" -> {
                 var main_products:List<Product> = emptyList()
-                productViewModel.products.observe(this,androidx.lifecycle.Observer {
-                    products -> main_products=products
+                productViewModel.getAllProducts().observe(this,androidx.lifecycle.Observer {
+                    products -> products.let { recyclerView.adapter= ProductsItemAdapter(activity as MainActivity,products) }
                 })
-                recyclerView.adapter= ProductsItemAdapter(activity as MainActivity,main_products)
             }
-            "electronics" -> {
+            "Electronics" -> {
+                listitems.Type.text="Electronics"
                 var main_products:List<Product> = emptyList()
-                productViewModel.products.observe(this,androidx.lifecycle.Observer {
-                        products -> products.let { main_products=products.filter { product -> product.type=="electronics"  } }
+                productViewModel.getAllProducts().observe(this,androidx.lifecycle.Observer {
+                        products -> products.let {
+                            recyclerView.adapter= ProductsItemAdapter(activity as MainActivity,
+                                products.filter { product -> product.type=="Electronics"  })
+                        }
                 })
-                recyclerView.adapter= ProductsItemAdapter(activity as MainActivity,main_products)
+
             }
-            "car" -> {
+            "Car" -> {
+                listitems.Type.text="Car"
                 var main_products:List<Product> = emptyList()
-                productViewModel.products.observe(this,androidx.lifecycle.Observer {
-                        products -> products.let {main_products= products.filter { product -> product.type=="car"  } }
+                productViewModel.getAllProducts().observe(this,androidx.lifecycle.Observer {
+                        products -> products.let {
+                            recyclerView.adapter= ProductsItemAdapter(activity as MainActivity,
+                            products.filter { product -> product.type=="Car"})
+                        }
 
                 })
-                recyclerView.adapter= ProductsItemAdapter(activity as MainActivity,main_products)
+
             }
-            "cloth" -> {
+            "Cloth" -> {
+                listitems.Type.text="Cloth"
                 var main_products:List<Product> = emptyList()
-                productViewModel.products.observe(this,androidx.lifecycle.Observer {
-                        products -> products.let { main_products= products.filter { product -> product.type=="cloth"  } }
+                productViewModel.getAllProducts().observe(this,androidx.lifecycle.Observer {
+                        products -> products.let {
+                            recyclerView.adapter= ProductsItemAdapter(activity as MainActivity,
+                            products.filter { product -> product.type=="Cloth"  })
+                        }
                 })
-                recyclerView.adapter= ProductsItemAdapter(activity as MainActivity,main_products)
             }
-            "house" ->{
+            "House" ->{
+                listitems.Type.text="House"
                 var main_products:List<Product> = emptyList()
-                productViewModel.products.observe(this,androidx.lifecycle.Observer {
-                        products -> products.let {main_products=  products.filter { product -> product.type=="house"  } }
+                productViewModel.getAllProducts().observe(this,androidx.lifecycle.Observer {
+                        products -> products.let {
+                            recyclerView.adapter= ProductsItemAdapter(activity as MainActivity,
+                                products.filter { product -> product.type=="House"  } )
+                        }
                 })
-                recyclerView.adapter= ProductsItemAdapter(activity as MainActivity,main_products)
+            }
+            "subscriptions" ->{
+                listitems.Type.text="Subscribed Products"
+                var username=activity?.getSharedPreferences("user_login", Context.MODE_PRIVATE)?.getString("username","unknown")
+                var subscriptions=subscriptionViewmodel.getSubscriptionForUser(username?:"unknown")
+                subscriptions.observe(this,androidx.lifecycle.Observer {
+                    subscriptions -> subscriptions.let {
+                        var adapter=ProductsItemAdapter(activity as MainActivity, emptyList<Product>())
+                        recyclerView.adapter= adapter
+                        subscriptions.forEach { it ->
+                            productViewModel.getProductsByUsername(it.subscribed_to).observe(this,androidx.lifecycle.Observer {
+                                it.forEach { adapter.addProduct(it) }
+                            })
+                        }
+                    }
+                })
             }
         }
-        //recyclerView.adapter= ProductsItemAdapter(activity as MainActivity,products)
 
         return listitems
     }

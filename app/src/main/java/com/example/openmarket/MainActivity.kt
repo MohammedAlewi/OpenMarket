@@ -4,21 +4,21 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
-import android.opengl.Visibility
 import android.os.Bundle
-import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.navigation.NavigationView
 import androidx.core.view.GravityCompat
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
-import androidx.core.content.ContextCompat
+import android.view.View
+import android.widget.ImageView
+import android.widget.TextView
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
-import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
 import com.example.openmarket.R.layout.activity_main
 import com.example.openmarket.data.Product
@@ -26,14 +26,13 @@ import com.example.openmarket.data.User
 import com.example.openmarket.viewmodel.UserViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
-import kotlinx.android.synthetic.main.content_main.*
 import kotlinx.android.synthetic.main.nav_header_main.*
-import java.util.*
 
 
 class MainActivity : AppCompatActivity(),
     NavigationView.OnNavigationItemSelectedListener,ProductsItemAdapter.ContentListener{
     var currentUser:User?=null
+    private lateinit var controller:NavController
     private lateinit var sheardPref:SharedPreferences
     private lateinit var userViewModel: UserViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,20 +51,45 @@ class MainActivity : AppCompatActivity(),
         var navController=Navigation.findNavController(this,R.id.main_content)
 
         setupNavigationMenu(navController)
-
+        Navigation.setViewNavController(fab,navController)
         fab.setOnClickListener {
-            it.findNavController().navigate(R.id.productUploadFragment)
+            navController.navigate(R.id.productUploadFragment)
+            //it.findNavController().navigate(R.id.productUploadFragment)
             //supportFragmentManager.beginTransaction().replace(R.id.home_framelayout,ProductUploadFragment()).commit()
         }
         userViewModel= ViewModelProviders.of(this).get(UserViewModel::class.java)
+        userViewModel.setActivtiy(this)
+
         sheardPref=getSharedPreferences("user_login",Context.MODE_PRIVATE)
-        var id=sheardPref.getLong("user_id",-1L)
-        if (id!=-1L){
-            var arg=Bundle()
-            var user=userViewModel.getUserById(id).value as User
+        var username=sheardPref.getString("username",null)
+
+        if (username!=null){
+
+            var user:User?=null// as User
+            userViewModel.getUserByUsername(username).observe(this,androidx.lifecycle.Observer {
+                userObj-> userObj.let {
+                    user=userObj;
+                    nav_view.getHeaderView(0).findViewById<TextView>(R.id.main_username).setText(userObj.username)
+                    nav_view.getHeaderView(0).findViewById<TextView>(R.id.main_fullname).setText(userObj.fullName)
+                }
+            })
+
             currentUser=user
-            arg.putSerializable("user",user)
-            userProfile.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_entry2_to_userProfileFragment, arg))
+
+            controller=navController
+            var profile =nav_view.getHeaderView(0).findViewById<ImageView>(R.id.userProfile)
+           profile.setOnClickListener {
+               var arg=Bundle()
+               arg.putSerializable("user",user)
+               navController.navigate(R.id.userProfileFragment,arg);
+               drawer_layout.closeDrawer(GravityCompat.START)
+           }
+            fab.setOnClickListener {
+                var arg=Bundle()
+                arg.putSerializable("user",user)
+                navController.navigate(R.id.productUploadFragment,arg)
+            }
+            navController.navigate(R.id.homeFragment,null)
         }
 
     }
@@ -106,17 +130,23 @@ class MainActivity : AppCompatActivity(),
         return networkInfo != null && networkInfo.isConnected
 
     }
+
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         // Handle navigation view item clicks here.
         when (item.itemId) {
             R.id.nav_upload -> {
             }
             R.id.nav_subscription -> {
-
+                println("--------------subscription hit")
+                Toast.makeText(this,"Subscriptions has been clicked",Toast.LENGTH_LONG).show()
+                var arg=Bundle()
+                arg.putSerializable("products","subscriptions")
+                controller.navigate(R.id.productsView,arg)
             }
             R.id.nav_setting -> {
 
             }
+            // description
             R.id.nav_share -> {
 
             }

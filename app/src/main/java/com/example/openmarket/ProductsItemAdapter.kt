@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.product_items_view.view.*
 class ProductsItemAdapter(mainActivity: MainActivity,items_val: List<Product>)
     :RecyclerView.Adapter<ProductsItemAdapter.ProductViewHolder>(){
 
-    val products=items_val
+    var products=items_val
     val main=mainActivity
 
 
@@ -46,6 +46,10 @@ class ProductsItemAdapter(mainActivity: MainActivity,items_val: List<Product>)
 
     }
 
+    fun addProduct(product: Product){
+        products=products.plus(product)
+        notifyDataSetChanged()
+    }
 
     inner class ProductViewHolder(itemView:View, val binding:ProductItemsViewBinding):RecyclerView.ViewHolder(itemView)
 
