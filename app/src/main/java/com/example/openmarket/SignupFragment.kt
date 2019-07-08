@@ -82,11 +82,13 @@ class SignupFragment : Fragment() {
 
         signUp.setOnClickListener {
             val user = readFeilds()
-            if (user != null)
+            if (user != null){
                 userViewModel.insertUser(user)
-            val bundle = Bundle()
-            bundle.putSerializable("user", user)
-            view.findNavController().navigate(R.id.loginFragment, bundle)
+                val bundle = Bundle()
+                bundle.putSerializable("user", user)
+                view.findNavController().navigate(R.id.loginFragment, bundle)
+            }
+
             //Navigation.createNavigateOnClickListener(R.id.action_signupFragment_to_loginFragment , bundle)
         }
 
@@ -151,8 +153,9 @@ class SignupFragment : Fragment() {
         }
 
         fun validUserFields(user: User): Boolean {
-            if (user.fullName.isNullOrEmpty() || user.username.isNotEmpty() || user.email.isNullOrEmpty() || user.phoneNo.isNullOrEmpty())
+            if (user.fullName.isNullOrEmpty() || user.username.isNullOrEmpty() || user.email.isNullOrEmpty() || user.phoneNo.isNullOrEmpty()){
                 return false
+            }
             return true
         }
     }

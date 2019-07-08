@@ -71,7 +71,7 @@ class ProductDetailFragment : Fragment() {
         var commentViews = view.findViewById(R.id.comment_items) as RecyclerView
         commentViews.layoutManager = LinearLayoutManager(this.context)
         productViewModel.getCommentForProduct(product.id).observe(this, androidx.lifecycle.Observer { comments ->
-            commentViews.adapter = CommentItemAdapter(comments)
+            commentViews.adapter = CommentItemAdapter(comments,activity as MainActivity,commentViewModel,view)
         })
 
 
@@ -147,7 +147,7 @@ class CommentListener(
 
         var body = view.comment_box.text.toString()
         var date =
-            Date().day.toString() + "/" + Date().month + "/" + (Date().year.toInt() + 1900) + " " + (Date().hours % 12) + ":" + Date().minutes
+            Date().date.toString() + "/" + Date().month + "/" + (Date().year.toInt() + 1900) + " " + (Date().hours % 12) + ":" + Date().minutes
         view.comment_box.setText("")
         var comment = Comment(0, body, date, "@$username")
         if (ProductDetailFragment.validCommentsFeilds(comment))

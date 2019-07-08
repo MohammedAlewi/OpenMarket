@@ -1,18 +1,19 @@
-package com.example.openmarket.viewmodel
+    package com.example.openmarket.viewmodel
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.viewModelScope
-import com.example.openmarket.MainActivity
-import com.example.openmarket.data.Comment
-import com.example.openmarket.data.OpenMarketDatabase
-import com.example.openmarket.repository.CommentRepository
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+    import android.app.Application
+    import androidx.lifecycle.AndroidViewModel
+    import androidx.lifecycle.LiveData
+    import androidx.lifecycle.Observer
+    import androidx.lifecycle.viewModelScope
+    import com.example.openmarket.MainActivity
+    import com.example.openmarket.data.Comment
+    import com.example.openmarket.data.OpenMarketDatabase
+    import com.example.openmarket.repository.CommentRepository
+    import kotlinx.coroutines.Dispatchers
+    import kotlinx.coroutines.launch
 
-class CommentViewModel(application: Application) : AndroidViewModel(application) {
-    private var commentRepository: CommentRepository
+    class CommentViewModel(application: Application) : AndroidViewModel(application) {
+        private var commentRepository: CommentRepository
 
     init {
         var comment_dao = OpenMarketDatabase.getInstance(application).getCommentDao()
@@ -25,6 +26,11 @@ class CommentViewModel(application: Application) : AndroidViewModel(application)
     }
 
     fun deleteComment(comment: Comment) = viewModelScope.launch(Dispatchers.IO) {
+    //    var comment=commentRepository.getCommentById(id).value
+//        comment.observe(commentRepository.activity, Observer {
+//           comment->comment.let {  commentRepository.deleteComment(comment) }
+//        })
+        //commentRepository.deleteComment(comment as Comment)
         commentRepository.deleteComment(comment)
     }
 

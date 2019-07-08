@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -101,18 +102,29 @@ class ProductsView : Fragment() {
                 var username =
                     activity?.getSharedPreferences("user_login", Context.MODE_PRIVATE)?.getString("username", "unknown")
                 var subscriptions = subscriptionViewmodel.getSubscriptionForUser(username ?: "unknown")
-                subscriptions.observe(this, androidx.lifecycle.Observer { subscriptions ->
+                subscriptions.observe(this, Observer { subscriptions ->
                     subscriptions.let {
                         var adapter = ProductsItemAdapter(activity as MainActivity, emptyList<Product>())
                         recyclerView.adapter = adapter
                         subscriptions.forEach { it ->
-                            productViewModel.getProductsByUsername(it.subscribed_to)
-                                .observe(this, androidx.lifecycle.Observer {
+                            productViewModel.getProductsByUsername(it.subscribed_to.removePrefix("@"))
+                                .observe(this, Observer {
                                     it.forEach { adapter.addProduct(it) }
                                 })
                         }
                     }
                 })
+            }
+            "my_products" -> {
+                listitems.Type.text = "My Products"
+                var username =
+                    activity?.getSharedPreferences("user_login", Context.MODE_PRIVATE)?.getString("username", "unknown")
+                productViewModel.getProductsByUsername(username ?: "unknown").observe(this, Observer { products ->
+                    products.let {
+                        recyclerView.adapter = ProductsItemAdapter(activity as MainActivity, products)
+                    }
+                })
+
             }
         }
 

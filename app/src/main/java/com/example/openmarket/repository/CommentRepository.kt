@@ -15,10 +15,10 @@ import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.random.Random
 
-class CommentRepository(private val commentDao: CommentDao, private val productCommentDao: ProductCommentDao) {
+open class CommentRepository(private val commentDao: CommentDao, private val productCommentDao: ProductCommentDao) {
     lateinit var activity: MainActivity
     @WorkerThread
-    fun insertComment(comment: Comment, product_id: Long) {
+    open fun insertComment(comment: Comment, product_id: Long) {
         if (activity.isConnected()) {
             GlobalScope.launch(Dispatchers.IO) {
                 val id = OpenMarketApiService.getInstance().saveComment(comment, product_id).await().body() as Long
@@ -39,7 +39,7 @@ class CommentRepository(private val commentDao: CommentDao, private val productC
     }
 
 
-    fun deleteComment(comment: Comment) {
+    open fun deleteComment(comment: Comment) {
         if (activity.isConnected()) {
             GlobalScope.launch(Dispatchers.IO) {
                 OpenMarketApiService.getInstance().deleteComment(comment.id)
@@ -56,7 +56,7 @@ class CommentRepository(private val commentDao: CommentDao, private val productC
         }
     }
 
-    fun getCommentForProduct(product_id: Long): LiveData<List<Comment>> {
+    open fun getCommentForProduct(product_id: Long): LiveData<List<Comment>> {
         //val commentsVal=    MutableLiveData<List<Comment>>
         if (activity.isConnected()) {
             GlobalScope.launch(Dispatchers.IO) {
@@ -69,7 +69,7 @@ class CommentRepository(private val commentDao: CommentDao, private val productC
 
     }
 
-    fun getCommentByUsername(username: String): LiveData<List<Comment>> {
+    open fun getCommentByUsername(username: String): LiveData<List<Comment>> {
         if (activity.isConnected()) {
             GlobalScope.launch(Dispatchers.IO) {
                 val comments =
@@ -82,7 +82,7 @@ class CommentRepository(private val commentDao: CommentDao, private val productC
 
     }
 
-    fun updateComment(comment: Comment) {
+    open fun updateComment(comment: Comment) {
         if (activity.isConnected()) {
             GlobalScope.launch(Dispatchers.IO) {
                 OpenMarketApiService.getInstance().updateComment(comment, comment.id)
@@ -91,7 +91,7 @@ class CommentRepository(private val commentDao: CommentDao, private val productC
         }
     }
 
-    fun getCommentById(id: Long): LiveData<Comment> {
+    open fun getCommentById(id: Long): LiveData<Comment> {
         if (activity.isConnected()) {
             GlobalScope.launch(Dispatchers.IO) {
                 val comments = OpenMarketApiService.getInstance().getCommentById(id).await().body() as Comment

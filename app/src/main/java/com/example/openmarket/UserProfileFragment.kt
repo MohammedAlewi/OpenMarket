@@ -8,8 +8,10 @@ import android.view.ViewGroup
 
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
 import com.example.openmarket.data.User
 import com.example.openmarket.databinding.FragmentUserProfileBinding
+import kotlinx.android.synthetic.main.fragment_user_profile.view.*
 
 class UserProfileFragment : Fragment() {
 
@@ -27,6 +29,10 @@ class UserProfileFragment : Fragment() {
         var user = arguments?.getSerializable("user") as User?
         var view = binding.root
         binding.user = user
+
+        view.usres_profile_image.setOnClickListener {
+            view.findNavController().navigate(R.id.editUserProfileFragment)
+        }
 
         return view
     }

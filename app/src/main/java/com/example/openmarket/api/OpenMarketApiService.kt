@@ -104,7 +104,7 @@ interface OpenMarketApiService {
     // end.....
     companion object {
 
-        private val url = "http://10.5.213.86:8888/"
+        private val url = "http://10.6.240.250:8888/"
 
         fun getInstance(): OpenMarketApiService {
 

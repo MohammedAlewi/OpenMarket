@@ -3,6 +3,8 @@ package com.example.openmarket.viewmodel
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.viewModelScope
 import com.example.openmarket.MainActivity
 import com.example.openmarket.data.OpenMarketDatabase
@@ -15,6 +17,7 @@ import kotlinx.coroutines.launch
 
 class UserViewModel(application: Application) : AndroidViewModel(application) {
     private var userRepository: UserRepository
+    lateinit var userObject:LiveData<User>
 
     init {
         var user_dao = OpenMarketDatabase.getInstance(application).getUserDao()
@@ -31,7 +34,9 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun getUserByUsername(username: String): LiveData<User> {
-        return userRepository.getUserByUsername(username)
+        var usr= userRepository.getUserByUsername(username)
+        userObject=usr
+        return usr
     }
 
     fun insertUser(user: User) = viewModelScope.launch(Dispatchers.IO) {
