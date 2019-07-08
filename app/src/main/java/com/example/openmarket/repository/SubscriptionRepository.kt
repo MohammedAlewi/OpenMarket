@@ -15,7 +15,7 @@ class SubscriptionRepository(private val subscriptionDao: SubscriptionDao) {
     fun getSubscriptionForUser(username: String): LiveData<List<Subscription>> {
         if (activity.isConnected()) {
             GlobalScope.launch(Dispatchers.IO) {
-                val subscriptions = OpenMarketApiService.getInstance().getSubscriptions(username)
+                val subscriptions = OpenMarketApiService.getInstance(activity).getSubscriptions(username)
                 var result = subscriptions.await().body()
                 if (result != null) subscriptionDao.insertSubscriptions(result)
             }
@@ -26,7 +26,7 @@ class SubscriptionRepository(private val subscriptionDao: SubscriptionDao) {
     fun saveSubscription(subscription: Subscription) {
         if (activity.isConnected()) {
             GlobalScope.launch(Dispatchers.IO) {
-                val ratings = OpenMarketApiService.getInstance().saveSubscription(subscription)
+                val ratings = OpenMarketApiService.getInstance(activity).saveSubscription(subscription)
             }
         }
         subscriptionDao.insertSubscription(subscription)

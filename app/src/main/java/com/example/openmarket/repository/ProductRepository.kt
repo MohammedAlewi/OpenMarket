@@ -17,7 +17,7 @@ class ProductRepository(
     fun insertProduct(product: Product, user_id: Long) {
         if (activity.isConnected()) {
             GlobalScope.launch(Dispatchers.IO) {
-                val id = OpenMarketApiService.getInstance().saveProductWithId(product, user_id).await().body() as Long
+                val id = OpenMarketApiService.getInstance(activity).saveProduct(product,product.userName).await().body() as Long
                 product.id = id
                 productDao.insertProduct(product)
                 userProductDao.insertUserProduct(UserProductJoin(product_id = id, user_id = user_id))
@@ -35,7 +35,7 @@ class ProductRepository(
     fun getProductId(id: Long): LiveData<Product> {
         if (activity.isConnected()) {
             GlobalScope.launch(Dispatchers.IO) {
-                val products = OpenMarketApiService.getInstance().getProductId(id).await().body() as Product
+                val products = OpenMarketApiService.getInstance(activity).getProductId(id).await().body() as Product
                 productDao.insertProduct(products)
             }
         }
@@ -46,7 +46,7 @@ class ProductRepository(
         if (activity.isConnected()) {
             GlobalScope.launch(Dispatchers.IO) {
                 val products =
-                    OpenMarketApiService.getInstance().getCommentByUsername(username).await().body() as List<Product>
+                    OpenMarketApiService.getInstance(activity).getCommentByUsername(username).await().body() as List<Product>
                 productDao.insertProducts(products)
             }
         }
@@ -56,7 +56,7 @@ class ProductRepository(
     fun getAllProducts(): LiveData<List<Product>> {
         if (activity.isConnected()) {
             GlobalScope.launch(Dispatchers.IO) {
-                val products = OpenMarketApiService.getInstance().getAllProducts().await().body() as List<Product>
+                val products = OpenMarketApiService.getInstance(activity).getAllProducts().await().body() as List<Product>
                 productDao.insertProducts(products)
             }
         }
@@ -67,7 +67,7 @@ class ProductRepository(
     fun updateProduct(product: Product) {
         if (activity.isConnected()) {
             GlobalScope.launch(Dispatchers.IO) {
-                OpenMarketApiService.getInstance().updateProduct(product, product.id)
+                OpenMarketApiService.getInstance(activity).updateProduct(product, product.id)
                 productDao.updateProduct(product)
             }
         } else {
@@ -83,7 +83,7 @@ class ProductRepository(
     fun deleteProduct(product: Product) {
         if (activity.isConnected()) {
             GlobalScope.launch(Dispatchers.IO) {
-                OpenMarketApiService.getInstance().deleteProduct(product.id)
+                OpenMarketApiService.getInstance(activity).deleteProduct(product.id)
 
                 productCommentDao.removeAllRelationByProductId(product_id = product.id)
                 userProductDao.removeAllRelationByProductId(product_id = product.id)
@@ -103,7 +103,7 @@ class ProductRepository(
         if (activity.isConnected()) {
             GlobalScope.launch(Dispatchers.IO) {
                 val comments =
-                    OpenMarketApiService.getInstance().getCommentForProduct(product_id).await().body() as List<Comment>
+                    OpenMarketApiService.getInstance(activity).getCommentForProduct(product_id).await().body() as List<Comment>
                 commentDao.insertComments(comments)
             }
         }
@@ -114,7 +114,7 @@ class ProductRepository(
         if (activity.isConnected()) {
             GlobalScope.launch(Dispatchers.IO) {
                 val products =
-                    OpenMarketApiService.getInstance().getProductsForUser(user_id).await().body() as List<Product>
+                    OpenMarketApiService.getInstance(activity).getProductsForUser(user_id).await().body() as List<Product>
                 productDao.insertProducts(products)
             }
         }

@@ -2,6 +2,7 @@ package com.example.openmarket.repository
 
 import android.content.Context
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import com.example.openmarket.MainActivity
 import com.example.openmarket.api.OpenMarketApiService
 import com.example.openmarket.data.Product
@@ -20,7 +21,7 @@ class UserRepository(private val userDao: UserDao, private val userProductDao: U
     fun getUserById(user_id: Long): LiveData<User> {
         if (activity.isConnected()) {
             GlobalScope.launch(Dispatchers.IO) {
-                val user = OpenMarketApiService.getInstance().findUserById(user_id).await().body() as User
+                val user = OpenMarketApiService.getInstance(activity).findUserById(user_id).await().body() as User
                 userDao.insertUser(user)
             }
         }
@@ -30,7 +31,7 @@ class UserRepository(private val userDao: UserDao, private val userProductDao: U
     fun getUserByUsername(username: String): LiveData<User> {
         if (activity.isConnected()) {
             GlobalScope.launch(Dispatchers.IO) {
-                val user = OpenMarketApiService.getInstance().findUserByUsername(username).await().body() as User
+                val user = OpenMarketApiService.getInstance(activity).findUserByUsername(username).await().body() as User
                 userDao.insertUser(user)
             }
         }
@@ -40,7 +41,7 @@ class UserRepository(private val userDao: UserDao, private val userProductDao: U
     fun insertUser(user: User) {
         if (activity.isConnected()) {
             GlobalScope.launch(Dispatchers.IO) {
-                var long=OpenMarketApiService.getInstance().registerUser(user).await().body()
+                var long=OpenMarketApiService.getInstance(activity).registerUser(user).await().body()
                 user.id=long?:0
                 userDao.insertUser(user)
             }
@@ -56,7 +57,7 @@ class UserRepository(private val userDao: UserDao, private val userProductDao: U
     fun updateUser(user: User) {
         if (activity.isConnected()) {
             GlobalScope.launch(Dispatchers.IO) {
-               var long= OpenMarketApiService.getInstance().updateUser(user, user.id).await().body()
+               var long= OpenMarketApiService.getInstance(activity).updateUser(user, user.id).await().body()
                 println("------id---------$long")
                 userDao.updateUser(user)
             }
@@ -72,7 +73,7 @@ class UserRepository(private val userDao: UserDao, private val userProductDao: U
     fun deleteUser(user: User) {
         if (activity.isConnected()) {
             GlobalScope.launch(Dispatchers.IO) {
-                OpenMarketApiService.getInstance().deleteUser(user.id)
+                OpenMarketApiService.getInstance(activity).deleteUser(user.id)
                 userProductDao.removeAllRelationByUserId(userid = user.id)
                 userDao.deleteUser(user)
             }
@@ -82,7 +83,7 @@ class UserRepository(private val userDao: UserDao, private val userProductDao: U
 
     fun login(username: String, password: String): Deferred<Response<User>>? {
         if (activity.isConnected()) {
-            return OpenMarketApiService.getInstance().login(username, password)
+            return OpenMarketApiService.getInstance(activity).login(username, password)
         }
         return null
     }

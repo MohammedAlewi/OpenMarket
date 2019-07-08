@@ -21,7 +21,7 @@ open class CommentRepository(private val commentDao: CommentDao, private val pro
     open fun insertComment(comment: Comment, product_id: Long) {
         if (activity.isConnected()) {
             GlobalScope.launch(Dispatchers.IO) {
-                val id = OpenMarketApiService.getInstance().saveComment(comment, product_id).await().body() as Long
+                val id = OpenMarketApiService.getInstance(activity).saveComment(comment, product_id).await().body() as Long
                 comment.id = id
                 commentDao.insertComment(comment)
                 productCommentDao.insertProductComment(ProductCommentJoin(comment_id = id, product_id = product_id))
@@ -42,7 +42,7 @@ open class CommentRepository(private val commentDao: CommentDao, private val pro
     open fun deleteComment(comment: Comment) {
         if (activity.isConnected()) {
             GlobalScope.launch(Dispatchers.IO) {
-                OpenMarketApiService.getInstance().deleteComment(comment.id)
+                OpenMarketApiService.getInstance(activity).deleteComment(comment.id)
                 productCommentDao.removeAllRelationByCommentId(comment.id)
                 commentDao.deleteComment(comment)
             }
@@ -61,7 +61,7 @@ open class CommentRepository(private val commentDao: CommentDao, private val pro
         if (activity.isConnected()) {
             GlobalScope.launch(Dispatchers.IO) {
                 val comments =
-                    OpenMarketApiService.getInstance().getCommentForProduct(product_id).await().body() as List<Comment>
+                    OpenMarketApiService.getInstance(activity).getCommentForProduct(product_id).await().body() as List<Comment>
                 commentDao.insertComments(comments)
             }
         }
@@ -73,7 +73,7 @@ open class CommentRepository(private val commentDao: CommentDao, private val pro
         if (activity.isConnected()) {
             GlobalScope.launch(Dispatchers.IO) {
                 val comments =
-                    OpenMarketApiService.getInstance().getCommentByUsername(username).await().body() as List<Comment>
+                    OpenMarketApiService.getInstance(activity).getCommentByUsername(username).await().body() as List<Comment>
                 commentDao.insertComments(comments)
             }
         }
@@ -85,7 +85,7 @@ open class CommentRepository(private val commentDao: CommentDao, private val pro
     open fun updateComment(comment: Comment) {
         if (activity.isConnected()) {
             GlobalScope.launch(Dispatchers.IO) {
-                OpenMarketApiService.getInstance().updateComment(comment, comment.id)
+                OpenMarketApiService.getInstance(activity).updateComment(comment, comment.id)
                 commentDao.updateComment(comment)
             }
         }
@@ -94,7 +94,7 @@ open class CommentRepository(private val commentDao: CommentDao, private val pro
     open fun getCommentById(id: Long): LiveData<Comment> {
         if (activity.isConnected()) {
             GlobalScope.launch(Dispatchers.IO) {
-                val comments = OpenMarketApiService.getInstance().getCommentById(id).await().body() as Comment
+                val comments = OpenMarketApiService.getInstance(activity).getCommentById(id).await().body() as Comment
                 commentDao.insertComment(comments)
             }
         }

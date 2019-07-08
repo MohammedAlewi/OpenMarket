@@ -15,7 +15,7 @@ class RatingRepository(private val ratingDao: RatingDao) {
     fun getRatingValue(product_id: Long): LiveData<List<Rating>> {
         if (activity.isConnected()) {
             GlobalScope.launch(Dispatchers.IO) {
-                val ratings = OpenMarketApiService.getInstance().getAllRatingForProduct(product_id)
+                val ratings = OpenMarketApiService.getInstance(activity).getAllRatingForProduct(product_id)
                 ratingDao.insertRatings(ratings.await().body() ?: emptyList())
             }
         }
@@ -25,7 +25,7 @@ class RatingRepository(private val ratingDao: RatingDao) {
     fun getRatingForUser(username: String): LiveData<List<Rating>> {
         if (activity.isConnected()) {
             GlobalScope.launch(Dispatchers.IO) {
-                val ratings = OpenMarketApiService.getInstance().getRating(username)
+                val ratings = OpenMarketApiService.getInstance(activity).getRating(username)
                 var rating = ratings.await().body()
                 if (rating != null) ratingDao.insertRatings(rating)
             }
@@ -36,7 +36,7 @@ class RatingRepository(private val ratingDao: RatingDao) {
     fun saveRating(rating: Rating) {
         if (activity.isConnected()) {
             GlobalScope.launch(Dispatchers.IO) {
-                val ratings = OpenMarketApiService.getInstance().saveRating(rating)
+                val ratings = OpenMarketApiService.getInstance(activity).saveRating(rating)
             }
         }
         ratingDao.insertRating(rating)
