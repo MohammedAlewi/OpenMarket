@@ -38,15 +38,10 @@ class LoginFragment : Fragment() {
             view.txtEmail.setText(user.username)
             view.txtPwd.setText(user.password)
 
-            with((activity?.getSharedPreferences("user_login", Context.MODE_PRIVATE) as SharedPreferences).edit()) {
-                putString("username", user.username)
-                apply()
-            }
-
-            var arg = Bundle()
-            arg.putSerializable("user", user)
-            //var profile=nav_view.getHeaderView(0).findViewById<ImageView>(R.id.userProfile)
-            //profile.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_entry2_to_userProfileFragment, arg))
+//            with((activity?.getSharedPreferences("user_login", Context.MODE_PRIVATE) as SharedPreferences).edit()) {
+//                putString("username", user.username)
+//                apply()
+//            }
 
         }
 
@@ -63,7 +58,7 @@ class LoginFragment : Fragment() {
         }
 
         fun isPasswordValid(username: String, password: String): Boolean {
-            if (username.isNullOrEmpty() || password.isNullOrEmpty())
+            if (username.isEmpty() || password.isEmpty())
                 return false
             return true
         }
@@ -87,15 +82,6 @@ class LoginBinding(var loginFragment: LoginFragment, var view: View, var userVie
 
                     (loginFragment.activity as MainActivity).currentUser = user
 
-
-                    var usr = Bundle()
-                    usr.putSerializable("user", user)
-                    // var profile=nav_view.getHeaderView(0).findViewById<ImageView>(R.id.userProfile)
-                    // profile.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_entry2_to_userProfileFragment, usr))
-
-
-                    view.findNavController().navigate(R.id.homeFragment, arg)
-
                     with(
                         (loginFragment.activity?.getSharedPreferences(
                             "user_login",
@@ -105,6 +91,7 @@ class LoginBinding(var loginFragment: LoginFragment, var view: View, var userVie
                         putString("username", user.username)
                         apply()
                     }
+                    view.findNavController().navigate(R.id.homeFragment, arg)
                 } else {
                     Toast.makeText(loginFragment.activity, "Password or Username is incorrect", Toast.LENGTH_LONG)
                         .show()

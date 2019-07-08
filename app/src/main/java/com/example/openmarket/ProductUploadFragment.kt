@@ -85,16 +85,19 @@ class ProductUploadFragment : Fragment() {
             // get user object
 
             if (userObject != null) {
-                var userid = userObject.id
-                product.userName = userObject.username
-                productViewModel.insertProduct(product, userid)
 
-                this.clearFields()
-                view.findNavController().navigate(R.id.homeFragment)
+                if (allProductFieldsSpecified(product)) {
+                    var userid = userObject.id
+                    product.userName = userObject.username
+                    productViewModel.insertProduct(product, userid)
 
-                val bundle = Bundle()
-                bundle.putSerializable("product", product)
-                Navigation.createNavigateOnClickListener(R.id.action_signupFragment_to_loginFragment, bundle)
+                    this.clearFields()
+                    view.findNavController().navigate(R.id.homeFragment)
+
+                    val bundle = Bundle()
+                    bundle.putSerializable("product", product)
+                    Navigation.createNavigateOnClickListener(R.id.action_signupFragment_to_loginFragment, bundle)
+                }else{ Toast.makeText(this.context,"fill all required spaces before uploading ",Toast.LENGTH_SHORT).show()}
             } else {
                 view.findNavController().navigate(R.id.loginFragment, null)
             }
@@ -176,33 +179,11 @@ class ProductUploadFragment : Fragment() {
     companion object {
         private val IMAGE_PICK_CODE = 1000
         private val PERMISSION_CODE = 1001
-    }
 
-}
-
-class UploadProductAction(
-    private var view: View, private var userObject: User?, private var productUploadFragment: ProductUploadFragment
-    , private var productViewModel: ProductViewModel
-) {
-    fun uploadButton(view: View, userObject: User?) {
-        val product = productUploadFragment.readFeilds()
-        product.date = Date().toString()
-        product.type = view.typeSpinner.selectedItem.toString()
-        // get user object
-
-        if (userObject != null) {
-            var userid = userObject.id
-            product.userName = userObject.username
-            productViewModel.insertProduct(product, userid)
-
-            productUploadFragment.clearFields()
-            view.findNavController().navigate(R.id.homeFragment)
-
-            val bundle = Bundle()
-            bundle.putSerializable("product", product)
-            Navigation.createNavigateOnClickListener(R.id.action_signupFragment_to_loginFragment, bundle)
-        } else {
-            view.findNavController().navigate(R.id.loginFragment, null)
+        fun allProductFieldsSpecified(product: Product):Boolean{
+            if (product.price==0.0 ||product.amount==0||product.description.isEmpty()||product.name.isEmpty())
+                return false
+            return true
         }
     }
 
