@@ -34,7 +34,10 @@
         <action android:id="@+id/action_homeFragment_to_productsView" app:destination="@id/productsView"/>
     </fragment>
     <fragment android:id="@+id/userProfileFragment" android:name="com.example.openmarket.UserProfileFragment"
-              android:label="fragment_user_profile" tools:layout="@layout/fragment_user_profile"/>
+              android:label="fragment_user_profile" tools:layout="@layout/fragment_user_profile">
+        <action android:id="@+id/action_userProfileFragment_to_editUserProfileFragment"
+                app:destination="@id/editUserProfileFragment"/>
+    </fragment>
     <fragment android:id="@+id/signupFragment" android:name="com.example.openmarket.SignupFragment"
               android:label="SignupFragment" tools:layout="@layout/fragment_signup">
         <action android:id="@+id/action_signupFragment_to_loginFragment" app:destination="@id/loginFragment"/>
@@ -45,4 +48,6 @@
               android:label="EditProductFragment">
         <action android:id="@+id/action_editProductFragment_to_homeFragment" app:destination="@id/homeFragment"/>
     </fragment>
+    <fragment android:id="@+id/editUserProfileFragment" android:name="com.example.openmarket.EditUserProfileFragment"
+              android:label="fragment_edit_user_profile" tools:layout="@layout/fragment_edit_user_profile"/>
 </navigation>

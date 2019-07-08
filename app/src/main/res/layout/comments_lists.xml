@@ -3,6 +3,7 @@
 >
     <data>
         <variable name="comment" type="com.example.openmarket.data.Comment"/>
+        <variable name="commentViewModel" type="com.example.openmarket.viewmodel.CommentViewModel"/>
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
             android:orientation="vertical"
@@ -70,6 +71,7 @@
                 android:text="Delete"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
+                android:onClick="@{()->commentViewModel.deleteComment(comment)}"
                 android:id="@+id/del_cmnt_btn" app:layout_constraintEnd_toStartOf="@+id/guideline38"
                 android:layout_marginEnd="8dp" app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginStart="8dp" android:layout_marginBottom="8dp"
