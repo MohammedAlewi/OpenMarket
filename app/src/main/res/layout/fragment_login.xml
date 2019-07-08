@@ -39,7 +39,7 @@
                 android:layout_width="349dp"
                 android:layout_height="60dp"
                 android:layout_margin="4dp"
-                android:hint="Email" app:layout_constraintTop_toTopOf="parent"
+                android:hint="Username" app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" android:id="@+id/textInputLayout"
                 app:layout_constraintVertical_bias="0.383" app:layout_constraintStart_toStartOf="parent"
@@ -67,7 +67,7 @@
                     android:id="@+id/txtPwd"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="text"
+                    android:inputType="textPassword"
                     android:maxLines="1"/>
         </com.google.android.material.textfield.TextInputLayout>
         <!--<TextView-->
