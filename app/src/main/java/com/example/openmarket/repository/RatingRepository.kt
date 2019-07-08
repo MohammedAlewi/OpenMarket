@@ -27,7 +27,7 @@ class RatingRepository(private val ratingDao: RatingDao) {
             GlobalScope.launch(Dispatchers.IO) {
                 val ratings = OpenMarketApiService.getInstance().getRating(username)
                 var rating = ratings.await().body()
-                if (rating != null) ratingDao.insertRating(rating)
+                if (rating != null) ratingDao.insertRatings(rating)
             }
         }
         return ratingDao.getRatingUsingUsername(username)

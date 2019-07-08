@@ -89,7 +89,7 @@ interface OpenMarketApiService {
     fun saveRating(@Body rating: Rating): Deferred<Response<Void>>
 
     @GET("rating/{username}")
-    fun getRating(@Path("username") username: String): Deferred<Response<Rating>>
+    fun getRating(@Path("username") username: String): Deferred<Response<List<Rating>>>
 
     @GET("rating/{product_id}")
     fun getAllRatingForProduct(@Path("product_id") product_id: Long): Deferred<Response<List<Rating>>>
