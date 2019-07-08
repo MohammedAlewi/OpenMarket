@@ -1,9 +1,14 @@
 package com.example.openmarket.api
 
+import android.content.Context
 import com.example.openmarket.data.Comment
 import com.example.openmarket.data.Product
 import com.example.openmarket.data.Rating
 import com.example.openmarket.data.User
+import com.franmontiel.persistentcookiejar.PersistentCookieJar
+import com.franmontiel.persistentcookiejar.cache.SetCookieCache
+import com.franmontiel.persistentcookiejar.persistence.CookiePersistor
+import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import kotlinx.coroutines.Deferred
 import okhttp3.Cookie
@@ -16,6 +21,8 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.*
 import com.example.openmarket.data.Subscription as Subscription1
+
+
 
 interface OpenMarketApiService {
     @FormUrlEncoded
@@ -104,16 +111,16 @@ interface OpenMarketApiService {
     // end.....
     companion object {
 
-        private val url = "http://10.6.203.173:8888/"
+        private val url = "http://192.168.43.129:8888/"
 
-        fun getInstance(): OpenMarketApiService {
+        fun getInstance(context: Context): OpenMarketApiService {
+            var cookieJar= MyJar(SetCookieCache(),SharedPrefsCookiePersistor(context))
 
             val interceptor = HttpLoggingInterceptor()
             interceptor.level = HttpLoggingInterceptor.Level.BASIC
-
             val client = OkHttpClient
                 .Builder()
-                .cookieJar(UvCookieJar())
+                .cookieJar(cookieJar)
                 .addInterceptor(interceptor)
                 .build()
 
@@ -122,6 +129,7 @@ interface OpenMarketApiService {
                 .client(client)
                 .addConverterFactory(MoshiConverterFactory.create())
                 .addCallAdapterFactory(CoroutineCallAdapterFactory())
+
                 .build()
 
             return retrofit.create(OpenMarketApiService::class.java)
@@ -129,14 +137,10 @@ interface OpenMarketApiService {
     }
 }
 
-private class UvCookieJar : CookieJar {
 
-    private val cookies = mutableListOf<Cookie>()
-
-    override fun saveFromResponse(url: HttpUrl, cookieList: List<Cookie>) {
-        cookies.clear()
-        cookies.addAll(cookieList)
-    }
-
-    override fun loadForRequest(url: HttpUrl): List<Cookie> = cookies
+class MyJar(var cache: SetCookieCache,var persistor: CookiePersistor):PersistentCookieJar(cache,persistor){
+     override fun saveFromResponse(url: HttpUrl, cookies: List<Cookie>) {
+         cache.addAll(cookies)
+         persistor.saveAll(cookies)
+     }
 }
