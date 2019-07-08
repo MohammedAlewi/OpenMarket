@@ -40,7 +40,8 @@ class UserRepository(private val userDao: UserDao, private val userProductDao: U
     fun insertUser(user: User) {
         if (activity.isConnected()) {
             GlobalScope.launch(Dispatchers.IO) {
-                OpenMarketApiService.getInstance().registerUser(user).await().body()
+                var long=OpenMarketApiService.getInstance().registerUser(user).await().body()
+                user.id=long?:0
                 userDao.insertUser(user)
             }
         } else {
@@ -55,7 +56,8 @@ class UserRepository(private val userDao: UserDao, private val userProductDao: U
     fun updateUser(user: User) {
         if (activity.isConnected()) {
             GlobalScope.launch(Dispatchers.IO) {
-                OpenMarketApiService.getInstance().updateUser(user, user.id).await().body()
+               var long= OpenMarketApiService.getInstance().updateUser(user, user.id).await().body()
+                println("------id---------$long")
                 userDao.updateUser(user)
             }
         } else {
