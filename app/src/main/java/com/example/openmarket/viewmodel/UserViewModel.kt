@@ -59,6 +59,7 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
          }
          runBlocking {
              response=result.await()!=null
+             println("------------------${result.await()?.email}")
          }
          return response
     }
