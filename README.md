@@ -6,13 +6,14 @@ https://github.com/surafelMelese/OpenMarketRest.git
 
 
 # Branch owners
+
 tibebeSilassie ==> Surafel Melese
 
 maroc ==> Mohammed Alewi
 
 XAR ==> Mulualem Tekle
 
-NNBranch ==> Natnael Muluget
+NNBranch ==> Natnael Mulugeta
 
 mat ==> Ruth Humnessa
 
