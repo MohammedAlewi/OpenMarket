@@ -53,16 +53,13 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
 
      fun login(username: String, password: String): Boolean? {
          val login= userRepository.login(username, password)
-         var response=true
+         var response:Boolean?=null
          var result= viewModelScope.async(Dispatchers.IO) {
             login?.await()?.body()
          }
          runBlocking {
              response=result.await()!=null
-             println("...............$result.await()")
          }
-         println("..................$response ")
-         response=false
          return response
     }
 }
