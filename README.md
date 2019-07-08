@@ -13,7 +13,7 @@ maroc ==> Mohammed Alewi
 
 XAR ==> Mulualem Tekle
 
-NNBranch ==> Natnael Mulugeta
+NNBranch and NNBranch2 ==> Natnael Mulugeta
 
 mat ==> Ruth Humnessa
 
