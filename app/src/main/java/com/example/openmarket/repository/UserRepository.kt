@@ -80,7 +80,7 @@ class UserRepository(private val userDao: UserDao, private val userProductDao: U
 
     }
 
-    fun login(username: String, password: String): Deferred<Response<Void>>? {
+    fun login(username: String, password: String): Deferred<Response<User>>? {
         if (activity.isConnected()) {
             return OpenMarketApiService.getInstance().login(username, password)
         }

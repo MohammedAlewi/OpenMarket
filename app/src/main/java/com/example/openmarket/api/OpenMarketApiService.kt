@@ -20,7 +20,7 @@ import com.example.openmarket.data.Subscription as Subscription1
 interface OpenMarketApiService {
     @FormUrlEncoded
     @POST("users/login")
-    fun login(@Field("username") user: String, @Field("password") password: String): Deferred<Response<Void>>
+    fun login(@Field("username") user: String, @Field("password") password: String): Deferred<Response<User>>
 
     // users methods ....
     @GET("users/{id}")
