@@ -6,10 +6,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.findNavController
 import com.example.openmarket.data.User
 import com.example.openmarket.databinding.FragmentEditUserProfileBinding
 import com.example.openmarket.viewmodel.UserViewModel
@@ -32,19 +34,34 @@ class EditUserProfileFragment : Fragment() {
         fragmentEditUserProfileBinding.userViewModel=userViewModel
         user.observe(this, Observer {
             usr-> usr.let { fragmentEditUserProfileBinding.user=usr ;
-            fragmentEditUserProfileBinding.action=UserButtonAction(userViewModel,usr)}
+            fragmentEditUserProfileBinding.action=UserButtonAction(userViewModel,usr,view)}
         })
         fragmentEditUserProfileBinding.lifecycleOwner = this
         return view
     }
 
+    companion object{
+        fun checkPasswordMatch(password:String,repassword:String):Boolean{
+            return password==repassword
+        }
+    }
 
 }
 
-class UserButtonAction(private var userViewModel: UserViewModel,var user:User){
+class UserButtonAction(private var userViewModel: UserViewModel,var user:User,var view: View){
     fun save_edited_changes(){
-        println("$-----------------${user.fullName}")
-        println("$-----------------${user.email}")
-        userViewModel.updateUser(user)
+        user.fullName=view.full_name_box.text.toString()
+        user.email=view.email_box_text.text.toString()
+        user.phoneNo=view.phone_no_text.text.toString()
+        user.password=view.pass_box_text.text.toString()
+        var repasssword=view.repass_box_text.text.toString()
+        if (EditUserProfileFragment.checkPasswordMatch(user.password,repasssword)){
+            userViewModel.updateUser(user)
+            var arg=Bundle()
+            arg.putSerializable("user",user)
+            view.findNavController().navigate(R.id.userProfileFragment,arg)
+        }else{
+            Toast.makeText(view.context,"Please Enter a matching password.",Toast.LENGTH_SHORT).show()
+        }
     }
 }
