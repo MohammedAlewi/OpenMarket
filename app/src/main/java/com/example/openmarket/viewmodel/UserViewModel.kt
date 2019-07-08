@@ -3,17 +3,13 @@ package com.example.openmarket.viewmodel
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
 import androidx.lifecycle.viewModelScope
 import com.example.openmarket.MainActivity
 import com.example.openmarket.data.OpenMarketDatabase
 import com.example.openmarket.data.Product
 import com.example.openmarket.data.User
 import com.example.openmarket.repository.UserRepository
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 class UserViewModel(application: Application) : AndroidViewModel(application) {
     private var userRepository: UserRepository
@@ -55,17 +51,18 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
         return userRepository.getProductsForUser(user_id)
     }
 
-    fun login(username: String, password: String): Boolean? {
-        var login = userRepository.login(username, password)
-        if (login == null)
-            return null
-        var result: Boolean? = null
-        GlobalScope.launch(Dispatchers.Main) {
-            var code = login.await()
-            if (code.code() == 301)
-                result = true
-            result = false
-        }
-        return result
+     fun login(username: String, password: String): Boolean? {
+         val login= userRepository.login(username, password)
+         var response=false
+         var result= viewModelScope.async(Dispatchers.IO) {
+            val code = login?.await()
+            println("code.............$code...... CD: ${code?.code()} URL $code?.url SCC: $code?.isSuccessful Err: $code?.errorBody() ")
+             code?.code() == 301
+         }
+         runBlocking {
+             response=result.await()
+         }
+         println("..................$response ")
+         return response
     }
 }

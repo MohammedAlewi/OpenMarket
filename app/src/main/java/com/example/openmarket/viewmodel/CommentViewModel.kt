@@ -13,7 +13,7 @@
     import kotlinx.coroutines.launch
 
     class CommentViewModel(application: Application) : AndroidViewModel(application) {
-        private var commentRepository: CommentRepository
+        var commentRepository: CommentRepository
 
     init {
         var comment_dao = OpenMarketDatabase.getInstance(application).getCommentDao()
