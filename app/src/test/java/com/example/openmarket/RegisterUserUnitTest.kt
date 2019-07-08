@@ -4,7 +4,7 @@ import com.example.openmarket.data.User
 import org.junit.Test
 import org.junit.runner.RunWith
 
-@RunWith(androidx.test.ext.junit.runners.AndroidJUnit4::class)
+//@RunWith(androidx.test.ext.junit.runners.AndroidJUnit4::class)
 class SignUpFragmentUnitTest{
 
     @Test

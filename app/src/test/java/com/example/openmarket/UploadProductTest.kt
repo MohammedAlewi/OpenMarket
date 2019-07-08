@@ -13,7 +13,6 @@ class UploadProductTest{
             12.12, Date().toString(),"@testUsername")
 
         var isValid=ProductUploadFragment.allProductFieldsSpecified(product)
-
         assert(isValid)
     }
 }

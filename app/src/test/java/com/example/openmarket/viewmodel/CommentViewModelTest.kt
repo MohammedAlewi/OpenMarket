@@ -5,6 +5,7 @@ import androidx.room.Room
 import androidx.test.platform.app.InstrumentationRegistry
 import com.example.openmarket.data.Comment
 import com.example.openmarket.data.OpenMarketDatabase
+import com.example.openmarket.viewmodel.`fake repositories`.CommentFakeRepository
 import org.junit.After
 import org.junit.Assert
 import org.junit.Before
@@ -19,8 +20,9 @@ class CommentViewModelTest {
     @Before
     fun setUp() {
         val context = InstrumentationRegistry.getInstrumentation().targetContext
-        openMarketDatabase= Room.inMemoryDatabaseBuilder(context,OpenMarketDatabase::class.java).build()
+        openMarketDatabase= OpenMarketDatabase.getInstance(context)
         commentViewModel= CommentViewModel(Application())
+        commentViewModel.commentRepository= CommentFakeRepository(openMarketDatabase.getCommentDao(),openMarketDatabase.getProductCommentDao())
     }
 
     @After
