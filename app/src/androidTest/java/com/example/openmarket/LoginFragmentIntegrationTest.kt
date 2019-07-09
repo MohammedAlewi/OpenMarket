@@ -29,8 +29,8 @@ class LoginFragmentIntegrationTest {
     @Test
     fun testStaticLabels(){
         onView(withId(R.id.loginscrn)).check(matches(withText("Login")))
-        onView(withId(R.id.fstTxt)).check(matches(withText("Email")))
-        onView(withId(R.id.secTxt)).check(matches(withText("Password")))
+        onView(withId(R.id.textInputLayout)).check(matches(withText("Username")))
+        onView(withId(R.id.textInputLayout2)).check(matches(withText("Password")))
     }
 
     @After
