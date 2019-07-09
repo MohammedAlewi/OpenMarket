@@ -29,10 +29,6 @@
                     android:icon="@android:drawable/sym_action_chat"
                     android:title="About Us"/>
 
-            <item
-                    android:id="@+id/entry"
-                    android:icon="@android:drawable/sym_action_chat"
-                    android:title="Entry"/>
         </menu>
     </item>
 

@@ -6,13 +6,13 @@ import androidx.room.*
 @Dao
 interface ProductCommentDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insertProductComment(productCommentJoin: ProductCommentJoin):Long
+    fun insertProductComment(productCommentJoin: ProductCommentJoin): Long
 
     @Query("DELETE FROM ProductCommentJoin WHERE comment_id =:comment_id")
-    fun removeAllRelationByCommentId( comment_id : Long)
+    fun removeAllRelationByCommentId(comment_id: Long)
 
     @Query("DELETE FROM ProductCommentJoin WHERE product_id =:product_id")
-    fun removeAllRelationByProductId( product_id : Long)
+    fun removeAllRelationByProductId(product_id: Long)
 
     @Delete
     fun deleteRelation(productCommentJoin: ProductCommentJoin)

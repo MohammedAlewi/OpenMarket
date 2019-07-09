@@ -20,6 +20,8 @@
     <fragment android:id="@+id/productDetailFragment" android:name="com.example.openmarket.ProductDetailFragment"
               android:label="fragment_product_detail" tools:layout="@layout/fragment_product_detail">
         <action android:id="@+id/action_productDetailFragment_to_productsView" app:destination="@id/productsView"/>
+        <action android:id="@+id/action_productDetailFragment_to_editProductFragment"
+                app:destination="@id/editProductFragment"/>
     </fragment>
     <fragment android:id="@+id/loginFragment" android:name="com.example.openmarket.LoginFragment"
               android:label="LoginFragment" tools:layout="@layout/fragment_login">
@@ -32,11 +34,20 @@
         <action android:id="@+id/action_homeFragment_to_productsView" app:destination="@id/productsView"/>
     </fragment>
     <fragment android:id="@+id/userProfileFragment" android:name="com.example.openmarket.UserProfileFragment"
-              android:label="fragment_user_profile" tools:layout="@layout/fragment_user_profile"/>
+              android:label="fragment_user_profile" tools:layout="@layout/fragment_user_profile">
+        <action android:id="@+id/action_userProfileFragment_to_editUserProfileFragment"
+                app:destination="@id/editUserProfileFragment"/>
+    </fragment>
     <fragment android:id="@+id/signupFragment" android:name="com.example.openmarket.SignupFragment"
               android:label="SignupFragment" tools:layout="@layout/fragment_signup">
         <action android:id="@+id/action_signupFragment_to_loginFragment" app:destination="@id/loginFragment"/>
     </fragment>
     <fragment android:id="@+id/productUploadFragment" android:name="com.example.openmarket.ProductUploadFragment"
               android:label="ProductUploadFragment" tools:layout="@layout/fragment_product_upload"/>
+    <fragment android:id="@+id/editProductFragment" android:name="com.example.openmarket.EditProductFragment"
+              android:label="EditProductFragment">
+        <action android:id="@+id/action_editProductFragment_to_homeFragment" app:destination="@id/homeFragment"/>
+    </fragment>
+    <fragment android:id="@+id/editUserProfileFragment" android:name="com.example.openmarket.EditUserProfileFragment"
+              android:label="fragment_edit_user_profile" tools:layout="@layout/fragment_edit_user_profile"/>
 </navigation>
