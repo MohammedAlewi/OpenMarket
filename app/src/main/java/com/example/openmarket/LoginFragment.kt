@@ -75,12 +75,7 @@ class LoginBinding(var loginFragment: LoginFragment, var view: View, var userVie
                 Toast.makeText(loginFragment.context, "There is No Connection", Toast.LENGTH_LONG).show()
             } else {
                 if (login == true) {
-//                    val user = userViewModel.getUserByUsername(username).value as User
-//
-//                    val arg = Bundle()
-//                    arg.putSerializable("user", user)
-//
-//                    (loginFragment.activity as MainActivity).currentUser = user
+
 
                     with(
                         (loginFragment.activity?.getSharedPreferences(
