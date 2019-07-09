@@ -87,7 +87,7 @@ class ProductDetailFragment : Fragment() {
         ratingViewModel.getRatingByProductId(product.id).observe(this, androidx.lifecycle.Observer { ratings ->
             ratings.let {
                 if (ratings.filter { rating -> rating.username == username }.isEmpty()) {
-                    ratingViewModel.saveRating(Rating(username ?: "unknown", 0.0, product.id))
+                    ratingViewModel.saveRating(Rating(username ?: "unknown", 0.0, product.id,0))
                 }
             }
         })
