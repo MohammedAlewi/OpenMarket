@@ -10,6 +10,7 @@ import com.example.openmarket.data.OpenMarketDatabase
 import com.example.openmarket.data.Product
 import com.example.openmarket.repository.ProductRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 class ProductViewModel(application: Application) : AndroidViewModel(application) {
@@ -29,16 +30,16 @@ class ProductViewModel(application: Application) : AndroidViewModel(application)
         productRepository.insertProduct(product, user_id)
     }
 
-    fun getProductId(id: Long): LiveData<Product> {
-        return productRepository.getProductId(id)
+    fun getProductId(id: Long)=viewModelScope.async(Dispatchers.IO) {
+         productRepository.getProductId(id)
     }
 
-    fun getProductsByUsername(username: String): LiveData<List<Product>> {
-        return productRepository.getProductsByUsername(username)
+    fun getProductsByUsername(username: String)=viewModelScope.async(Dispatchers.IO){
+         productRepository.getProductsByUsername(username)
     }
 
-    fun getAllProducts(): LiveData<List<Product>> {
-        return productRepository.getAllProducts()
+    fun getAllProducts()=viewModelScope.async(Dispatchers.IO){
+         productRepository.getAllProducts()
     }
 
 
@@ -50,12 +51,12 @@ class ProductViewModel(application: Application) : AndroidViewModel(application)
         productRepository.deleteProduct(product)
     }
 
-    fun getCommentForProduct(product_id: Long): LiveData<List<Comment>> {
-        return productRepository.getCommentForProduct(product_id)
+    fun getCommentForProduct(product_id: Long)=viewModelScope.async(Dispatchers.IO) {
+        productRepository.getCommentForProduct(product_id)
     }
 
-    fun getProductsForUser(user_id: Long): LiveData<List<Product>> {
-        return productRepository.getProductsForUser(user_id)
+    fun getProductsForUser(user_id: Long)=viewModelScope.async(Dispatchers.IO){
+       productRepository.getProductsForUser(user_id)
     }
 
     fun setActivtiy(activity: MainActivity) {

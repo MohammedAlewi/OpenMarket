@@ -6,9 +6,7 @@ import com.example.openmarket.MainActivity
 import com.example.openmarket.data.OpenMarketDatabase
 import com.example.openmarket.data.Rating
 import com.example.openmarket.repository.RatingRepository
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 class RatingViewmodel(application: Application) : AndroidViewModel(application) {
     private lateinit var ratingRepository: RatingRepository
@@ -18,40 +16,26 @@ class RatingViewmodel(application: Application) : AndroidViewModel(application) 
         ratingRepository = RatingRepository(rating_dao)
     }
 
-    fun getRatingValue(product_id: Long): LiveData<Double> {
-        var result = MutableLiveData<Double>()
-        GlobalScope.launch(Dispatchers.Main) {
-            ratingRepository.getRatingValue(product_id).observe(ratingRepository.activity, Observer { ratings ->
-                ratings.let {
-                    var rate = 0.0
-                    ratings.forEach { rate += it.rateNo }
-                    result.postValue(rate / ratings.size)
-                }
-            })
-        }
-        return result
+    fun getRatingValue(product_id: Long)=viewModelScope.async(Dispatchers.IO) {
+        ratingRepository.getRatingValue(product_id)
+
     }
 
-    fun getViewersNumber(product_id: Long): LiveData<Int> {
-        var result = MutableLiveData<Int>()
-        GlobalScope.launch(Dispatchers.Main) {
-            ratingRepository.getRatingValue(product_id).observe(ratingRepository.activity, Observer { ratings ->
-                ratings.let { result.postValue(ratings.size) }
-            })
-        }
-        return result
+    fun getViewersNumber(product_id: Long)=viewModelScope.async(Dispatchers.IO) {
+            ratingRepository.getRatingValue(product_id)
+
     }
 
     fun saveRating(rating: Rating) = viewModelScope.launch(Dispatchers.IO) {
         ratingRepository.saveRating(rating)
     }
 
-    fun getRatingByUsername(username: String): LiveData<List<Rating>> {
-        return ratingRepository.getRatingForUser(username)
+    fun getRatingByUsername(username: String)=viewModelScope.async(Dispatchers.IO){
+         ratingRepository.getRatingForUser(username)
     }
 
-    fun getRatingByProductId(product_id: Long): LiveData<List<Rating>> {
-        return ratingRepository.getRatingValue(product_id)
+    fun getRatingByProductId(product_id: Long)=viewModelScope.async(Dispatchers.IO) {
+        ratingRepository.getRatingValue(product_id)
     }
 
     fun setActivtiy(activity: MainActivity) {

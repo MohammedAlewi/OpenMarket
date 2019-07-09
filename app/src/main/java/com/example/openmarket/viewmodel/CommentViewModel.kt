@@ -10,6 +10,7 @@
     import com.example.openmarket.data.OpenMarketDatabase
     import com.example.openmarket.repository.CommentRepository
     import kotlinx.coroutines.Dispatchers
+    import kotlinx.coroutines.async
     import kotlinx.coroutines.launch
 
     class CommentViewModel(application: Application) : AndroidViewModel(application) {
@@ -34,19 +35,19 @@
         commentRepository.deleteComment(comment)
     }
 
-    fun getCommentForProduct(product_id: Long): LiveData<List<Comment>> {
-        return commentRepository.getCommentForProduct(product_id)
+    fun getCommentForProduct(product_id: Long)=viewModelScope.async(Dispatchers.IO){
+         commentRepository.getCommentForProduct(product_id)
     }
 
-    fun getCommentByUsername(username: String): LiveData<List<Comment>> {
-        return commentRepository.getCommentByUsername(username)
+    fun getCommentByUsername(username: String)=viewModelScope.async(Dispatchers.IO) {
+         commentRepository.getCommentByUsername(username)
     }
 
     fun updateComment(comment: Comment) =
         viewModelScope.launch(Dispatchers.IO) { commentRepository.updateComment(comment) }
 
-    fun getCommentById(id: Long): LiveData<Comment> {
-        return commentRepository.getCommentById(id)
+    fun getCommentById(id: Long)=viewModelScope.async(Dispatchers.IO){
+         commentRepository.getCommentById(id)
     }
 
     fun setActivtiy(activity: MainActivity) {
