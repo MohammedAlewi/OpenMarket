@@ -21,7 +21,11 @@ import com.example.openmarket.data.Subscription
 import com.example.openmarket.databinding.FragmentProductDetailBinding
 import com.example.openmarket.viewmodel.*
 import kotlinx.android.synthetic.main.fragment_product_detail.view.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import okhttp3.Dispatcher
 import java.util.*
 
 class ProductDetailFragment : Fragment() {
@@ -71,8 +75,12 @@ class ProductDetailFragment : Fragment() {
 
         var commentViews = view.findViewById(R.id.comment_items) as RecyclerView
         commentViews.layoutManager = LinearLayoutManager(this.context)
-        productViewModel.getCommentForProduct(product.id).observe(this, androidx.lifecycle.Observer { comments ->
-            commentViews.adapter = CommentItemAdapter(comments,activity as MainActivity,commentViewModel,view)
+        var context=this
+        GlobalScope.launch(Dispatchers.Main){
+            productViewModel.getCommentForProduct(product.id).await().observe(context, androidx.lifecycle.Observer { comments ->comments.let {
+                comments.forEach { comment->comment.userName="@${comment.userName}" }
+                commentViews.adapter = CommentItemAdapter(comments,activity as MainActivity,commentViewModel,view)
+            }
         })
 
 
@@ -82,33 +90,37 @@ class ProductDetailFragment : Fragment() {
             view.edit_btn.visibility = View.VISIBLE
             view.delete_btn.visibility = View.VISIBLE
         }
-
-
-        ratingViewModel.getRatingByProductId(product.id).observe(this, androidx.lifecycle.Observer { ratings ->
-            ratings.let {
-                if (ratings.filter { rating -> rating.username == username }.isEmpty()) {
-                    ratingViewModel.saveRating(Rating(username ?: "unknown", 0.0, product.id,0))
+        runBlocking {
+            ratingViewModel.getRatingByProductId(product.id).await().observe(context, androidx.lifecycle.Observer { ratings ->
+                ratings.let {
+                    if (ratings.none { rating -> rating.username == username }) {
+                        ratingViewModel.saveRating(Rating(username ?: "unknown", 0.0, product.id,0))
+                    }
                 }
-            }
-        })
+            })
+        }
 
+        GlobalScope.launch (Dispatchers.Main) {
+            ratingViewModel.getViewersNumber(product.id).await().observe(context, androidx.lifecycle.Observer { num ->
+                num.let { view.view_no.text = num.size.toString() }
+            })
+        }
+        GlobalScope.launch (Dispatchers.Main){
+            ratingViewModel.getRatingValue(product.id).await().observe(context, androidx.lifecycle.Observer { rating_no ->
 
-        ratingViewModel.getViewersNumber(product.id).observe(this, androidx.lifecycle.Observer { num ->
-            num.let { view.view_no.text = num.toString() }
-        })
-
-
-        ratingViewModel.getRatingValue(product.id).observe(this, androidx.lifecycle.Observer { rating_no ->
-            rating_no.let {
-                if (!rating_no.isNaN()) {
-                    view.product_rating.text = rating_no.toString()
-                } else {
-                    view.product_rating.text = "0.0"
+                rating_no.let {
+                    var rate = 0.0
+                    rating_no.forEach { rate += it.rateNo }
+                    var result=(rate / rating_no.size)
+                    if (!result.isNaN()) {
+                        view.product_rating.text = result.toString()
+                    } else {
+                        view.product_rating.text = "0.0"
+                    }
                 }
-            }
-        })
-
-        return view
+            })
+        }}
+            return view
     }
 
     companion object {
@@ -150,7 +162,7 @@ class CommentListener(
         var date =
             Date().date.toString() + "/" + Date().month + "/" + (Date().year.toInt() + 1900) + " " + (Date().hours % 12) + ":" + Date().minutes
         view.comment_box.setText("")
-        var comment = Comment(0, body, date, "@$username")
+        var comment = Comment(0, body, date, username)
         if (ProductDetailFragment.validCommentsFeilds(comment))
             commentViewModel.insertComment(comment, product_id = product.id)
     }
@@ -186,17 +198,27 @@ class CommentListener(
     fun addRating() {
         var username =
             activity.getSharedPreferences("user_login", Context.MODE_PRIVATE).getString("username", "unknown")
-        ratingViewmodel.getRatingByUsername(username ?: "unknown")
-            .observe(context, androidx.lifecycle.Observer { ratings ->
-                ratings.forEach { rating ->
-                    rating.let {
-                        if (rating.product_id == product.id && rating.rateNo < 5) {
-                            rating.rateNo += 1
-                            ratingViewmodel.saveRating(rating)
+        runBlocking {
+            var rate:Rating?=null
+            ratingViewmodel.getRatingByUsername(username ?: "unknown").await()
+                .observe(context, androidx.lifecycle.Observer { ratings ->
+                    ratings.let { rating ->
+                        var lists=rating.filter { rate -> rate.product_id==product.id }
+                        if(1>=lists.size && lists.get(0).rateNo<5) {
+                            rate=lists.get(0)
+                            lists.get(0).rateNo+=1.0
+                            ratingViewmodel.saveRating(lists.get(0))
                         }
                     }
-                }
             })
+//            runBlocking {
+//                rate?.rateNo?.plus(1)
+//                if (rate!=null){
+//                    ratingViewmodel.saveRating(rate)
+//                }
+//            }
+        }
+
     }
 
     fun subscribe() {

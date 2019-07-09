@@ -16,6 +16,8 @@ import com.example.openmarket.data.Product
 import com.example.openmarket.viewmodel.ProductViewModel
 import com.example.openmarket.viewmodel.SubscriptionViewmodel
 import kotlinx.android.synthetic.main.fragment_products_view.view.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 
@@ -45,58 +47,74 @@ class ProductsView : Fragment() {
         if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             recyclerView.layoutManager = GridLayoutManager(this.context, 3)
         }
+        var context=this
         when (type) {
             "none" -> {
                 recyclerView.adapter = ProductsItemAdapter(activity as MainActivity, emptyList())
             }
             "any" -> {
                 var main_products: List<Product> = emptyList()
-                productViewModel.getAllProducts().observe(this, androidx.lifecycle.Observer { products ->
-                    products.let { recyclerView.adapter = ProductsItemAdapter(activity as MainActivity, products) }
-                })
+                runBlocking {
+                    productViewModel.getAllProducts().await().observe(context, androidx.lifecycle.Observer { products ->
+                        products.let { recyclerView.adapter = ProductsItemAdapter(activity as MainActivity, products) }
+                    })
+                }
+
             }
             "Electronics" -> {
                 listitems.Type.text = "Electronics"
                 var main_products: List<Product> = emptyList()
-                productViewModel.getAllProducts().observe(this, androidx.lifecycle.Observer { products ->
-                    products.let {
-                        recyclerView.adapter = ProductsItemAdapter(activity as MainActivity,
-                            products.filter { product -> product.type == "Electronics" })
-                    }
-                })
+                runBlocking {
+                    productViewModel.getAllProducts().await().observe(context, androidx.lifecycle.Observer { products ->
+                        products.let {
+                            recyclerView.adapter = ProductsItemAdapter(activity as MainActivity,
+                                products.filter { product -> product.type == "Electronics" })
+                        }
+                    })
+                }
+
 
             }
             "Car" -> {
                 listitems.Type.text = "Car"
                 var main_products: List<Product> = emptyList()
-                productViewModel.getAllProducts().observe(this, androidx.lifecycle.Observer { products ->
-                    products.let {
-                        recyclerView.adapter = ProductsItemAdapter(activity as MainActivity,
-                            products.filter { product -> product.type == "Car" })
-                    }
+                runBlocking {
+                    productViewModel.getAllProducts().await().observe(context, androidx.lifecycle.Observer { products ->
+                        products.let {
+                            recyclerView.adapter = ProductsItemAdapter(activity as MainActivity,
+                                products.filter { product -> product.type == "Car" })
+                        }
 
-                })
+                    })
+                }
+
 
             }
             "Cloth" -> {
                 listitems.Type.text = "Cloth"
                 var main_products: List<Product> = emptyList()
-                productViewModel.getAllProducts().observe(this, androidx.lifecycle.Observer { products ->
-                    products.let {
-                        recyclerView.adapter = ProductsItemAdapter(activity as MainActivity,
-                            products.filter { product -> product.type == "Cloth" })
-                    }
-                })
+                runBlocking {
+                    productViewModel.getAllProducts().await().observe(context, androidx.lifecycle.Observer { products ->
+                        products.let {
+                            recyclerView.adapter = ProductsItemAdapter(activity as MainActivity,
+                                products.filter { product -> product.type == "Cloth" })
+                        }
+                    })
+
+                }
             }
             "House" -> {
                 listitems.Type.text = "House"
                 var main_products: List<Product> = emptyList()
-                productViewModel.getAllProducts().observe(this, androidx.lifecycle.Observer { products ->
-                    products.let {
-                        recyclerView.adapter = ProductsItemAdapter(activity as MainActivity,
-                            products.filter { product -> product.type == "House" })
-                    }
-                })
+                runBlocking {
+                    productViewModel.getAllProducts().await().observe(context, androidx.lifecycle.Observer { products ->
+                        products.let {
+                            recyclerView.adapter = ProductsItemAdapter(activity as MainActivity,
+                                products.filter { product -> product.type == "House" })
+                        }
+                    })
+                }
+
             }
             "subscriptions" -> {
                 listitems.Type.text = "Subscribed Products"
@@ -110,10 +128,12 @@ class ProductsView : Fragment() {
                             var adapter = ProductsItemAdapter(activity as MainActivity, emptyList<Product>())
                             recyclerView.adapter = adapter
                             subscriptions.forEach { it ->
-                                productViewModel.getProductsByUsername(it.subscribed_to.removePrefix("@"))
-                                    .observe(context, Observer {
-                                        it.forEach { adapter.addProduct(it) }
-                                    })
+                                GlobalScope.launch {
+                                    productViewModel.getProductsByUsername(it.subscribed_to.removePrefix("@"))
+                                        .await().observe(context, Observer {
+                                            it.forEach { adapter.addProduct(it) }
+                                        })
+                                }
                             }
                         }
                     })
@@ -125,11 +145,14 @@ class ProductsView : Fragment() {
                 listitems.Type.text = "My Products"
                 var username =
                     activity?.getSharedPreferences("user_login", Context.MODE_PRIVATE)?.getString("username", "unknown")
-                productViewModel.getProductsByUsername(username ?: "unknown").observe(this, Observer { products ->
-                    products.let {
-                        recyclerView.adapter = ProductsItemAdapter(activity as MainActivity, products)
-                    }
-                })
+                runBlocking {
+                    productViewModel.getProductsByUsername(username ?: "unknown").await().observe(context, Observer { products ->
+                        products.let {
+                            recyclerView.adapter = ProductsItemAdapter(activity as MainActivity, products)
+                        }
+                    })
+                }
+
 
             }
         }

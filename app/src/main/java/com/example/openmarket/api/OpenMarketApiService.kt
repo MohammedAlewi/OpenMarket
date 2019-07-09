@@ -98,20 +98,20 @@ interface OpenMarketApiService {
     @GET("rating/{username}")
     fun getRating(@Path("username") username: String): Deferred<Response<List<Rating>>>
 
-    @GET("rating/{product_id}")
+    @GET("rating/product/{product_id}")
     fun getAllRatingForProduct(@Path("product_id") product_id: Long): Deferred<Response<List<Rating>>>
 
     // subscription section
-    @POST("subscription/save")
+    @POST("users/subscription/save")
     fun saveSubscription(@Body subscription: com.example.openmarket.data.Subscription): Deferred<Response<Void>>
 
-    @GET("subscription/{username}")
+    @GET("users/subscription/{username}")
     fun getSubscriptions(@Path("username") username: String): Deferred<Response<List<com.example.openmarket.data.Subscription>>>
 
     // end.....
     companion object {
 
-        private val url = "http://10.6.210.138:8888/"
+        private val url = "http://192.168.43.129:8888/"
 
         fun getInstance(context: Context): OpenMarketApiService {
             var cookieJar= MyJar(SetCookieCache(),SharedPrefsCookiePersistor(context))
