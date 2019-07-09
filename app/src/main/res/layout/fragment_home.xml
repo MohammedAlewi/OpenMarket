@@ -30,7 +30,8 @@
             app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
             app:menu="@menu/bottom_navigation" app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintVertical_bias="0.0">
+            app:layout_constraintVertical_bias="0.0" app:itemRippleColor="@color/design_default_color_background"
+            app:itemTextColor="@color/colorPrimary">
 
     </com.google.android.material.bottomnavigation.BottomNavigationView>
 
