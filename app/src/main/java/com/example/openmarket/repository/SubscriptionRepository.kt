@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 class SubscriptionRepository(private val subscriptionDao: SubscriptionDao) {
     lateinit var activity: MainActivity
 
-    fun getSubscriptionForUser(username: String): LiveData<List<Subscription>> {
+    suspend fun getSubscriptionForUser(username: String): LiveData<List<Subscription>> {
         if (activity.isConnected()) {
             GlobalScope.launch(Dispatchers.IO) {
                 val subscriptions = OpenMarketApiService.getInstance(activity).getSubscriptions(username)
@@ -23,11 +23,11 @@ class SubscriptionRepository(private val subscriptionDao: SubscriptionDao) {
         return subscriptionDao.getUserSubscriptions(username)
     }
 
-    fun saveSubscription(subscription: Subscription) {
+    suspend fun saveSubscription(subscription: Subscription) {
         if (activity.isConnected()) {
-            GlobalScope.launch(Dispatchers.IO) {
+          //  GlobalScope.launch(Dispatchers.IO) {
                 val ratings = OpenMarketApiService.getInstance(activity).saveSubscription(subscription)
-            }
+          //  }
         }
         subscriptionDao.insertSubscription(subscription)
     }

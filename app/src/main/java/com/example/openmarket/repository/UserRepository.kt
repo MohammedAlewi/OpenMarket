@@ -18,33 +18,33 @@ import retrofit2.Response
 class UserRepository(private val userDao: UserDao, private val userProductDao: UserProductDao) {
     lateinit var activity: MainActivity
 
-    fun getUserById(user_id: Long): LiveData<User> {
+     suspend fun getUserById(user_id: Long): LiveData<User> {
         if (activity.isConnected()) {
-            GlobalScope.launch(Dispatchers.IO) {
+           // GlobalScope.launch(Dispatchers.IO) {
                 val user = OpenMarketApiService.getInstance(activity).findUserById(user_id).await().body() as User
                 userDao.insertUser(user)
-            }
+           // }
         }
         return userDao.getUserById(user_id)
     }
 
-    fun getUserByUsername(username: String): LiveData<User> {
+    suspend fun getUserByUsername(username: String): LiveData<User> {
         if (activity.isConnected()) {
-            GlobalScope.launch(Dispatchers.IO) {
+            //GlobalScope.launch(Dispatchers.IO) {
                 val user = OpenMarketApiService.getInstance(activity).findUserByUsername(username).await().body() as User
                 userDao.insertUser(user)
-            }
+            //}
         }
         return userDao.getUserByUsername(username)
     }
 
-    fun insertUser(user: User) {
+    suspend fun insertUser(user: User) {
         if (activity.isConnected()) {
-            GlobalScope.launch(Dispatchers.IO) {
+            //GlobalScope.launch(Dispatchers.IO) {
                 var long=OpenMarketApiService.getInstance(activity).registerUser(user).await().body()
                 user.id=long?:0
                 userDao.insertUser(user)
-            }
+           // }
         } else {
             var id = userDao.insertUser(user)
             with(activity.getSharedPreferences("unsaved_data_on_server", Context.MODE_PRIVATE).edit()) {
@@ -54,13 +54,12 @@ class UserRepository(private val userDao: UserDao, private val userProductDao: U
         }
     }
 
-    fun updateUser(user: User) {
+    suspend fun updateUser(user: User) {
         if (activity.isConnected()) {
-            GlobalScope.launch(Dispatchers.IO) {
+            //GlobalScope.launch(Dispatchers.IO) {
                var long= OpenMarketApiService.getInstance(activity).updateUser(user, user.id).await().body()
-                println("------id---------$long")
                 userDao.updateUser(user)
-            }
+            //}
         } else {
             userDao.updateUser(user)
             with(activity.getSharedPreferences("unsaved_data_on_server", Context.MODE_PRIVATE).edit()) {
@@ -70,13 +69,13 @@ class UserRepository(private val userDao: UserDao, private val userProductDao: U
         }
     }
 
-    fun deleteUser(user: User) {
+    suspend fun deleteUser(user: User) {
         if (activity.isConnected()) {
-            GlobalScope.launch(Dispatchers.IO) {
+           // GlobalScope.launch(Dispatchers.IO) {
                 OpenMarketApiService.getInstance(activity).deleteUser(user.id)
                 userProductDao.removeAllRelationByUserId(userid = user.id)
                 userDao.deleteUser(user)
-            }
+           // }
         }
 
     }
