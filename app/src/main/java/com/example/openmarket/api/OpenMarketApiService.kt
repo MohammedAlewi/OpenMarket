@@ -111,7 +111,7 @@ interface OpenMarketApiService {
     // end.....
     companion object {
 
-        private val url = "http://192.168.43.129:8888/"
+        private val url = "http://10.6.210.138:8888/"
 
         fun getInstance(context: Context): OpenMarketApiService {
             var cookieJar= MyJar(SetCookieCache(),SharedPrefsCookiePersistor(context))

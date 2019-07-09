@@ -16,6 +16,7 @@ import com.example.openmarket.data.Product
 import com.example.openmarket.viewmodel.ProductViewModel
 import com.example.openmarket.viewmodel.SubscriptionViewmodel
 import kotlinx.android.synthetic.main.fragment_products_view.view.*
+import kotlinx.coroutines.runBlocking
 
 
 class ProductsView : Fragment() {
@@ -102,18 +103,23 @@ class ProductsView : Fragment() {
                 var username =
                     activity?.getSharedPreferences("user_login", Context.MODE_PRIVATE)?.getString("username", "unknown")
                 var subscriptions = subscriptionViewmodel.getSubscriptionForUser(username ?: "unknown")
-                subscriptions.observe(this, Observer { subscriptions ->
-                    subscriptions.let {
-                        var adapter = ProductsItemAdapter(activity as MainActivity, emptyList<Product>())
-                        recyclerView.adapter = adapter
-                        subscriptions.forEach { it ->
-                            productViewModel.getProductsByUsername(it.subscribed_to.removePrefix("@"))
-                                .observe(this, Observer {
-                                    it.forEach { adapter.addProduct(it) }
-                                })
+                var context=this
+                runBlocking {
+                    subscriptions.await().observe(context, Observer { subscriptions ->
+                        subscriptions.let {
+                            var adapter = ProductsItemAdapter(activity as MainActivity, emptyList<Product>())
+                            recyclerView.adapter = adapter
+                            subscriptions.forEach { it ->
+                                productViewModel.getProductsByUsername(it.subscribed_to.removePrefix("@"))
+                                    .observe(context, Observer {
+                                        it.forEach { adapter.addProduct(it) }
+                                    })
+                            }
                         }
-                    }
-                })
+                    })
+                }
+
+
             }
             "my_products" -> {
                 listitems.Type.text = "My Products"

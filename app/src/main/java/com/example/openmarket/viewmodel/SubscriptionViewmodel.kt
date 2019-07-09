@@ -9,6 +9,7 @@ import com.example.openmarket.data.OpenMarketDatabase
 import com.example.openmarket.data.Subscription
 import com.example.openmarket.repository.SubscriptionRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 class SubscriptionViewmodel(application: Application) : AndroidViewModel(application) {
@@ -23,8 +24,8 @@ class SubscriptionViewmodel(application: Application) : AndroidViewModel(applica
         subscriptionRepository.saveSubscription(subscription)
     }
 
-    fun getSubscriptionForUser(username: String): LiveData<List<Subscription>> {
-        return subscriptionRepository.getSubscriptionForUser(username)
+    fun getSubscriptionForUser(username: String)=viewModelScope.async(Dispatchers.IO){
+         subscriptionRepository.getSubscriptionForUser(username)
     }
 
     fun setActivtiy(activity: MainActivity) {

@@ -94,9 +94,6 @@ class ProductUploadFragment : Fragment() {
                     this.clearFields()
                     view.findNavController().navigate(R.id.homeFragment)
 
-                    val bundle = Bundle()
-                    bundle.putSerializable("product", product)
-                    Navigation.createNavigateOnClickListener(R.id.action_signupFragment_to_loginFragment, bundle)
                 }else{ Toast.makeText(this.context,"fill all required spaces before uploading ",Toast.LENGTH_SHORT).show()}
             } else {
                 view.findNavController().navigate(R.id.loginFragment, null)

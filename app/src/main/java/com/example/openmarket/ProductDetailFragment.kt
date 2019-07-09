@@ -21,6 +21,7 @@ import com.example.openmarket.data.Subscription
 import com.example.openmarket.databinding.FragmentProductDetailBinding
 import com.example.openmarket.viewmodel.*
 import kotlinx.android.synthetic.main.fragment_product_detail.view.*
+import kotlinx.coroutines.runBlocking
 import java.util.*
 
 class ProductDetailFragment : Fragment() {
@@ -159,13 +160,16 @@ class CommentListener(
         if (product.userName.contains('@')) {
             username = product.userName.substring(1)
         }
-        userViewModel.getUserByUsername(username).observe(context, androidx.lifecycle.Observer { userObj ->
-            userObj.let {
-                var arg = Bundle()
-                arg.putSerializable("user", userObj)
-                view.findNavController().navigate(R.id.userProfileFragment, arg)
-            }
-        })
+        var context=context
+        runBlocking {
+            userViewModel.getUserByUsername(username).await().observe(context, androidx.lifecycle.Observer { userObj ->
+                userObj.let {
+                    var arg = Bundle()
+                    arg.putSerializable("user", userObj)
+                    view.findNavController().navigate(R.id.userProfileFragment, arg)
+                }
+            })
+        }
     }
 
     fun deleteProduct() {

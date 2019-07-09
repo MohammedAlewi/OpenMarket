@@ -21,18 +21,18 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
         userRepository = UserRepository(user_dao, user_prod_dao)
     }
 
-    fun getUserById(user_id: Long): LiveData<User> {
-        return userRepository.getUserById(user_id)
+    fun getUserById(user_id: Long)=viewModelScope.launch(Dispatchers.IO){
+         userRepository.getUserById(user_id)
     }
 
     fun setActivtiy(activity: MainActivity) {
         userRepository.activity = activity
     }
 
-    fun getUserByUsername(username: String): LiveData<User> {
+    fun getUserByUsername(username: String)=viewModelScope.async(Dispatchers.IO) {
         var usr= userRepository.getUserByUsername(username)
         userObject=usr
-        return usr
+        usr
     }
 
     fun insertUser(user: User) = viewModelScope.launch(Dispatchers.IO) {

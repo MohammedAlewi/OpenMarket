@@ -12,6 +12,7 @@ import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
 import com.example.openmarket.viewmodel.ProductViewModel
 import kotlinx.android.synthetic.main.fragment_home.view.*
+import kotlinx.coroutines.runBlocking
 
 
 class HomeFragment : Fragment() {
@@ -30,17 +31,26 @@ class HomeFragment : Fragment() {
         productViewModel = ViewModelProviders.of(this).get(ProductViewModel::class.java)
         productViewModel.setActivtiy(activity as MainActivity)
 
-        productViewModel.getAllProducts().observe(this, Observer { products ->
-            products.let {
-                if (products.isEmpty()) {
-                    childFragmentManager.beginTransaction()
-                        .replace(R.id.home_framelayouts, ProductsView.newInstance("none")).commit()
-                } else {
-                    childFragmentManager.beginTransaction()
-                        .replace(R.id.home_framelayouts, ProductsView.newInstance("any")).commit()
+        var size=0
+        var cotext=this
+        runBlocking {
+            productViewModel.getAllProducts().observe(cotext, Observer { products ->
+                products.let {
+                    size=products.size
+                    if (size==0) {
+                        childFragmentManager.beginTransaction()
+                            .replace(R.id.home_framelayouts, ProductsView.newInstance("none")).commit()
+                    }
                 }
-            }
-        })
+            })
+            childFragmentManager.beginTransaction()
+                .replace(R.id.home_framelayouts, ProductsView.newInstance("any")).commit()
+
+        }
+
+
+
+
 
 
         view.bottom_nav.setOnNavigationItemSelectedListener {

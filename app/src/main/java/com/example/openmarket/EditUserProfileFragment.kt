@@ -16,6 +16,7 @@ import com.example.openmarket.data.User
 import com.example.openmarket.databinding.FragmentEditUserProfileBinding
 import com.example.openmarket.viewmodel.UserViewModel
 import kotlinx.android.synthetic.main.fragment_edit_user_profile.view.*
+import kotlinx.coroutines.runBlocking
 
 class EditUserProfileFragment : Fragment() {
     private val userViewModel by lazy { ViewModelProviders.of(this).get(UserViewModel::class.java) }
@@ -32,10 +33,15 @@ class EditUserProfileFragment : Fragment() {
             activity?.getSharedPreferences("user_login", Context.MODE_PRIVATE)?.getString("username", "unknown") ?:"username"
         var user=userViewModel.getUserByUsername(username)
         fragmentEditUserProfileBinding.userViewModel=userViewModel
-        user.observe(this, Observer {
-            usr-> usr.let { fragmentEditUserProfileBinding.user=usr ;
-            fragmentEditUserProfileBinding.action=UserButtonAction(userViewModel,usr,view)}
-        })
+        var context=this
+        runBlocking {
+            user.await().observe(context, Observer {
+                    usr-> usr.let { fragmentEditUserProfileBinding.user=usr ;
+                fragmentEditUserProfileBinding.action=UserButtonAction(userViewModel,usr,view)}
+            })
+        }
+
+
         fragmentEditUserProfileBinding.lifecycleOwner = this
         return view
     }

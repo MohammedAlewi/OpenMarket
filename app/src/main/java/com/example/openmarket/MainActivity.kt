@@ -24,6 +24,8 @@ import com.example.openmarket.viewmodel.UserViewModel
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.runBlocking
 
 
 class MainActivity : AppCompatActivity(),
@@ -56,20 +58,22 @@ class MainActivity : AppCompatActivity(),
         }
         userViewModel = ViewModelProviders.of(this).get(UserViewModel::class.java)
         userViewModel.setActivtiy(this)
-
         sheardPref = getSharedPreferences("user_login", Context.MODE_PRIVATE)
         var username = sheardPref.getString("username", null)
 
         if (username != null) {
-
+            var context=this
             var user: User? = null// as User
-            userViewModel.getUserByUsername(username).observe(this, androidx.lifecycle.Observer { userObj ->
-                userObj.let {
-                    user = userObj
-                    nav_view.getHeaderView(0).findViewById<TextView>(R.id.main_username).text = userObj.username
-                    nav_view.getHeaderView(0).findViewById<TextView>(R.id.main_fullname).text = userObj.fullName
-                }
-            })
+            runBlocking {
+                userViewModel.getUserByUsername(username).await().observe(context, androidx.lifecycle.Observer { userObj ->
+                    userObj.let {
+                        user = userObj
+                        nav_view.getHeaderView(0).findViewById<TextView>(R.id.main_username).text = userObj.username
+                        nav_view.getHeaderView(0).findViewById<TextView>(R.id.main_fullname).text = userObj.fullName
+                    }
+                })
+            }
+
 
             currentUser = user
 
